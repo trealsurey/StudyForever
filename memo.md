@@ -166,3 +166,15 @@ public class ResourcePatternResolverTest {
 
 `() -> new HashMap<>()` 就可以写成 `HashMap::new` 
 
+
+
+
+
+`git add .`
+
+`git commit`
+
+`git pull`
+
+`git push`
+
