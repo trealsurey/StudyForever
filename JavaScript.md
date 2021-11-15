@@ -20,5 +20,9 @@ var n = null;
 n + 'jojo'	//nulljojo
 ```
 
-
+## 数组
+JS 中一个数组可以放各种类型的元素
+```js
+var a = [1, 'jojo', 'female', true];
+```
 
