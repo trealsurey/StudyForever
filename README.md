@@ -1,2 +1,3 @@
-# StudyForever
-学习记录
+# Algorithm
+
+刷题笔记
