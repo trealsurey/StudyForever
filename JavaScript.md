@@ -39,7 +39,7 @@ n + 'jojo'	//nulljojo
 
 str.substr(startIdx, length)
 
-str.substring(startIdx, endIdx) 且不包含 endIdxo
+str.substring(startIdx, endIdx) 且不包含 endIdx
 
 ### Object 类型
 
@@ -50,9 +50,9 @@ Object 类是所有类型的超类，自定义的任何类型都默认继承 Obj
 可以通过 `prototype` 属性来给类动态扩展属性以及函数
 
 ```js
-    Student.prototype.getEmail = function() {
-        return this.email
-    }
+Student.prototype.getEmail = function() {
+    return this.email
+}
 ```
 
 - 函数：`toString()` `valueOf()` `toLocaleString()`
@@ -74,6 +74,7 @@ test()  // 弹出tettetetetetetetetest
 ### 回调函数 callback
 回调函数的特点是：自己把函数写出来之后，不是由自己负责调用而是由其他程序负责调用该函数
 
-```js
+```html
 // 将sayHello函数注册到按钮上，等待click事件发生后，该函数被浏览器调用。我们称sayHello函数为回调函数
 <input type = "button" onclick = "sayHello" />
+```
