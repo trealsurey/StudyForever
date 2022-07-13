@@ -1,3 +1,7 @@
+*TODO*
+
+1. JS 渲染顺序
+
 ## 变量
 
 - 变量只声明不赋值 -- 返回 `undefined`
@@ -20,13 +24,56 @@ var n = null;
 n + 'jojo'	//nulljojo
 ```
 
-## 数组
-JS 中一个数组可以放各种类型的元素
+- 任何变量，如果不加 `var` 进行定义，那么就是全局的。如果在函数内部用 var 定义一个变量那么它就是局部变量，否则就是全局变量
+
+## 数据类型
+
+- 原始类型：Number、String、Boolean、Undefined、Null
+- 引用类型：Object
+
+【注】Undefined 类型只有一个值，就是 undefined；**NaN 属于 Number 类型**
+
+### String 类型
+
+> **str.substr() 和 str.substring() 的区别**
+
+str.substr(startIdx, length)
+
+str.substring(startIdx, endIdx) 且不包含 endIdxo
+
+### Object 类型
+
+Object 类是所有类型的超类，自定义的任何类型都默认继承 Object
+
+- 属性：`prototype（常用）` 和 `constructor`
+
+可以通过 `prototype` 属性来给类动态扩展属性以及函数
+
 ```js
-var a = [1, 'jojo', 'female', true];
+    Student.prototype.getEmail = function() {
+        return this.email
+    }
 ```
 
-## JS 调试
-> 如何快速找到 DOM 元素
+- 函数：`toString()` `valueOf()` `toLocaleString()`
 
-在 Chrome 中的 Elements 面板中标记一个 DOM 元素，并在控制台中使用它。Chrome 控制台会保留选择历史的最后五个元素，最终选择的首个元素被标记为 `$0`，第二个选择的元素为 `$1`，以此类推。
+
+## 函数
+对于 JS 来说，如果定义两个名字相同的函数，那么后声明的函数会覆盖前一个的声明
+
+```js
+var test = function() {
+    alert("test")
+}
+var test = function(){
+    alert("tettetetetetetetetest")
+}
+test()  // 弹出tettetetetetetetetest
+```
+
+### 回调函数 callback
+回调函数的特点是：自己把函数写出来之后，不是由自己负责调用而是由其他程序负责调用该函数
+
+```js
+// 将sayHello函数注册到按钮上，等待click事件发生后，该函数被浏览器调用。我们称sayHello函数为回调函数
+<input type = "button" onclick = "sayHello" />
