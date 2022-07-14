@@ -1,6 +1,4 @@
-# StudyForever
-学习记录
+# StudyForever - Frontend
+
 
 Some frontend related notes
-
-Stay Hungry Stay Foolish
