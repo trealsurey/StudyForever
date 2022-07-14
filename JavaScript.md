@@ -78,3 +78,49 @@ test()  // 弹出tettetetetetetetetest
 // 将sayHello函数注册到按钮上，等待click事件发生后，该函数被浏览器调用。我们称sayHello函数为回调函数
 <input type = "button" onclick = "sayHello" />
 ```
+
+### 关于 JS 代码的执行顺序
+```html
+<!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
+因为代码是从上往下运行的，当运行到getElementById时并找不到id为myBtn的按钮 -->
+<!-- Uncaught TypeError: Cannot set properties of null (setting 'onclick') -->
+<body>
+    <script type="text/javascript">
+        document.getElementById("myBtn").onclick = function() {
+            alert("this is my button.")
+        }
+    </script>
+
+    <input type="button" value="btn1" id="myBtn" />
+</body>
+```
+
+想要实现就需要使用 `load` 事件
+
+`load` 事件什么时候发生？当**页面元素全部加载完毕之后**才会发生。
+
+```html
+<body onload="ready()">
+    <script type='text/javascript'>
+        function ready() {
+            document.getElementById("myBtn").onclick = function () {
+                alert("this is my button.")
+            }
+        }
+    </script>
+    <input type="button" value="btn1" id="myBtn" />
+</body>
+
+<!-- 或者 -->
+
+<body>
+    <script type='text/javascript'>
+        window.onload = function() {
+            document.getElementById("myBtn").onclick = function() {
+                alert("this is my button...")
+            }
+        }
+    </script>
+    <input type="button" value="333333" id="myBtn" />
+</body>
+```
