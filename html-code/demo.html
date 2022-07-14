@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>测试JS代码执行顺序</title>
+</head>
+
+<body>
+    <script type='text/javascript'>
+        window.onload = function() {
+            document.getElementById("myBtn").onclick = function() {
+                alert("this is my button test...")
+            }
+        }
+    </script>
+    <input type="button" value="btn1" id="myBtn" />
+</body>
+</html>
