@@ -1,2 +1,3 @@
 # StudyForever
-学习记录
+
+Stay Hungry Stay Foolish
