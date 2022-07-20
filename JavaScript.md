@@ -1,3 +1,12 @@
+# JavaScript
+JS 包括
+- ECMAScript：JS 的核心语法（ES 规范，ECMA-262 标准）
+- DOM：Document Object Model，文档对象模型，对网页当中的节点进行增删改的过程都是对 DOM 操作的过程。HTML 文档被当做一棵 DOM 树来看待。
+- BOM：Browser Object Model，浏览器对象模型。关闭浏览器窗口、打开一个新的浏览器窗口、后退、前进、浏览器地址栏上的地址等进行操作都是 BOM 编程。
+
+## DOM 和 BOM 的区别
+- BOM 的顶级对象是：window；DOM 的顶级对象是：document；实际上 BOM 是包括 DOM 的。
+
 ## 变量
 
 - 变量只声明不赋值 -- 返回 `undefined`
@@ -120,3 +129,28 @@ test()  // 弹出tettetetetetetetetest
     <input type="button" value="333333" id="myBtn" />
 </body>
 ```
+
+## 关于 void 运算符
+`void` 运算符对给定的表达式进行求值，然后**返回 `undefined`**
+
+void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(0)（等同于void 0）`。在上述情况中，也可以使用全局变量 undefined 来代替（假定其仍是默认值）
+
+```html
+<!-- 假设现在需要实现一个超链接的效果，点击超链接后弹出相应内容，但是页面不进行跳转
+     必须加上javascript: ，如果不加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
+     同样，使用 javascript:undefined 是一样的效果
+     甚至，使用 js:void(0) 也是一样的效果-->
+<body>
+    <a href="javascript:void(0)" onclick="alert('ddddddd.......')">这是一个超链接</a>
+</body>
+```
+
+## 有哪些方法可以通过浏览器向服务器发请求？
+1. 直接在浏览器地址栏输入 URL 然后回车
+2. 表单 form 的提交 form.submit
+3. 超链接
+4. document.location (.href可省略)
+5. window.location.href (.href可省略)
+6. window.open("url")
+
+以上所有的请求方式均可以携带数据给服务器，但只有表单提交的数据是动态的
