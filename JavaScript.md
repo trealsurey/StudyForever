@@ -84,7 +84,26 @@ test()  // 弹出tettetetetetetetetest
 <input type = "button" onclick = "sayHello" />
 ```
 
-### 关于 JS 代码的执行顺序
+### eval 函数
+> https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval
+
+`eval` 函数的作用是：将字符串当做一段 JS 代码解释并执行
+
+```js
+window.eval("var i = 100;")
+alert("i = " + i)   // 结果：弹出 i = 100
+```
+
+```js
+// java连接数据库，查询数据之后，将返回数据以json字符串返回给浏览器，还不是一个json对象，可以使用eval函数，将json字符串穿换成json对象
+var fromJava = "{\"name\": \"zhangsan\", \"pwd\": \"124\"}"
+window.eval("var jsonObj = " + fromJava)
+alert(jsonObj.name + ", " + jsonObj.pwd)
+```
+
+**永远不要使用 eval 函数，存在一个非常好的 eval 替代方法：只需使用 `window.Function`**
+
+## 关于 JS 代码的执行顺序
 ```html
 <!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
 因为代码是从上往下运行的，当运行到getElementById时并找不到id为myBtn的按钮 -->
@@ -154,3 +173,10 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 6. window.open("url")
 
 以上所有的请求方式均可以携带数据给服务器，但只有表单提交的数据是动态的
+
+## JSON
+JavaScript Object Notation(JavaScript对象标记)
+
+- 一种标准的轻量级数据交换格式。体积小，易解析。
+- 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
+
