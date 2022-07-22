@@ -180,3 +180,6 @@ JavaScript Object Notation(JavaScript对象标记)
 - 一种标准的轻量级数据交换格式。体积小，易解析。
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
 
+## ES6
+> [ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
+
