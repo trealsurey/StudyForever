@@ -44,6 +44,20 @@ Emmet 语法的前身是 Zen coding，它使用缩写来提高 html/css 的编�
    2. 搜索 `format`，选择 `格式化`
    3. 勾选想要的格式化方式
 
+## font字体
+|  属性   | 作用  |  值 |
+|  ----  | ----  |  ---- |
+| font-style  | 字体风格 |  italic/normal/oblique/oblique 40deg(倾斜角度)   |
+| font-weight  | 字体粗细 |  normal/bold/lighter/bolder/数值100-900(400是normal，700是bold)  |
+| font-size  | 字体大小 |  px   |
+| line-height  | 行高 |  px   |
+| font-family  | 字体 |  Jetbrains Mono/Microsoft YaHei ...   |
+
+**复合写法**
+```css
+font: font-style font-weight font-size/line-height font-family;
+```
+
 ## 复合选择器 :star:
 
 ### 后代选择器
@@ -252,6 +266,39 @@ background: 颜色 url 平铺 滚动 位置;
 | background-position  | 图片位置 |  x y   |
 
 ## CSS 三大特性
-- 层叠性
-- 继承性
-- 优先级
+
+- **层叠性**：相同选择器设置不同的样式时，一个样式会覆盖另一个。遵循的原则是：执行后来声明的样式
+- **继承性**：子标签继承父标签的某些样式（text-，font-，line-，这些元素开头的可以继承，以及 color 属性）
+  - 行高的继承性：元素行高 = font-size * 数字
+```css
+body {
+   font: 14px/1.5 'Jetbrains Mono';
+}
+div {
+   font-size: 18px;
+}
+
+/* div是body的子元素，此时div中元素的行高是 18 * 1.5 = 27px */
+```
+- **优先级**：同一个元素指定多个选择器，就会有优先级的产生
+  - 选择器相同：则执行层叠性，也即覆盖
+  - 选择器不同，则根据 `选择器权重` 执行。**从高到低**
+    - !important
+    - 行内样式 style=""
+    - ID选择器
+    - 类选择器，伪类选择器
+    - 元素选择器
+    - 继承，*（注意！无论父元素权重多高，子元素继承之后得到的权重都是0，只要再有同样的声明就会覆盖）
+  - `权重叠加`：如果是复合选择器，则会有权重叠加，需要计算权重
+
+> Ref: [优先级 from MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity)
+
+## 盒子模型
+
+### border
+- border-width
+- border-style
+- border-color
+- 复合形式：1px solid red; 没有顺序
+- `border-collapse: collapse;` 相邻边框合并在一起
+- 边框会影响 div 实际大小，div 大小 = 内容 + 上边框 + 下边框
