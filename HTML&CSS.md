@@ -88,7 +88,7 @@ ol li {
 <!-- 第一个有序列表中的字体为粉色，class为test的列表的颜色为红色 -->
 ```
 
-### 子选择器（重要）
+### 子选择器
 又称子元素选择器，只能选择作为某元素的**最近一级**子元素。简单理解就是选亲儿子元素
 ```css
 元素1 > 元素2 { 
@@ -295,10 +295,19 @@ div {
 
 ## 盒子模型
 
-### border
+### border 边框
 - border-width
 - border-style
 - border-color
 - 复合形式：1px solid red; 没有顺序
 - `border-collapse: collapse;` 相邻边框合并在一起
-- 边框会影响 div 实际大小，div 大小 = 内容 + 上边框 + 下边框
+- **边框会影响 div 实际大小**，div 大小 = 内容 + 上边框 + 下边框
+
+### padding 内边距
+- padding-top/bottom/left/right
+- `padding: 5px` 上下左右各5px
+- `padding: 5px 10px` 上下5px，左右10px
+- `padding: 5px 10px 20px` 上5px，左右10px，下20px
+- `padding: 5px 10px 20px 30px` 上5右10下20左30，顺时针方向 
+- **padding 会影响 div 实际大小**，如果 div 已经有了宽和高，加上 padding 之后会撑大 div
+- 
