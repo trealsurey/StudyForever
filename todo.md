@@ -86,3 +86,8 @@
    console.log(i);
 </script>
 ```
+
+## 算法题
+[剑指 Offer II 029. 排序的循环链表](https://leetcode.cn/problems/4ueAj6/)
+
+[反转链表](https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/)
