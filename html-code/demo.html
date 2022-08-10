@@ -4,19 +4,18 @@
     <meta charset="UTF-8" />
     <title>测试JS代码执行顺序</title>
   </head>
+  <style>
+    div {
+      background-color: blue;
+      height: 100px;
+      width: 100px;
+      border-radius: 50px;
+    }
+  </style>
 
   <body>
-    <script type="text/javascript">
-      window.onload = function () {
-        for (var i = 0; i < 5; i++) {
-          setTimeout(function () {
-            console.log(i++);
-          }, 4000);
-        }
-        console.log(i);
-      };
-    </script>
-    <input type="button" value="btn1" id="myBtn" />
-    <a href="void(0)" onclick="alert('ddddddd.......')">这是一个超链接</a>
+    <div>
+      
+    </div>
   </body>
 </html>
