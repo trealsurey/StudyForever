@@ -354,8 +354,9 @@ border-radius: length   /* length是圆的半径，或者可以写百分比 */
 **简写形式：左上角 右上角 右下角 左下角**
 
 ### 盒子阴影
-
-**box-shadow**
+```css
+box-shadow: h-shadow v-shadow blur spread color inset;
+```
 
 |  属性   | 作用  |  值 |
 |  ----  | ----  |  ---- |
@@ -371,3 +372,15 @@ border-radius: length   /* length是圆的半径，或者可以写百分比 */
 - 盒子阴影不占用空间，不影响其他盒子排列
 
 ### 文字阴影
+```css
+text-shadow: h-shadow v-shadow blur;
+```
+
+|  属性   | 作用  |  值 |
+|  ----  | ----  |  ---- |
+| h-shadow  | **必需**。水平阴影位置。允许负值 |  px   |
+| v-shadow  | **必需**。垂直阴影位置。允许负值 |  px  |
+| blur  | 可选。模糊距离（是否模糊） |  px   |
+| color  | 可选。阴影颜色 |  颜色/rgba   |
+
+## 浮动
