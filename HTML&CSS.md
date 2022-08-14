@@ -384,3 +384,27 @@ text-shadow: h-shadow v-shadow blur;
 | color  | 可选。阴影颜色 |  颜色/rgba   |
 
 ## 浮动
+```css
+float: left/right/none;
+```
+
+设置了浮动的元素的最重要特征：
+- 脱离标准普通流的控制浮动到指定位置（俗称脱标），**浮动的盒子不再保留原来的位置**
+- 如果多个盒子都设置了浮动，则它们会按照属性值**一行内显示并且顶端对齐排列**
+
+```css
+.div1 {
+   float: left;
+   width: 200px;
+   height: 200px;
+   background-color: red;
+}
+.div2 {
+   width: 300px;
+   height: 300px;
+   background-color: blue;
+}
+
+/* div1设置浮动之后，不再保留原来的位置，那么div2就会占据div1原来的位置，
+   就会变成div2在div1的下层的效果 */
+```
