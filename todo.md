@@ -53,7 +53,7 @@
 50. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
 51. websocket和轮询的区别
 52. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
-53. 
+53. stringify的用法 
 
 
 **重点！！！**
@@ -87,7 +87,34 @@
 </script>
 ```
 
+### 23. Promise async await
+
+> https://www.bilibili.com/video/BV1WP4y187Tu?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5
+
+### 27. var let const 的区别
+
+> https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5
+
+|     | 重复定义 | 修改值 | 声明提升 | 块级作用域 | 循环
+| :-: | :-:  |  :-: | :-: | :-: | :-: |
+| var  | 可以 | 可以 | 会 | 严格来说不支持<br/>（function可以） | 可以<br/>（注意闭包问题） |
+| let  | 不可以 | 可以 | 不会 | 支持 | 可以 | 
+| const  | 不可以 | 不可以（除了数组和对象） | 不会 | 支持 | 不可以 | 
+
+### 53. JSON.stringify() 的用法
+
+> https://www.bilibili.com/video/BV16N4y1G7gv?spm_id_from=333.1007.tianma.1-1-1.click&vd_source=c727c2934b167656e7856cce64cc7eb5
+
 ## 算法题
 [剑指 Offer II 029. 排序的循环链表](https://leetcode.cn/problems/4ueAj6/)
 
 [反转链表](https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/)
+
+## 遇到过最有挑战性的问题是什么，你是怎么解决的？
+- localstorage里面利用true/false判断会永远判断为true，需要转换为用1/0来判断。
+在localstorage中存储的boolean数据都变成了字符串了，才导致的。
+所以"true"=true及"false"==false,“true”==false显示都为false。
+
+
+- 从后端拿到数据后，但是不能正确显示，表单中数据不存在（浏览器设置了自动翻译）
+https://www.zhihu.com/question/49864093/answer/2618721557
