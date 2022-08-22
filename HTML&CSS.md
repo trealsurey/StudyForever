@@ -441,6 +441,125 @@ float: left/right/none;
 /* 三个盒子并排展示，没有空隙，顶端对齐 */
 ```
 
-### 浮动元素经常和标准流父级元素搭配使用
-为了约束浮动元素的位置，网页布局一般采用的策略是：**先用标准流的父元素排列上下位置，之后内部子元素采取浮动排列左右位置。**符合网页布局第一准则。
+### 浮动布局注意点
+1. 浮动布局和标准流的父盒子搭配使用：**先用标准流的父元素排列上下位置，之后内部子元素采取浮动排列左右位置**。符合网页布局第一准则。
+2. 一个元素浮动了，理论上其余的兄弟元素也要浮动，以防引起问题。**浮动的盒子只会影响浮动盒子后面的标准流，不会影响前面的标准流**
+```css
+/* case 1 */
+.div1 {
+   height: 100px;
+   width: 100px;
+   background-color: red;
+}
+.div2 {
+   height: 200px;
+   width: 200px;
+   background-color: yellow;
+   float: left;
+}
+.div3 {
+   height: 300px;
+   width: 300px;
+   background-color: green;
+}
 
+/* div1 没有浮动，按照标准流布局，独自占一行 */
+```
+![浮动注意点-1](imgs/浮动注意点-1.png)
+
+```css
+/* case 2 */
+.div1 {
+   height: 100px;
+   width: 100px;
+   background-color: red;
+   float: left;
+}
+.div2 {
+   height: 200px;
+   width: 200px;
+   background-color: yellow;
+}
+.div3 {
+   height: 300px;
+   width: 300px;
+   background-color: green;
+   float: left;
+}
+```
+![浮动注意点-2](imgs/浮动注意点-2.png)
+
+### 清除浮动
+由于父级盒子很多情况下，不方便给高度，那么当子盒子使用浮动后，父盒子的高度就会变成0，也就会影响下面的其他标准流盒子。这时就需要清除浮动。
+
+清除浮动之后，父级会根据浮动的子盒子自动检测高度。父级有了高度，就不会影响下面的标准流了。
+
+```css
+选择器 {clear: left/right/both;}
+
+/* 实际工作中，几乎只用 both */
+```
+清除浮动的策略是：闭合浮动
+
+#### 清除浮动的方法（后面三个重点）
+1. 额外标签法：也称为隔墙法，是W3C推荐的做法
+   1. 在浮动元素末尾添加一个空标签，必须是**块级元素**
+   2. 优点：通俗易懂，书写方便
+   3. 缺点：添加许多无意义标签，结构化较差
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>demo</title>
+  </head>
+  <style>
+    .container {
+      border: 3px solid lightblue;
+    }
+    .div1 {
+      width: 100px;
+      height: 100px;
+      background-color: lightgreen;
+      float: left;
+    }
+    .div2 {
+      width: 150px;
+      height: 150px;
+      background-color: lightcoral;
+      float: left;
+    }
+    .clear {
+      clear: both;
+    }
+    .footer {
+      height: 50px;
+      background-color: grey;
+    }
+  </style>
+
+  <body>
+    <div class="container">
+      <div class="div1">div1</div>
+      <div class="div2">div2</div>
+      <!-- 清除浮动 -->
+      <div class="clear"></div>
+    </div>
+    <div class="footer">footer</div>
+  </body>
+</html>
+```
+
+2. 父级添加 `overflow` 属性
+   1. 给**父级元素**添加，属性值设置为 `hidden/auto/scroll`
+   2. 优点：代码简洁
+   3. 缺点：无法显示溢出的部分
+```css
+/* 其余代码同上 */
+.container {
+   overflow: hidden;
+}
+```
+
+3. 父级添加 `after` 伪元素
+4. 父级添加双伪元素  
