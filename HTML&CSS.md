@@ -562,4 +562,32 @@ float: left/right/none;
 ```
 
 3. 父级添加 `after` 伪元素
-4. 父级添加双伪元素  
+   1. 优点：没有增加标签，结构更简单
+   2. 缺点：照顾低版本浏览器（IE）
+```css
+.clearfix:after {
+   content: "";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+}
+```
+```html
+<!-- 在父盒子中添加 -->
+<div class="clearfix"></div>
+```
+
+4.  父级添加双伪元素
+    1. 优点：代码更简洁
+    2. 缺点：照顾低版本浏览器 
+```css
+.clearfix:before,
+.clearfix:after {
+   content: "";
+   display: table;
+}
+.clearfix:after {
+   clear: both;
+}
+```
