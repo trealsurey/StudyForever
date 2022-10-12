@@ -62,6 +62,39 @@ Student.prototype.getEmail = function() {
 
 - 函数：`toString()` `valueOf()` `toLocaleString()`
 
+## 数组
+
+### 添加删除数组元素
+
+| 方法名 | 说明 | 返回值 |
+| :---: | :---: | :---: |
+| push(arg1,...) | 末尾添加一个或多个元素 | 返回新的长度 | 
+| pop() | 删除数组最后一个元素，数组长度减 1，无参数，修改了原数组 | 返回所删除元素的值 |
+| unshift() | 向数组的开头添加一个或多个元素，修改了原数组	| 返回新的长度 |
+| shift() | 删除数组的第一个元素，数组长度减 1，无参数，修改了原数组 | 返回第一个元素的值 |
+
+### 数组排序
+| 方法名 | 说明 | 是否修改原数组 |
+| :---: | :---: | :---: |
+| reverse() | 颠倒数组中的元素顺序，无参数 | 改变原数组，返回新数组 | 
+| sort() | 对数组元素进行排序 | 改变原数组，返回新数组 |
+
+**注意：**
+sort 方法对数组进行原地排序，但是默认**按照字典序排序**。需要传入一个比较函数 `cmp(a, b)`，然后得到我们需要的排序效果。
+
+```js
+let arr = [1, 4, 17, 12, 9];
+
+arr.sort();
+console.log(arr); // [ 1, 12, 17, 4, 9 ]
+
+let cmp = (a, b) => a - b;
+
+arr.sort(cmp);
+console.log(arr); // [ 1, 4, 9, 12, 17 ]
+
+// 其中，let cmp = (a, b) => a - b; 为升序，b - a 为降序。
+```
 
 ## 函数
 对于 JS 来说，如果定义两个名字相同的函数，那么后声明的函数会覆盖前一个的声明
@@ -103,6 +136,62 @@ alert(jsonObj.name + ", " + jsonObj.pwd)
 
 **永远不要使用 eval 函数，存在一个非常好的 eval 替代方法：只需使用 `window.Function`**
 
+## 作用域
+通常来说，一段程序代码中所用到的名字并不总是有效和可用的，而限定这个名字的可用性的代码范围就是这个名字的作用域。作用域的使用提高 程序逻辑的局部性，增强了程序的可靠性，减少了名字冲突。
+
+### 全局变量和局部变量的区别
+- **全局变量**：在任何一个地方都可以使用，只有在浏览器关闭时才会被销毁，因此比较占内存
+- **局部变量**：只在函数内部使用，当其所在的代码块被执行时，会被初始化；当代码块运行结束后，就会被销毁，因此更节省内存空间
+
+### 作用域链
+内部函数访问外部函数的变量，采取链式查找的方式，采用**就近原则**
+
+```js
+var f1 = function() {
+    var num = 123;
+    var f2 = function() {
+        console.log(num);
+    }
+    f2()
+}
+var num = 456;
+f1()
+```
+
+## 预解析
+JS 代码是由浏览器中的 JS 解析器来执行的。解析器在运行 JS 代码的时候分为两步：预解析和代码执行
+
+其中**预解析**会把 JS 中所有的 var 和 function 提升到当前作用域的最前面。
+- 变量提升/变量预解析：把所有的变量声明提升到当前作用域的最前面，不提升赋值操作
+- 函数提升/函数预解析：把所有的函数声明提升到当前作用域的最前面，不调用函数
+
+```js
+// case 1
+console.log(num)
+
+// 报错：Uncaught ReferenceError: num is not defined
+```
+
+```js
+// case 2
+console.log(num)
+var num;
+
+// 输出：undefined
+```
+
+```js
+// case 3
+f1()
+function f1() {
+    console.log(11)
+}
+```
+
+```js
+// case 4
+
+```
 ## 关于 JS 代码的执行顺序
 ```html
 <!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
@@ -181,5 +270,10 @@ JavaScript Object Notation(JavaScript对象标记)
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
 
 ## ES6
-> [ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
+[ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
 
+## var let const 区别
+
+ [蛋老师讲解三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
+
+ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 {} 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
