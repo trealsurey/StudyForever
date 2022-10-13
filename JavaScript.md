@@ -382,8 +382,31 @@ d = parseInt(time / 60 % 60)   // 计算分钟
 d = parseInt(time % 60)   // 计算当前秒数
 ```
 
+## DOM
+文档对象模型（Document Object Model，简称 DOM )，是 W3C 组织推荐的处理可扩展标记语言（HTML 或者 XML）的标准编程接口。
+
+W3C 已经定义了一系列的 DOM 接口，通过这些 DOM 接口可以改变网页的内容、结构和样式。
+
+DOM 树包括
+- 文档：一个页面就是一个文档，DOM中使用 `document` 表示
+- 元素：页面中的所有标签都是元素，DOM中使用 `element` 表示
+- 节点：网页中的所有内容都是节点（标签、属性、文本、注释等），DOM 中使用 `node` 表示
+
+以上内容都称之为对象
+
+### 使用 DOM 获取元素
+
+- document.getElementById()
+- document.getElementsByTagName()
+- element.getElementsByTagName()
+
+下面三个方法是 HTML5 新增的方法
+- document.getElementsByClassName()
+- document.querySelector('选择器')： 只返回第一个
+- document.querySelectorAll('选择器')
+
 ## DOM 和 BOM 的区别
-- BOM 的顶级对象是：window；DOM 的顶级对象是：document；实际上 BOM 是包括 DOM 的。
+- BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
 
 ## 关于 JS 代码的执行顺序
 
