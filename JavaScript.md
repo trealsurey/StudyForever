@@ -162,36 +162,83 @@ f1()
 JS 代码是由浏览器中的 JS 解析器来执行的。解析器在运行 JS 代码的时候分为两步：预解析和代码执行
 
 其中**预解析**会把 JS 中所有的 var 和 function 提升到当前作用域的最前面。
-- 变量提升/变量预解析：把所有的变量声明提升到当前作用域的最前面，不提升赋值操作
-- 函数提升/函数预解析：把所有的函数声明提升到当前作用域的最前面，不调用函数
+- 变量提升/变量预解析：把所有的变量声明提升到**当前作用域**的最前面，不提升赋值操作
+- 函数提升/函数预解析：把所有的函数声明提升到**当前作用域**的最前面，不调用函数
 
 ```js
-// case 1
+/* case 1 */
 console.log(num)
 
 // 报错：Uncaught ReferenceError: num is not defined
 ```
 
 ```js
-// case 2
+/* case 2 */
 console.log(num)
-var num;
+var num = 10;
 
 // 输出：undefined
+
+/*
+    JS 预解析会将第二行的 var num 提升到当前作用域的最前面，
+    但是只提升变量声明，不提升赋值，即相当于下面的代码：
+    var num
+    console.log(num)
+    num = 10
+    所以会输出undefined
+*/
 ```
 
 ```js
-// case 3
+/* case 3 */
 f1()
 function f1() {
     console.log(11)
 }
+
+// 输出：11
 ```
 
 ```js
-// case 4
+/* case 4 */
+f2()
+var f2 = function() {
+    console.log(22)
+}
 
+// 报错：Uncaught TypeError: f2 is not a function
+
+/*
+    JS 预解析会将第二行的 var 提升到当前作用域的最前面，
+    但是只提升变量声明，不提升赋值，即相当于下面的代码：
+    var f2
+    f2()
+    f2 = function(){}
+    所以会报错
+*/
 ```
+
+### 一个例子
+```js
+f1();
+console.log(c);
+console.log(b);
+console.log(a);
+function f1() {
+    var a = b = c = 9;
+    console.log(a);
+    console.log(b);
+    console.log(c);
+// 输出： 9 9 9 9 9 报错：a is not defined
+```
+
+注意：
+`var a = b = c = 9` 相当于 `var a = 9; b = 9; c = 9;` 也就是 **b 和 c 是全局变量**
+
+如果想要集体声明，正确写法 `var a = 9, b = 9, c = 9` 就相当于 `var a = 9; var b = 9; var c = 9;` 就是三个局部变量了
+
+所以只会报错 `a is not defined`
+
 ## 关于 JS 代码的执行顺序
 ```html
 <!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
