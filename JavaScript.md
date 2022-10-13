@@ -4,9 +4,6 @@ JS 包括
 - DOM：Document Object Model，文档对象模型，对网页当中的节点进行增删改的过程都是对 DOM 操作的过程。HTML 文档被当做一棵 DOM 树来看待。
 - BOM：Browser Object Model，浏览器对象模型。关闭浏览器窗口、打开一个新的浏览器窗口、后退、前进、浏览器地址栏上的地址等进行操作都是 BOM 编程。
 
-## DOM 和 BOM 的区别
-- BOM 的顶级对象是：window；DOM 的顶级对象是：document；实际上 BOM 是包括 DOM 的。
-
 ## 变量
 
 - 变量只声明不赋值 -- 返回 `undefined`
@@ -144,6 +141,9 @@ alert(jsonObj.name + ", " + jsonObj.pwd)
 - **局部变量**：只在函数内部使用，当其所在的代码块被执行时，会被初始化；当代码块运行结束后，就会被销毁，因此更节省内存空间
 
 ### 作用域链
+
+[深入浅出图解作用域链和闭包](https://segmentfault.com/a/1190000019275094)
+
 内部函数访问外部函数的变量，采取链式查找的方式，采用**就近原则**
 
 ```js
@@ -218,6 +218,14 @@ var f2 = function() {
 */
 ```
 
+### 函数预编译的步骤
+函数预编译，发生在函数执行的前一刻。
+
+1. 创建 AO 对象。AO 即 Activation Object 活跃对象，其实就是「执行期上下文」。
+2. 找形参和变量声明，将形参名和变量作为 AO 的属性名，值为 undefined。
+3. 将实参值和形参统一，实参的值赋给形参。
+4. 查找函数声明，函数名作为 AO 对象的属性名，值为整个函数体。
+
 ### 一个例子
 ```js
 f1();
@@ -239,7 +247,148 @@ function f1() {
 
 所以只会报错 `a is not defined`
 
+## 对象
+
+### 创建对象的三种方式
+
+```js
+var obj = {
+    name: 'wyx',
+    age: 1,
+    hi: function(){
+        console.log('hello world')
+    }
+}
+```
+
+```js
+var obj = new Object()
+obj.name = 'wyx'
+obj.age = 1
+obj.hi = function() {
+    console.log('hello world')
+}
+```
+
+```js
+function ObjConstructor(name, age)  {
+    this.name = name
+    this.age = age
+}
+
+var wyx = new ObjConstructor('wyx', 1)
+```
+
+## 内置对象
+
+### Math
+
+#### Math 常用方法
+- `Math.PI` 圆周率
+- `Math.floor()` 向下取整
+- `Math.ceil()` 向上取整
+- `Math.round()` 
+- `Math.abs()` 绝对值
+- `Math.max()`
+- `Math.min()`
+
+#### Math.random()
+返回一个位于区间 [0, 1) 之间的伪随机浮点数
+
+获取闭区间 [a, b] 之间的整数
+```js
+let ran = parseInt(Math.random() * (b - a + 1)) + a;
+```
+
+获取 [a, b) 之间的整数
+```js
+let ran = parseInt(Math.random() * (b - a)) + a;
+```
+
+随机点名实现
+```js
+function getRandom2(a, b) {
+return parseInt(Math.random() * (b - a + 1)) + a;
+}
+
+let names = new Array('Peter', 'Murphy', 'Jack', 'Darcy', 'Alice');
+console.log(names[getRandom2(0, names.length-1)]);
+```
+
+### Date
+
+#### 一般格式
+```js
+let date = new Date();
+
+let date3 = new Date('2019-10-1 10:10:10');
+let date4 = new Date('2019/10/1');
+```
+
+#### 常用格式
+```js
+let date = new Date();
+console.log(date.getFullYear()); // 2022
+console.log(date.getMonth() + 1); // 10，注意得到的月份要加 1
+console.log(date.getDate()); // 13
+console.log(date.getDay()); // 4 星期四
+```
+
+#### 时分秒
+```js
+function getTime() { {
+        return t < 10 ? '0' + t : t;
+    }
+    [h, m, s] = [che
+    let time = new Date();
+    let h, m, s;
+    [h, m, s] = [time.getHours(), time.getMinutes(), time.getSeconds()]
+    function check(t)ck(h), check(m), check(s)];
+    return h + ':' + m  + ':' +s;
+}
+console.log(getTime());
+```
+
+#### 时间戳
+获取 1971 年 1 月 1 日至今过去的毫秒数
+
+```js
+let date = new Date();
+console.log(date)
+console.log(date.valueOf())
+console.log(date.getTime())
+
+let d = +new Date() // 要记住这个
+console.log(d)
+
+let date2 = Date.now()
+console.log('date2 ==== ' + date2)
+
+/*
+Thu Oct 13 2022 16:05:26 GMT+0800 (中国标准时间)
+1665648326770
+1665648326770
+1665648326770
+date2 ==== 1665648326770
+*/
+```
+
+如何制作一个倒计时呢？利用时间戳就可以实现：期望的时间减掉现在的时间就是需要的总毫秒数 time /= 1000 就是秒数
+
+```js
+d = parseInt(time / 60 / 60 / 24)   // 计算天数
+d = parseInt(time / 60 / 60 % 24)   // 计算小时
+d = parseInt(time / 60 % 60)   // 计算分钟
+d = parseInt(time % 60)   // 计算当前秒数
+```
+
+## DOM 和 BOM 的区别
+- BOM 的顶级对象是：window；DOM 的顶级对象是：document；实际上 BOM 是包括 DOM 的。
+
 ## 关于 JS 代码的执行顺序
+
+[javascript引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
+
 ```html
 <!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
 因为代码是从上往下运行的，当运行到getElementById时并找不到id为myBtn的按钮 -->
