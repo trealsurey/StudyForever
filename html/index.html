@@ -9,7 +9,7 @@
   </head>
 
   <style>
-    .tri {
+    /* .tri {
       width: 0;
       height: 0;
       border: 100px dotted transparent;
@@ -21,13 +21,16 @@
       height: 200px;
       border-top: 10px solid lightgreen;
       border-right: 10px solid blueviolet;
-    }
+    } */
   </style>
 
   <body>
     <div class="header">
       <img src="" />
-      <div class="tab"></div>
+      <div class="tab">
+        <p>test</p>
+        today is a good day
+      </div>
       <div class="search"></div>
       <div class="user"></div>
     </div>
@@ -39,12 +42,7 @@
   </body>
 
   <script>
-     let date = new Date();
-     console.log(date)
-     console.log(date.valueOf())
-     console.log(date.getTime())
-
-     let date2 = Date.now()
-     console.log('date2 ==== ' + date2)
+    var text = document.querySelector('.tab')
+    console.log(text.innerText);
   </script>
 </html>

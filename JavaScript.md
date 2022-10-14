@@ -405,6 +405,40 @@ DOM 树包括
 - document.querySelector('选择器')： 只返回第一个
 - document.querySelectorAll('选择器')
 
+获取特殊元素
+- `document.body` 获取 body 元素
+- `document.documentElement` 获取 html 元素
+
+### 改变元素内容
+
+#### innerHtml
+从起始位置到终止位置的全部内容，包括 html 表现，同时保留空格和换行
+
+W3C 推荐使用
+
+#### innerText
+从起始位置到终止位置的内容，但它不识别 html 标签，同时空格和换行也会去掉
+
+（存疑？vscode测试也会保留空格和换行）
+
+## 事件
+
+三要素：
+- 事件源：事件被触发的对象（按钮）
+- 事件类型：如何触发、什么事件（点击按钮）
+- 事件处理程序：可通过一个函数赋值的方式实现
+
+### 常见鼠标事件
+
+- `onclick` 鼠标点击左键触发
+- `onmouseover` 鼠标经过触发
+- `onmouseout` 鼠标离开触发
+- `onfocus` 获得焦点触发
+- `onblur` 失去焦点触发
+- `onmousemove` 鼠标移动触发
+- `onmouseup` 鼠标弹起触发
+- `onmousedown` 鼠标按下触发
+
 ## DOM 和 BOM 的区别
 - BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
 
