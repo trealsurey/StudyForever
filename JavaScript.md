@@ -411,15 +411,44 @@ DOM 树包括
 
 ### 改变元素内容
 
-#### innerHtml
-从起始位置到终止位置的全部内容，包括 html 表现，同时保留空格和换行
+#### innerHTML & innerText
 
-W3C 推荐使用
+- innerHTML
+  - 从起始位置到终止位置的全部内容，包括 html 表现，同时保留空格和换行
+  - **W3C 推荐使用**
+- innerText
+  - 从起始位置到终止位置的内容，但它不识别 html 标签，同时空格和换行也会去掉
+  - （存疑？vscode测试也会保留空格和换行）
 
-#### innerText
-从起始位置到终止位置的内容，但它不识别 html 标签，同时空格和换行也会去掉
+#### 表单元素
+利用DOM 可以操控一下表单元素的属性
+- type
+- value
+- checked
+- selected
+- disabled
 
-（存疑？vscode测试也会保留空格和换行）
+#### 样式属性
+通过JS修改元素的大小、颜色、位置等样式
+- `element.style` 行内样式操作
+- `element.className` 类名操作
+
+```js
+var div = document.querySelector('div')
+
+div.onclick = function() {
+    // 点击 div 就会改变背景颜色
+    this.style.backgroundColor = 'lightcoral'
+    // 点击 div 就会修改类名
+    this.className = 'header'
+}
+```
+**注意：**
+1. JS 中的样式要采用驼峰命名法，如上面例子中的 `backgroundColor`，如果写成 `background-color` 就会报错
+2. 在 JS 中通过 `.style` 修改的样式是 **行内样式**，权重很高，会覆盖掉 `<style>` 标签中的样式
+3. 如果修改样式较多，可以选择直接修改类类名的方式
+4. `class` 是一个保留字，所以使用 `className` 来操作元素类名
+
 
 ## 事件
 
