@@ -31,31 +31,32 @@
 26. 0.1+0.2为什么不等于0.3
 27. let const var的区别
 28. 箭头函数和普通函数的区别
-29. **手写event bus**
-30. **手写bind**
-31. **手写Promise**
-32. **手写快排**
-33. **JS 运行机制，eventloop，遇到fetch setInterval setTimeout等异步操作怎么办，遇到async await promise等异步操作怎么办**
-34. 防抖和节流
-35. 网页性能优化
-36. 浏览器循环机制
-37. SPA
-38. 前端路由
-39. 脱离文档流
-40. cookie session token 原理
-41. 事件冒泡和捕获
-42. e.target e.currentTarget区别
-43. 如何实现跨域，为什么要有跨域
-44. 类选择器和伪类的区别和优先级，各种选择器的优先级
-45. 如何开启动画加速
-46. 变量提升
-47. 宏任务微任务
-48. JS中数组长度为什么能任意变化（如何扩容
-49. html中js和css的加载顺序会阻塞页面渲染吗
-50. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
-51. websocket和轮询的区别
-52. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
-53. stringify的用法 
+29. 箭头函数中this的指向问题
+30. **手写event bus**
+31. **手写bind**
+32. **手写Promise**
+33. **手写快排**
+34. **JS 运行机制，eventloop，遇到fetch setInterval setTimeout等异步操作怎么办，遇到async await promise等异步操作怎么办**
+35. 防抖和节流
+36. 网页性能优化
+37. 浏览器循环机制
+38. SPA
+39. 前端路由
+40. 脱离文档流
+41. cookie session token 原理
+42. 事件冒泡和捕获
+43. e.target e.currentTarget区别
+44. 如何实现跨域，为什么要有跨域
+45. 类选择器和伪类的区别和优先级，各种选择器的优先级
+46. 如何开启动画加速
+47. 变量提升
+48. 宏任务微任务
+49. JS中数组长度为什么能任意变化（如何扩容
+50. html中js和css的加载顺序会阻塞页面渲染吗
+51. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
+52. websocket和轮询的区别
+53. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
+54. stringify的用法 
 
 
 **重点！！！**

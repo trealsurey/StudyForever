@@ -9,40 +9,33 @@
   </head>
 
   <style>
-    /* .tri {
-      width: 0;
-      height: 0;
-      border: 100px dotted transparent;
-      margin: 0 auto;
-      border-left-color: coral;
+    .no {
+      height: 30px;
+      width: 30px;
+      background-color: lightblue;
+      float: left;
     }
-    .test {
-      width: 500px;
-      height: 200px;
-      border-top: 10px solid lightgreen;
-      border-right: 10px solid blueviolet;
-    } */
+    .main {
+      height: 300px;
+      width: 300px;
+      background-color: lightcoral;
+      float: left;
+    }
   </style>
 
   <body>
-    <div class="header">
-      <img src="" />
-      <div class="tab">
-        <p>test</p>
-        today is a good day
-      </div>
-      <div class="search"></div>
-      <div class="user"></div>
+    <div class="main">
+      <input type="text" class="inp" value="请输入搜索内容..."/>
     </div>
-    <div class="container"></div>
-    <div class="footer"></div>
-
-    <div class="tri"></div>
-    <div class="test"></div>
   </body>
 
   <script>
-    var text = document.querySelector('.tab')
-    console.log(text.innerText);
+    var inp = document.querySelector('.inp')
+    inp.onfocus = () => {
+      inp.value = ''
+    }
+    inp.onblur = () => {
+      inp.value = '请输入搜索内容...'
+    }
   </script>
 </html>
