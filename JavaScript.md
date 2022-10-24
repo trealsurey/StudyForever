@@ -449,6 +449,142 @@ div.onclick = function() {
 3. 如果修改样式较多，可以选择直接修改类类名的方式
 4. `class` 是一个保留字，所以使用 `className` 来操作元素类名
 
+### 排他思想
+如果有同一组元素，我们想要某一个元素实现某种样式，需要用到循环的排他思想算法：
+
+1. 所有元素全部清除样式（干掉其他人）
+2. 给当前元素设置样式（留下我自己）
+3. 注意顺序不能颠倒，首先干掉其他人，再设置自己。
+
+```js
+ const btns = document.getElementsByTagName('button');
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].onclick = function () {
+            for (let j = 0; j < btns.length; j++) {
+                btns[j].style.backgroundColor = '';
+            }
+            this.style.backgroundColor = 'pink';
+        }
+    }
+``` 
+
+### 表格中的全选功能
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>表格全选</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    table {
+      margin: 0 auto;
+      margin-top: 300px;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    td {
+      border: 2px solid lightblue;
+      border-spacing: 0;
+      width: 150px;
+    }
+  </style>
+
+  <body>
+    <table class="tab">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" class="selectAll" />
+            全选
+          </th>
+          <th>名称</th>
+          <th>价格</th>
+        </tr>
+      </thead>
+      <tbody class="tb">
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>apple pencil</td>
+          <td>800</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>apple watch</td>
+          <td>2000</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+
+  <script>
+    var all = document.querySelector(".selectAll");
+    var tabs = document.querySelector(".tb").querySelectorAll("input");
+
+    all.onclick = () => {
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].checked = all.checked;
+      }
+    };
+
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].onclick = function () {
+        var flag = true;
+        for (var i = 0; i < tabs.length; i++) {
+          if (!tabs[i].checked) {
+            flag = false;
+            break;
+          }
+        }
+        all.checked = flag;
+      };
+    }
+  </script>
+</html>
+```
+
+### 自定义属性
+#### 获取属性值
+- `element.属性` 主要获取内置属性值
+- `element.getAttribute()` 主要用来获得自定义属性
+
+#### 设置属性值
+- `element.属性 = xxx`
+- `element.setAttribute('属性', '值')` 主要针对自定义属性
+
+#### 通过data规定自定义属性
+自定义属性目的：为了保存并使用数据。有些数据可以保存到页面中而不用保存到数据库中
+
+但有些自定义属性容易引起歧义，所以在 H5 中新增了自定义属性
+
+规定使用 `data-` 开头作为属性名并且赋值
+
+```css
+<div data-index="1"></div>
+```
+
+同时 H5 新增 `element.dataset.index` 或者 `element.dataset['index']` 新增或者获取自定义属性，并且从 IE11 后才开始支持
+
+如果自定义属性中有多个 - 连接的单词，获取时采用驼峰命名法 
+
+#### 移除属性
+
+`element.removeAttribute('属性')`
+
+### 节点操作
+
 
 ## 事件
 
