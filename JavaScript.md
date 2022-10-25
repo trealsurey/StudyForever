@@ -606,6 +606,165 @@ DOM 树中的所有节点都可以通过 JS 进行访问，所有节点均可被
 - `nodeName` 节点名称
 - `nodeValue` 节点值 
 
+#### 节点层级
+利用 DOM 树将节点分为不同的层级，常见的是父子兄层级关系
+
+1. 父级节点 `node.parentNode`
+   1. 返回离某节点最近的父节点（亲爸爸）
+   2. 如果没有父节点返回 null
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="first">
+      <div class="sec">
+        <div class="thr"></div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var thr = document.querySelector('.thr')
+    console.log(thr.parentNode);
+  </script>
+</html>
+
+<!-- 返回  div.sec -->
+```
+
+2. 子节点 `parentNode.childNodes`
+   1. 返回包含指定节点的子节点集合，该集合为即时更新的集合
+   2.  **注意**：返回值里包含了所有的子节点，包括元素节点，文本节点（空格等）。如果指向获得里面的元素节点，则需要另外处理。**所以一般不提倡使用 childNodes**
+
+3. 子节点 `parentNode.children` （**常用**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="first">
+      <ul class="lsit">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </body>
+
+  <script>
+    var ul = document.querySelector('ul');
+    console.log(ul.children);
+  </script>
+</html>
+
+<!-- 返回 HTMLCollection(4) [li, li, li, li] -->
+```
+
+4. 获取所有节点的第一个和最后一个
+   1. `parentNode.firstChild` 包含所有节点
+   2. `parentNode.listChild`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="first">
+      <ul class="lsit">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </body>
+
+  <script>
+    var d = document.querySelector('.first');
+    console.log(d.firstChild);
+  </script>
+</html>
+
+<!-- 返回 #text，因为包含所有节点，所以第一个子节点是一个空行，就是一个文本节点 -->
+```
+
+5. 获取元素节点中的第一个和最后一个（>=IE9）
+   1. `parentNode.firstElementChild`
+   2. `parentNode.lastElementChild`
+
+6. 实际开发中
+   1. `parentNode.children[0]`
+   2.  `parentNode.children[parentNode.children.length - 1]`
+
+7. 兄弟节点
+   1. `node.nextSibling` 下一个兄弟节点，包括所有类型节点
+   2. `node.previousSibling` 上一个
+
+8. 兄弟元素节点 （>=IE9）
+   1. `node.nextElementSibling`
+   2. `node.previousElementSibling`
+
+```js
+// 如果需要兼容 IE
+function getNextElementSibling(node) {
+    let n = node;
+    while (n = n.nextSibling) {
+        if (n.nodeType === 1) {
+            return n;
+        }
+    }
+    return null;
+}
+```
+
+#### 创建和添加节点
+- `document.createElement('tagName')` 创建节点
+- `parentNode.appendChild(childNode)` 添加节点。若已存在同样的子节点，则在元素后追加
+
+```js
+var li = document.createElement('li')
+var ul = doucument.querySelector('ul')
+ul.appendChild(li)
+```
+
+- `node.insertBefore(child, 指定元素)` 添加节点到指定节点的前面
+
+```js
+var ins = document.createElement('li')
+// 在 ul 的第一个元素前面插入一个 li
+ul.insertBefore(ins, ul.children[0])
+```
+
+#### 删除节点
+`removeChild(childNode)` 会返回删除的节点
+
+#### 复制节点
+`node.cloneNode([deep])` 返回调用该方法的节点的一个副本。也称为克隆节点/拷贝节点。其中 node 为被克隆的元素节点。
+
+其中 deep 参数可以选择 true/false，表示是否为深拷贝。
+
+默认为空，也就是浅拷贝
+
+- 深拷贝：同时复制节点本身和里面的子节点
+- 浅拷贝：只复制节点本身，不复制子节点
+
+```js
+let newClone = node.cloneNode(true)
+```
+
 ## 事件
 
 三要素：

@@ -13,86 +13,21 @@
       margin: 0;
       padding: 0;
     }
-
-    .main {
-      margin: 0 auto;
-      width: 568px;
-    }
-
-    .head {
-      height: 30px;
-    }
-
-    li {
-      float: left;
-      list-style: none;
-      width: 140px;
-      background-color: lightgray;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      border: 1px solid gray;
-      border-collapse: collapse;
-      cursor: pointer;
-    }
-
-    .con {
-      /* display: none; */
-    }
   </style>
 
   <body>
-    <div class="main">
-      <div class="head">
-        <ul class="tab">
-          <li class="first">商品介绍</li>
-          <li class="decTab">规格与包装</li>
-          <li class="afterTab">售后保障</li>
-          <li class="comTab">商品评价</li>
-        </ul>
-      </div>
-      <div class="con">
-        <div class="intro" data-index="0">
-          这是商品介绍
-        </div>
-        <div class="dec" data-index="1">
-          这是规格与包装
-        </div>
-        <div class="after" data-index="2">
-          这是售后保障
-        </div>
-        <div class="comment" data-index="3">
-          这是商品评价
-        </div>
-      </div>
+    <div class="first">
+      <ul class="lsit">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
     </div>
   </body>
 
   <script>
-    var first = document.querySelector('.first')
-    var decTab = document.querySelector('.decTab')
-    var afterTab = document.querySelector('.afterTab')
-    var comTab = document.querySelector('.comTab')
-    first.style.backgroundColor = 'red';
-    var con = document.querySelector('.con').querySelectorAll('div')
-    // con[0].style.display = ''
-    for (var i = 1; i < con.length;i ++) {
-      con[i].style.display = 'none'
-    }
-
-    var dec = document.querySelector('.dec')
-    var li = document.querySelectorAll('li')
-    for (var i = 0; i < li.length; i ++) {
-      li[i].onclick = function(){
-        con[i].style.display = 'block'
-      }
-    }
-
-    decTab.onclick = () => {
-      first.style.backgroundColor = 'lightgray'
-      con[0].style.display='none'
-      decTab.style.backgroundColor = 'red'
-      dec.style.display = ''
-    }
+    var d = document.querySelector('.first');
+    console.log(d.firstChild);
   </script>
 </html>
