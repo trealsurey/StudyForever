@@ -765,6 +765,18 @@ ul.insertBefore(ins, ul.children[0])
 let newClone = node.cloneNode(true)
 ```
 
+#### 三总动态创建元素的区别
+- `document.write()`
+- `element.innerHTML`
+- `element.createElement()`
+
+1. `document.write()` 创建元素，是直接将内容写入页面的内容流，但是 当文档流执行完毕，会导致页面全部重绘。即覆盖原本的页面。
+2. `innerHTML` 是将内容写入某个 DOM 节点，不会导致页面全部重绘。
+3. `innerHTML` 创建多个元素效率更高（不要拼接字符串，采取数组形式拼接），结构稍微复杂。
+4. `createElement()` 创建多个元素效率稍低一点点，但是结构更清晰。
+
+总结：不同浏览器下，`innerHTML` 效率要比 `creatElement` 高
+
 ## 事件
 
 三要素：
