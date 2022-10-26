@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    table {
+      margin: 0 auto;
+      margin-top: 100px;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    th,
+    td {
+      border: 2px solid lightblue;
+      /* border-spacing: 10px; */
+      height: 50px;
+      width: 100px;
+    }
+    a {
+      text-decoration: none;
+    }
+  </style>
+
+  <body>
+    <table>
+      <thead class="head">
+        <tr>
+          <th>姓名</th>
+          <th>学科</th>
+          <th>成绩</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody class="con"></tbody>
+    </table>
+  </body>
+
+  <script>
+    var datas = [
+      {
+        name: "lucy",
+        subject: "js",
+        score: "100",
+      },
+      {
+        name: "wbk",
+        subject: "js",
+        score: "80",
+      },
+      {
+        name: "wyx",
+        subject: "js",
+        score: "100",
+      },
+    ];
+
+    // 1. 创建三行
+    var tbody = document.querySelector("tbody");
+    for (var i = 0; i < datas.length; i++) {
+      var tr = document.createElement("tr");
+      tbody.appendChild(tr);
+      // 2. 每一行创建三列
+      for (key in datas[i]) {
+        var td = document.createElement("td");
+        // console.log(datas[0])
+        td.innerHTML = datas[i][key];
+        tr.appendChild(td);
+      }
+      // 3. 创建删除按钮
+      var del = document.createElement("td");
+      del.innerHTML = "<a href=javascript:;>删除</a>";
+      tr.appendChild(del);
+    }
+
+    // 4. 删除逻辑
+    var del = document.querySelectorAll("a");
+    for (var i = 0; i < del.length; i++) {
+      del[i].onclick = function () {
+        tbody.removeChild(this.parentNode.parentNode);
+      };
+    }
+  </script>
+</html>

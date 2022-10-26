@@ -756,23 +756,45 @@ ul.insertBefore(ins, ul.children[0])
 
 其中 deep 参数可以选择 true/false，表示是否为深拷贝。
 
-默认为空，也就是浅拷贝
+默认为空，也就是false，即浅拷贝
 
 - 深拷贝：同时复制节点本身和里面的子节点
 - 浅拷贝：只复制节点本身，不复制子节点
 
-```js
-let newClone = node.cloneNode(true)
+```html
+<html>
+  <body>
+    <ul>
+      <li>111</li>
+      <li>222</li>
+    </ul>
+  </body>
+
+  <script>
+    var ul = document.querySelector('ul')
+
+    // case 1 浅拷贝
+    var lili = ul.children[0].cloneNode()
+
+    // case 2 深拷贝
+    var deepli = ul.children[0].cloneNode(true)
+  </script>
+</html>
+
+<!-- 
+  case 1 结果：会多出一个 li，但是不会有里面的数字
+  case 2 结果：会复制出一个 li 和 数字加在新的一行
+-->
 ```
 
-#### 三总动态创建元素的区别
-- `document.write()`
+#### 三种动态创建元素的区别
+- `document.write()` 了解即可
 - `element.innerHTML`
 - `element.createElement()`
 
-1. `document.write()` 创建元素，是直接将内容写入页面的内容流，但是 当文档流执行完毕，会导致页面全部重绘。即覆盖原本的页面。
+1. `document.write()` 创建元素，是直接将内容写入页面的内容流，但是如果文档流执行完毕，会导致页面全部重绘。即覆盖原本的页面。
 2. `innerHTML` 是将内容写入某个 DOM 节点，不会导致页面全部重绘。
-3. `innerHTML` 创建多个元素效率更高（不要拼接字符串，采取数组形式拼接），结构稍微复杂。
+3. `innerHTML` 创建多个元素效率更高（前提是不要拼接字符串，而是采取数组形式拼接），结构稍微复杂。
 4. `createElement()` 创建多个元素效率稍低一点点，但是结构更清晰。
 
 总结：不同浏览器下，`innerHTML` 效率要比 `creatElement` 高
