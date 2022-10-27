@@ -817,6 +817,36 @@ ul.insertBefore(ins, ul.children[0])
 - `onmouseup` 鼠标弹起触发
 - `onmousedown` 鼠标按下触发
 
+### 注册事件/绑定时间
+
+给元素添加事件，就是注册/绑定事件
+1. 传统方式：利用 on 开头的事件，比如 onclick
+   1. 注册事件的**唯一性**：同一个元素同一个事件只能设置一个处理函数，最 后注册的处理函数将会 覆盖 前面注册的处理函数
+2. 方法监听注册方式
+   1. W3C 推荐方式
+   2. `addEventListener()`
+   3. IE9 之前可以用 `attachEvent()` 代替
+   4. 同一个元素同一个事件可以注册多个监听器，按注册顺序依次执行
+
+#### 方法监听注册事件
+
+```js
+eventTarget.addEventListener(type, listener[, useCapture])
+```
+
+`eventTarget.addEventListener()` 方法将指定的监听器注册到 `eventTarget`（目标对象）上，当该对象触发指定的事件时，就会执行事件处理函数。
+
+该方法接收三个参数：
+1. `type`：事件类型**字符串**，比如 'click' 、'mouseover'，注意这里不要带 on
+2. `listener`：事件处理函数，事件发生时，会调用该监听函数
+3. `useCapture`：可选参数，是一个布尔值，默认是 false。学完 DOM 事件流后，我们再进一步学习
+
+### 删除事件/解绑事件
+
+1. 传统方式：`eventTarget.onclick = null`
+2. 方法监听注册方式：
+   1. `eventTarget.removeEventListener(type, listener[, useCapture])`
+
 ## DOM 和 BOM 的区别
 - BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
 
