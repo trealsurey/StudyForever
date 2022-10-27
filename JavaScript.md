@@ -873,6 +873,16 @@ div.removeEventListener('click', fn)
 
 ![DOM事件流](imgs/DOM事件流.png)
 
+#### 注意事项
+1. JS 代码中只能执行捕获或者冒泡其中的一个阶段
+2. `onclick` 和 `attachEvent` 只能得到冒泡阶段
+3. `addEventListener(type, listener[, useCapture])` 第三个参数
+   1. true，表示在事件捕获阶段调用事件处理程序
+   2. false，表示在事件冒泡阶段调用事件处理程序
+4. 实际开发中很少使用事件捕获，更关注事件冒泡
+5. 有些事件是没有冒泡的，比如 `onblur` `onfocus` `onmouseenter` `onmouseleave`
+
+
 ## DOM 和 BOM 的区别
 - BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
 
