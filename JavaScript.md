@@ -846,6 +846,32 @@ eventTarget.addEventListener(type, listener[, useCapture])
 1. 传统方式：`eventTarget.onclick = null`
 2. 方法监听注册方式：
    1. `eventTarget.removeEventListener(type, listener[, useCapture])`
+   2. `eventTarget.detachEvent(eventNameWithOn, callback)` 为了兼容 IE，不怎么使用
+
+```js
+function fn() {
+  alert('111111111')
+}
+
+// 添加事件
+div.addEventListener('click', fn)
+
+// 解绑事件
+div.removeEventListener('click', fn)
+```
+
+### DOM 事件流
+
+事件流描述的是从页面中接收事件的顺序
+
+事件发生时会在元素节点之间按照特定的顺序传播，这个传播过程就是 DOM 事件流
+
+分为三个阶段
+1. 捕获阶段：由网景最早提出，由 DOM 最顶层节点开始，然后逐级向下传播到最具体的元素接收的过程
+2. 当前目标阶段
+3. 冒泡阶段：IE 最早提出，事件开始时由最具体的元素接收，然后逐级向上传播到 DOM 最顶层节点的过程
+
+![DOM事件流](imgs/DOM事件流.png)
 
 ## DOM 和 BOM 的区别
 - BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
