@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>跟随鼠标的天使-demo</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+
+  <style>
+    body {
+      cursor: none;
+    }
+    img {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+    }
+  </style>
+
+  <body>
+    <img src="../imgs/angel.gif" alt="angel">
+  </body>
+
+  <script>
+    var img = document.querySelector('img')
+    document.addEventListener('mousemove', function(e) {
+      var top = e.clientY
+      var left = e.clientX
+      // 千万记得加 px，要不然没效果哦
+      img.style.top = top + 'px'
+      img.style.left = left + 'px'
+    })
+  </script>
+</html>
