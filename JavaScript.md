@@ -1081,7 +1081,7 @@ ul.addEventListener('click', function(e) {
 // 可以通过 e.target 操作每个 li
 ```
 
-### 常见鼠标事件
+### 常用鼠标事件
 
 - `onclick` 鼠标点击左键触发
 - `onmouseover` 鼠标经过触发
@@ -1141,7 +1141,13 @@ document.addEventListener('click', function(e) {
 
 ![clientX、offsetX、screenX的区别](imgs/clientX-offsetX-screenX区别.png)
 
+### 常用键盘事件
 
+- `onkeyup` 某个键盘按键被松开时触发
+- `onkeydown` 某个键盘按键被按下时触发
+- `onkeypress` 某个键盘按键被按下时触发，但是它不识别功能键，比如 ctrl shift 箭头等
+
+  
 
 ## DOM 和 BOM 的区别
 
