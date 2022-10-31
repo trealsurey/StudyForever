@@ -807,17 +807,6 @@ ul.insertBefore(ins, ul.children[0])
 - 事件类型：如何触发、什么事件（点击按钮）
 - 事件处理程序：可通过一个函数赋值的方式实现
 
-### 常见鼠标事件
-
-- `onclick` 鼠标点击左键触发
-- `onmouseover` 鼠标经过触发
-- `onmouseout` 鼠标离开触发
-- `onfocus` 获得焦点触发
-- `onblur` 失去焦点触发
-- `onmousemove` 鼠标移动触发
-- `onmouseup` 鼠标弹起触发
-- `onmousedown` 鼠标按下触发
-
 ### 注册事件/绑定事件
 
 给元素添加事件，就是注册/绑定事件
@@ -1056,6 +1045,101 @@ input.onclick = function(e) {
 ```
 
 #### 阻止事件冒泡
+
+```js
+son.addEventListener('click', function(e){
+  e.stopPropagation()
+})
+
+// 案例见上面 father/son 案例，加入以上代码之后，点击 son 盒子只会弹出 son
+```
+
+#### 事件委托/代理/委派
+
+jQuery 中称为事件委派
+
+**原理： 不是每个子节点单读设置事件监听器，而是事件监听器设置在父节点上，然后利用冒泡原理影响设置每个子节点**
+
+比如：给 ul 注册点击事件，然后利用事件对象的 target 来找到当前点击的 li，事件就会冒泡到 ul 上；再由于 ul 上已经有了注册事件，那么就会触发事件监听器。
+
+这样的好处在于只需要操作一次 DOM，提高了程序的性能
+
+```js
+var ul = document.querySelector('ul')
+ul.addEventListener('click', function() {
+  alert('弹弹弹 弹走鱼尾纹')
+})
+
+// 点击每个 li 都会有弹框弹出
+```
+
+```js
+ul.addEventListener('click', function(e) {
+  e.target.style.backgroundColor = 'pink'
+})
+
+// 可以通过 e.target 操作每个 li
+```
+
+### 常见鼠标事件
+
+- `onclick` 鼠标点击左键触发
+- `onmouseover` 鼠标经过触发
+- `onmouseout` 鼠标离开触发
+- `onfocus` 获得焦点触发
+- `onblur` 失去焦点触发
+- `onmousemove` 鼠标移动触发
+- `onmouseup` 鼠标弹起触发
+- `onmousedown` 鼠标按下触发
+
+#### 禁止鼠标右键菜单
+
+`contextmenu` 主要控制应该何时显示上下文菜单，主要用于程序猿取消默认的上下文菜单
+
+```js
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault()
+})
+
+// 效果就是：选中文字之后，再鼠标右键，不会出现右键菜单
+```
+
+#### 禁止选中文字
+
+```js
+document.addEventListener('selectstart', function(e) {
+  e.preventDefault()
+})
+
+// 效果：无法选中文字
+```
+
+#### 鼠标事件对象 MouseEvent
+
+```js
+document.addEventListener('click', function(e) {
+  console.log(e);
+})
+
+// 输出 PointerEvent
+```
+
+`PointerEvent` 拓展了 `MouseEvent`，是一类可以被定点设备所触发的 DOM 事件，它们被用来创建一个可以有效掌握各类输入设备 **（鼠标、触控笔和单点或多点的手指触摸）** 的统一的 DOM 事件模型
+
+[Pointer Events from MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Pointer_events)
+
+| 鼠标事件对象 | 说明 |
+| :---: | :---: |
+| e.clientX | 返回鼠标相对于浏览器窗口可视区的 X 坐标 | 
+| e.clientY | 返回鼠标相对于浏览器窗口可视区的 Y 坐标 |
+| e.pageX | 返回鼠标相对于文档页面的 X 坐标，IE9+ 支持，**最常用** |
+| e.pageY | 返回鼠标相对于文档页面的 Y 坐标，IE9+ 支持，**最常用** |
+| e.screenX | 返回鼠标相对于电脑屏幕的 X 坐标 |
+| e.screenY | 返回鼠标相对于电脑屏幕的 Y 坐标 |
+
+![clientX、offsetX、screenX、pageX的区别](imgs/clientX-offsetX-screenX-pageX%E5%8C%BA%E5%88%AB.png)
+
+![clientX、offsetX、screenX的区别](imgs/clientX-offsetX-screenX区别.png)
 
 
 
