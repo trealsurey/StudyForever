@@ -1145,9 +1145,40 @@ document.addEventListener('click', function(e) {
 
 - `onkeyup` 某个键盘按键被松开时触发
 - `onkeydown` 某个键盘按键被按下时触发
-- `onkeypress` 某个键盘按键被按下时触发，但是它不识别功能键，比如 ctrl shift 箭头等
+- `onkeypress` 某个键盘按键被按下时触发，**但是它不识别功能键，比如 ctrl shift 左右箭头等**
 
-  
+三个事件的执行顺序是：keydown --> keypress --> keyup
+
+#### 键盘事件对象 KeyboardEvent
+
+```js
+document.addEventListener('keyup', function(e) {
+  console.log(e)
+})
+
+// 输出 KeyboardEvent
+```
+
+可以通过 `e.keyCode` 来获取按下的某个键的 ASCII 值
+
+最新的 MDN 中已经弃用 `keyCode` 转而使用 `code`，
+但是在某些浏览器中还支持，所以在使用时需要考虑兼容性问题，同时应该尽量避免使用 `keyCode`
+
+```js
+document.addEventListener('keyup', function(e) {
+  console.log(e.code)
+  console.log(e.key)
+})
+
+// 按下 D 会输出 KeyD(不区分大小写)
+// 按下 D 会输出 D
+```
+
+[KeyboardEvent.keyCode from MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent/keyCode)
+
+注意：
+- `onkeydown` 和 `onkeyup` 不区分字母大小写，`onkeypress` 区分大小写
+- 在实际开发中，更多使用 up 和 down，因为它们能识别包括功能键在内的所有键         
 
 ## DOM 和 BOM 的区别
 
