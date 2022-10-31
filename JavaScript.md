@@ -71,6 +71,7 @@ Student.prototype.getEmail = function() {
 | shift() | 删除数组的第一个元素，数组长度减 1，无参数，修改了原数组 | 返回第一个元素的值 |
 
 ### 数组排序
+
 | 方法名 | 说明 | 是否修改原数组 |
 | :---: | :---: | :---: |
 | reverse() | 颠倒数组中的元素顺序，无参数 | 改变原数组，返回新数组 | 
@@ -817,7 +818,7 @@ ul.insertBefore(ins, ul.children[0])
 - `onmouseup` 鼠标弹起触发
 - `onmousedown` 鼠标按下触发
 
-### 注册事件/绑定时间
+### 注册事件/绑定事件
 
 给元素添加事件，就是注册/绑定事件
 1. 传统方式：利用 on 开头的事件，比如 onclick
@@ -874,6 +875,7 @@ div.removeEventListener('click', fn)
 ![DOM事件流](imgs/DOM事件流.png)
 
 #### 注意事项
+
 1. JS 代码中只能执行捕获或者冒泡其中的一个阶段
 2. `onclick` 和 `attachEvent` 只能得到冒泡阶段
 3. `addEventListener(type, listener[, useCapture])` 第三个参数
@@ -882,8 +884,183 @@ div.removeEventListener('click', fn)
 4. 实际开发中很少使用事件捕获，更关注事件冒泡
 5. 有些事件是没有冒泡的，比如 `onblur` `onfocus` `onmouseenter` `onmouseleave`
 
+```html
+<!-- case 1：在捕获阶段调用事件 -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    div {
+      margin: 0 auto;
+    }
+    .father {
+      height: 300px;
+      width: 300px;
+      background-color: pink;
+    }
+    .son {
+      height: 200px;
+      width: 200px;
+      background-color: lightblue;
+    }
+  </style>
+
+  <body>
+    <div class="father">
+      <div class="son">son盒子</div>
+    </div>
+  </body>
+
+  <script>
+    var son = document.querySelector('.son')
+    son.addEventListener('click', function() {
+      alert('son')
+    }, true)
+
+    var father = document.querySelector('.father')
+    father.addEventListener('click', function() {
+      alert('father')
+    }, true)
+  </script>
+</html>
+
+<!-- 
+  点击 son 盒子，会先弹出 father 再弹出 son
+  因为设置了事件捕获 true
+  会按照 document -> html -> body -> father -> son 的顺序进行捕获 
+-->
+```
+
+```js
+// case 2: 在冒泡阶段调用事件
+
+var son = document.querySelector('.son')
+son.addEventListener('click', function() {
+  alert('son')
+}, false)
+
+var father = document.querySelector('.father')
+father.addEventListener('click', function() {
+  alert('father')
+}, false)
+
+// 点击 son 会先弹出 son 再弹出 father
+```
+
+### 事件对象
+
+```js
+div.addEventListennr('click', function(event) {
+  console.log(event)
+})
+```
+
+`event` 就是一个事件对象，写到我们侦听函数的小括号里面，当形参来看
+
+事件对象存在的前提是必须要有事件，如果没有 click 等监听事件，那么事件对象也就不存在了。它是系统自动创建的，不需要我们传递参数
+
+事件对象是有关事件的一系列相关数据的集合。比如：
+- 和鼠标相关的：鼠标按下的坐标等等
+- 和键盘相关的：按下的是哪个键等等
+
+我们可以自己给 `event` 命名，比如可以直接写成 `evt` `e` 都可以
+
+存在兼容性问题。在 IE 6/7/8 版本中必须使用 `window.event` 来获取事件对象 
+
+如果需要考虑兼容性问题，那么可以在使用时写成
+
+```js
+e = event || window.event
+```
+
+#### 事件对象的常用属性和方法
+
+| 属性/方法 | 说明 |
+| :---: | :---: |
+| e.target | 返回 **触发** 事件的对象 | 
+| e.type | 返回事件类型，比如 click mouseover，不带 on |
+| e.preventDefault() | 阻止默认事件/行为 |
+| e.stopPropagatin() | 阻止冒泡 |
+| --- 以下都是非标准写法 --- | --- 供 IE 6/7/8 --- |
+| e.srcElement | 返回触发事件的对象 |
+| e.returnValue | 阻止默认事件 |
+| e.cancelBubble | 阻止冒泡 |
+
+#### e.target 和 this 的 区别
+
+`e.target` 返回触发事件的对象/元素
+
+`this` 返回绑定事件的对象/元素
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="main">
+      <ul>
+        <li>111</li>
+        <li>222</li>
+      </ul>
+    </div>
+  </body>
+
+  <script>
+    var ul = document.querySelector('ul')
+    ul.addEventListener('click', function(e) {
+      console.log('e.target == ' + e.target)
+      console.log('this == ' + this)
+    })
+  </script>
+</html>
+
+<!-- 
+  e.target == [object HTMLLIElement] 返回 li，点击 li 触发事件
+  this == [object HTMLUListElement] 返回 ul，ul 上绑定了事件
+-->
+```
+
+#### 阻止默认行为
+
+阻止默认行为可以让链接不跳转，或者让提交按钮不提交
+
+```js
+var a = document.querySelector('a')
+a.addEventListener('click', function(e) {
+  e.preventDefault()
+})
+
+var input = document.querySelector('input')
+input.addEventListener('click', function(e) {
+  e.preventDefault()
+}) 
+
+// 点击超链接或者提交按钮都不会有相应跳转
+```
+
+传统注册方式下，也可以通过 `return false` 来阻止默认行为。但是这样 return 之后的内容就不会再执行了，了解即可
+
+```js
+input.onclick = function(e) {
+  return false
+}
+```
+
+#### 阻止事件冒泡
+
+
 
 ## DOM 和 BOM 的区别
+
 - BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
 
 ## 关于 JS 代码的执行顺序

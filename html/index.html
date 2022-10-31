@@ -9,60 +9,35 @@
   </head>
 
   <style>
-    * {
+    /* * {
       margin: 0;
       padding: 0;
-    }
+    } */
     div {
-      height: 300px;
-      width: 300px;
       margin: 0 auto;
-      margin-top:30px;
-    }
-    textarea {
-      border: 2px solid lightcoral;
+      width: 200px;
+      height: 100px;
+      margin-top: 100px;
     }
   </style>
 
   <body>
     <div class="main">
-      <textarea name="text" id="" cols="30" rows="10">
-
-      </textarea>
-      <input type="button" value="发布">
-    </div>
-
-    <div class="show">
-      <ul class="list">
-
-      </ul>
+      <a href="https://www.baidu.com">跳转到百度</a>
+      <form action="https://www.baidu.com">
+        <input type="submit" value="提交">
+      </form>
     </div>
   </body>
 
   <script>
-    var ul = document.querySelector('ul')
-    
-    var btn = document.querySelector('input')
-
-    btn.onclick = () => {
-      var text = document.querySelector('textarea').value
-      var li = document.createElement('li')
-      ul.appendChild(li)
-      li.innerHTML = text + '<a href="javascript:;">删除</a>'
-    
-
-      
-    var del = document.querySelectorAll('a')
-    for(var i = 0; i < del.length; i ++) {
-      console.log(ul.children)
-      console.log(ul.children[i])
-      del[i].onclick = function() {
-        ul.removeChild(ul.children[i])
-        // ul.removeChild(this.parentNode)
-      }
-    }
-    }
-
-    
+    var a = document.querySelector('a')
+    a.addEventListener('click', function(e) {
+      e.preventDefault()
+    })
+    var input = document.querySelector('input')
+    input.addEventListener('click', function(e) {
+      e.preventDefault()
+    }) 
   </script>
 </html>
