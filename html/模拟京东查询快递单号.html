@@ -50,6 +50,7 @@
 
   <script>
     var input = document.querySelector('input')
+    // 用 keyup 比 keydown 更合适，keydown 会出问题
     document.addEventListener('keyup', function(e) {
         if (e.key == 's' || e.key == 'S') {
             input.focus()

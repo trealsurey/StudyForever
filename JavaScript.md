@@ -1178,7 +1178,18 @@ document.addEventListener('keyup', function(e) {
 
 注意：
 - `onkeydown` 和 `onkeyup` 不区分字母大小写，`onkeypress` 区分大小写
-- 在实际开发中，更多使用 up 和 down，因为它们能识别包括功能键在内的所有键         
+- 在实际开发中，更多使用 up 和 down，因为它们能识别包括功能键在内的所有键   
+- **`keydown` 和 `keypress` 在文本框中的特点：触发事件的时候，文本还没有落入文本框中，所以在监听文本框时，基本都是用 `keyup`**
+
+## BOM
+
+BOM（Browser Object Model）即浏览器对象模型，它提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是 `window`
+
+BOM 由一系列相关的对象构成，并且每个对象都提供了很多方法与属性。
+
+BOM  缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准化组织是 W3C，BOM 最初是Netscape 浏览器标准的一部分
+
+
 
 ## DOM 和 BOM 的区别
 
