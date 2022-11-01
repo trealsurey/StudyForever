@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>模拟京东查询快递单号--demo</title>
-</head>
+  </head>
 
-<!-- 
+  <!-- 
     需求：
         1. 在未输入内容时，不显示上方 div
         2. 输入内容时，上方 div 放大显示文本框中输入的文本
@@ -15,7 +15,62 @@
         4. 当文本框失去焦点时，上方 div 不会显示
  -->
 
-<body>
+ <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .main {
+        /* height: 200px; */
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 100px;
+        position: relative;
+    }
+    .up {
+        position: absolute;
+        width: 164px;
+        top: -40px;
+        font-size: 24px;
+        line-height: 26px;
+        padding: 5px 0;
+        border: 1px solid lightgray;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .2);
+        overflow: hidden;
+        display: none;
+    }
+ </style>
 
-</body>
+  <body>
+    <div class="main">
+      <div class="up">233</div>
+      <input type="text" placeholder="请输入您的快递单号..." class="num"/>
+    </div>
+  </body>
+
+  <script>
+    var input = document.querySelector('input')
+    document.addEventListener('keyup', function(e) {
+        if (e.key == 's' || e.key == 'S') {
+            input.focus()
+        }
+    })
+    var up = document.querySelector('.up')
+    input.addEventListener('keyup', function(e) {
+        if (input.value != '') {
+            up.style.display = 'block'
+            up.innerHTML = input.value
+        } else {
+            up.style.display = 'none'
+        }
+    })
+    input.onblur = () => {
+        up.style.display = 'none'
+    }
+    input.onfocus = () => {
+        if (input.value != '') {
+            up.style.display = 'block'
+        }
+    }
+  </script>
 </html>
