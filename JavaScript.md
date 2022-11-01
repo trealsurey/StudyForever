@@ -1189,19 +1189,44 @@ BOM 由一系列相关的对象构成，并且每个对象都提供了很多方�
 
 BOM  缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准化组织是 W3C，BOM 最初是Netscape 浏览器标准的一部分
 
+BOM 比 DOM 更大，它包含 DOM。
 
+### window 对象
 
-## DOM 和 BOM 的区别
+浏览器的顶级对象，具有双重角色：
+1. 它是 JS 访问浏览器窗口的一个接口
+2. 它是一个全局对象。定义在全局作用域中的变量、函数都会变成 `window` 对象的属性和方法
 
-- BOM 的顶级对象是：`window`；DOM 的顶级对象是：`document`；实际上 BOM 是包括 DOM 的。
+`window` 对象包括：
+- document
+- location
+- navigation
+- screen
+- history
 
-## 关于 JS 代码的执行顺序
+【注意】声明变量时尽量不要用 name 作为变量名，因为 `window` 下已经有了一个属性叫 `window.name`
 
-[javascript引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
+### 窗口加载事件
+
+#### load 事件
+
+`window.onload = function() {}`   或者
+
+`window.addEventListener('load', function() {})`
+
+onload 就是窗口/页面加载事件，当文档内容完全加载完成后才会触发该事件（包括图像、脚本文件、CSS 文件等）
+
+有了 `window.onload` 就可以把 JS 代码写到页面元素的上方
+
+注意：
+- `window.onload` 传统注册事件方式只能写一次，如果有多个，会以最后一个为准
+- 如果使用 `addEventListener` 则没有限制。
 
 ```html
-<!-- 如果按照下面这种将script写在input前面的写法，那么运行时会报错。
-因为代码是从上往下运行的，当运行到getElementById时并找不到id为myBtn的按钮 -->
+<!-- 
+  如果按照下面这种将 script 写在 input 前面的写法，那么运行时会报错。
+  因为代码是从上往下运行的，当运行到 getElementById 时并找不到 id 为 myBtn 的按钮 
+-->
 <!-- Uncaught TypeError: Cannot set properties of null (setting 'onclick') -->
 <body>
     <script type="text/javascript">
@@ -1215,8 +1240,6 @@ BOM  缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准�
 ```
 
 想要实现就需要使用 `load` 事件
-
-`load` 事件什么时候发生？当**页面元素全部加载完毕之后**才会发生。
 
 ```html
 <body onload="ready()">
@@ -1243,6 +1266,43 @@ BOM  缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准�
     <input type="button" value="333333" id="myBtn" />
 </body>
 ```
+
+#### DOMContentLoad 事件
+
+`document.addEventListener('DOMContentLoaded', function() {})`
+
+仅当 DOM 加载完成后就可触发事件，不包括样式表、图片、flash 等（**IE9 以上才支持**），所以加载速度比 `load` 更快
+
+**如果页面的图片很多的话, 从用户访问到 `load` 触发可能需要较长的时间, 交互效果就不能实现，必然影响用户的体验，此时用 `DOMContentLoaded` 事件比较合适**
+
+### 调整窗口大小事件
+
+`window.onresize = function() {}`  或者
+
+`window.addEventListener('resize', function() {})`
+
+`window.onresize` 是调整窗口大小加载事件, 当触发时就调用处理函数
+
+注意：
+1. 只要窗口大小发生像素变化，就会触发这个事件
+2. 我们经常 **利用这个事件完成响应式布局**
+3. `window.innerWidth` 是当前屏幕的宽度
+
+### 关于 JS 代码的执行顺序
+
+[javascript 引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
+
+## DOM 和 BOM 的区别
+
+| DOM | BOM |
+| :---: | :---: |
+| 文档对象模型 | 浏览器对象模型 | 
+| 把 **文档** 当做一个对象来看待 | 把 **浏览器** 当做一个对象来看待 |
+| DOM 的顶级对象是：`document` | BOM 的顶级对象是：`window` |
+| DOM 主要是操作页面元素 | BOM 主要是浏览器窗口交互 |
+| DOM 是 W3C 标准规范 | BOM 是浏览器厂商在各自浏览器上定义的，兼容性较差 |
+
+
 
 ## 关于 void 运算符
 `void` 运算符对给定的表达式进行求值，然后**返回 `undefined`**
