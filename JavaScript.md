@@ -1292,6 +1292,8 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 
 [javascript 引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
 
+
+
 ## DOM 和 BOM 的区别
 
 | DOM | BOM |
@@ -1302,8 +1304,6 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 | DOM 主要是操作页面元素 | BOM 主要是浏览器窗口交互 |
 | DOM 是 W3C 标准规范 | BOM 是浏览器厂商在各自浏览器上定义的，兼容性较差 |
 
-
-
 ## 关于 void 运算符
 `void` 运算符对给定的表达式进行求值，然后**返回 `undefined`**
 
@@ -1311,7 +1311,7 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 
 ```html
 <!-- 假设现在需要实现一个超链接的效果，点击超链接后弹出相应内容，但是页面不进行跳转
-     必须加上javascript: ，如果不加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
+     必须加上javascript:;，如果不 加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
      同样，使用 javascript:undefined 是一样的效果
      甚至，使用 js:void(0) 也是一样的效果-->
 <body>
