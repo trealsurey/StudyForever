@@ -108,6 +108,7 @@ test()  // 弹出tettetetetetetetetest
 ```
 
 ### 回调函数 callback
+
 回调函数的特点是：自己把函数写出来之后，不是由自己负责调用而是由其他程序负责调用该函数
 
 ```html
@@ -1292,6 +1293,42 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 
 [javascript 引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
 
+### 定时器
+
+#### setTimeout()
+
+`window.setTimeout(回调函数[, 延迟的毫秒数])`  window 可省略
+
+设置一个定时器，该定时器在到期后执行调用函数
+
+一个页面中经常会用到不同的定时器，提倡给不同的定时器设置不同的名字
+
+#### 停止 setTimeout()
+
+`window.clearTimeout(timeoutID)`  window 可省略
+
+```js
+var timer = setTimeout(function() {
+  console.log('BOOOOOM')
+}, 5000)
+
+clearTimeout(timer) // 清除 timer 定时器
+```
+
+#### setInterval()
+
+`window.setInterval(回调函数[, 延迟的毫秒数])`  window 可省略
+
+重复调用一个函数，每隔这个时间，就会调用一次回调函数
+
+一个页面中经常会用到不同的定时器，提倡给不同的定时器设置不同的名字
+
+#### 停止 setInterval()
+
+`window.clearInterval(intervalID)`  window 可省略
+
+### this 指向问题
+
 
 
 ## DOM 和 BOM 的区别
@@ -1304,13 +1341,12 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 | DOM 主要是操作页面元素 | BOM 主要是浏览器窗口交互 |
 | DOM 是 W3C 标准规范 | BOM 是浏览器厂商在各自浏览器上定义的，兼容性较差 |
 
-## 关于 void 运算符
-`void` 运算符对给定的表达式进行求值，然后**返回 `undefined`**
+`void` 运算符对给定的表达式 进行求值，然后**返回 `undefined`**
 
 void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(0)（等同于void 0）`。在上述情况中，也可以使用全局变量 undefined 来代替（假定其仍是默认值）
 
 ```html
-<!-- 假设现在需要实现一个超链接的效果，点击超链接后弹出相应内容，但是页面不进行跳转
+<!-- 假设现在需要实现一个超链接的效果，点击超链接后弹 出相应内容，但是页面不进行跳转
      必须加上javascript:;，如果不 加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
      同样，使用 javascript:undefined 是一样的效果
      甚至，使用 js:void(0) 也是一样的效果-->
@@ -1320,6 +1356,7 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 ```
 
 ## 有哪些方法可以通过浏览器向服务器发请求？
+
 1. 直接在浏览器地址栏输入 URL 然后回车
 2. 表单 form 的提交 form.submit
 3. 超链接
@@ -1330,12 +1367,14 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 以上所有的请求方式均可以携带数据给服务器，但只有表单提交的数据是动态的
 
 ## JSON
+
 JavaScript Object Notation(JavaScript对象标记)
 
 - 一种标准的轻量级数据交换格式。体积小，易解析。
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
 
 ## ES6
+
 [ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
 
 ## var let const 区别
