@@ -1329,7 +1329,11 @@ clearTimeout(timer) // 清除 timer 定时器
 
 ### this 指向问题
 
+this 的指向在函数定义时是确定不了的，只有在函数执行的时候才能确定 this 到底指向谁
 
+一般情况下，this 的最终指向是那个调用它的对象
+
+全局作用域或者普通函数中 this 的指向是全局对象 window（注意定时器里的 this 指向 window）
 
 ## DOM 和 BOM 的区别
 
