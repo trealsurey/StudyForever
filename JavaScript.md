@@ -1374,6 +1374,62 @@ console.log(2)
 
 ![事件循环](imgs/EventLoop.png)
 
+### location 对象
+
+`window` 对象给我们提供了一个 `location` 属性用于获取或设置窗体的URL，并且可以用于解析 URL。因为这个属性返回的是一个对象，所以我们将这个属性也称为 `location` 对象
+
+#### URL
+
+统一资源定位符（Uniform Resource Locator，URL）
+
+`protocol://host[:port]/path/[?query]#fragment`
+
+| 组成 | 说明 |
+| :---: | :---: |
+| protocol | 通信协议，常用 http ftp | 
+| host | 主机/域名 `www.baidu.com`  `www.bilibili.com` |
+| port | 端口号，可选，省略时使用默认端口，如 http 的默认端口是 80 |
+| path | 路径，由零个或多个 / 隔开的字符串，一般用来表示主机上的一个目录或文件地址 |
+| query | 参数，以键值对的形式，通过 `&` 符号隔开，如 `name=jojo&age=2` |
+| fragment | 片段，# 后面内容常见于链接、锚点 |
+
+#### location 对象属性
+
+| 属性 | 返回值 |
+| :---: | :---: |
+| location.href | 整个 URL | 
+| location.host | 主机/域名 |
+| location.port | 端口号，如果未写则返回空字符串 |
+| location.pathname | 路径 |
+| location.search | 参数 |
+| location.hash | 片段 |
+
+#### location 对象方法
+
+| 方法 | 功能 |
+| :---: | :---: |
+| location.assign() | 和 href 一样，可以跳转页面（也称为重定向页面），记录历史，可以实现后退页面 | 
+| location.replace() | 替换当前页面，因为不记录历史，所以不能后退页面 |
+| location.reload() | 重新加载页面，相当于刷新按钮或者 f5 如果参数为 true 则相当于 强制刷新 ctrl + f5 |
+
+### navigator 对象
+
+`navigator` 对象包含有关浏览器的信息，它有很多属性，我们最常用的是 `userAgent`，该属性可以返回由客户机发送服务器的 `user-agent` 头部的值
+
+可以通过 `navigator.userAgent.match(regex 正则表达式)` 来判断用户是用手机端还是 PC 端打开页面，再利用 `location.href` 进行跳转
+
+### history 对象
+
+`window` 对象给我们提供了一个 `history` 对象，与浏览器历史记录进行交互。该对象包含用户（在浏览器窗口中)访问过的 URL
+
+| 方法 | 功能 |
+| :---: | :---: |
+| history.back() | 可以后退 | 
+| history.forward() | 前进功能 |
+| history.go(参数) | 前进后退功能，如果是 1 表示前进一个页面，如果是 -1 表示后退一个页面 |
+
+history 对象一般在实际开发中用处较少，但是在一些 OA 办公系统中会经常见到
+
 ## DOM 和 BOM 的区别
 
 | DOM | BOM |
