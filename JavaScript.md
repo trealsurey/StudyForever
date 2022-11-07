@@ -1521,19 +1521,59 @@ scroll 的相关属性可以动态地得到某元素的大小、滚动距离等
 | element.scrollWidth | 返回自身实际的宽度，不含 border，返回数值不带单位 |
 | element.scrollHeight | 返回自身实际的高度，不含 border，返回数值不带单位 |
 
-如果浏览器的高/宽度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。
-
-![scrollHeight-clientHeight区别](imgs/scrollHeight-clientHeight区别.png)
-
 #### scroll 事件
 
-如果浏览器的高（或宽)度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。滚动条在滚动时会触发onscroll事件。
+如果浏览器的高（或宽)度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。滚动条在滚动时会触发 scroll 事件。
 
 ```js
 div.addEventListener('scroll', function() {
   console.log(div.scrollTop)
 })
 ```
+
+### 被卷去的头部
+
+- **页面** 被卷去的头部
+  - 如果浏览器的高/宽度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。
+  - `window.pageYOffset`
+  - 如果是被卷去的左侧就是 `window.pageXOffset`
+- **元素** 被卷去的头部
+  - `element.scrollTop`
+
+![scrollHeight-clientHeight区别](imgs/scrollHeight-clientHeight区别.png)
+
+#### 兼容性问题
+
+需要注意的是，页面被卷去的头部，有兼容性问题，因此被卷去的头部通常有如下几种写法
+
+1. 声明了DTD，使用 `document.documentElement.scrollTop`
+2. 未声明DTD，使用 `document.body.scrollTop`
+3. 新方法 `window.pageYoffset` 和 `window. pageXoffset`，IE9 开始支持
+
+```js
+// 如果必须要考虑兼容性的问题
+
+function getScroll() {
+  return {
+    left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+    top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+  }
+}
+
+// 使用时 getScroll().left/top
+```
+
+### offset client scroll 区别
+
+| 属性 | 功能 | 常用用法 |
+| :---: | :---: | :---: |
+| offset | padding + border + 内容 | 用于获取元素位置 |
+| client | padding + 内容 | 用于获取元素大小 | 
+| scroll | 内容 | 用于获取滚动距离 |
+
+返回的数值均不带单位
+
+![offset-client-scroll区别](imgs/offset-client-scroll区别.png)
 
 ## 立即执行函数
 
