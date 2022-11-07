@@ -1440,18 +1440,63 @@ history 对象一般在实际开发中用处较少，但是在一些 OA 办公�
 | DOM 主要是操作页面元素 | BOM 主要是浏览器窗口交互 |
 | DOM 是 W3C 标准规范 | BOM 是浏览器厂商在各自浏览器上定义的，兼容性较差 |
 
+## void 运算符
+
 `void` 运算符对给定的表达式 进行求值，然后**返回 `undefined`**
 
 void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(0)（等同于void 0）`。在上述情况中，也可以使用全局变量 undefined 来代替（假定其仍是默认值）
 
 ```html
 <!-- 假设现在需要实现一个超链接的效果，点击超链接后弹 出相应内容，但是页面不进行跳转
-     必须加上javascript:;，如果不 加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
+     必须加上javascript:;，如果不加会默认当成一个路径，则会报错 Cannot GET /html-code/void(0)
      同样，使用 javascript:undefined 是一样的效果
      甚至，使用 js:void(0) 也是一样的效果-->
 <body>
     <a href="javascript:void(0)" onclick="alert('ddddddd.......')">这是一个超链接</a>
 </body>
+```
+
+## PC 端网页特效
+
+### 元素偏移量 offset
+
+offset 就是偏移量，我们使用 offset 相关属性可以 **动态地** 获取元素的位置/偏移、大小等。
+
+比如当我们没有设置宽度高度时，或者缩小屏幕时，就可以方便地获取到元素的大小等信息
+
+- 获得元素距离 **带有定位** 父元素的位置
+- 获得元素自身的大小（宽度高度）
+- 注意：返回的数值都不带单位
+
+| 属性 | 功能 |
+| :---: | :---: |
+| element.offsetParent | 返回该元素 **带有定位** 的父级元素，如果父级元素都没有定位则返回 body | 
+| element.offsetTop | 返回元素相对于 **带有定位** 的父元素上方的偏移 |
+| element.offsetLeft | 返回元素相对于 **带有定位** 的父元素左侧的偏移 |
+| element.offsetWidth | 返回自身包括 padding、boder、内容区的宽度 |
+| element.offsetHeight | 返回自身包括 padding、border、内容区的高度 |
+
+#### offset 和 style 的区别
+
+| offset | style |
+| :---: | :---: |
+| 可以得到任意样式表中的样式值 | 只能得到行内样式表中的样式值 | 
+| 获得的数值没有单位 | 获得的是带有单位的字符串 |
+| offsetWidth = padding + border + width | style.width 不包含 padding 和 border |
+| offsetWidth 等属性是只读属性，只能获取不能赋值 | style.width 是可读写属性，可以获取也可以赋值 |
+| 想要 **获取** 元素大小、位置，用 offset 更合适 | 想要给元素 **更改** 值，用 style |
+
+#### 获取鼠标在盒子内的坐标
+
+```js
+var box = document.querySelector('.box')
+box.addEventListener('mousemove ', function(e) {
+  var x = e.pageX - this.offsetLeft
+  var y = e.pageY - this.offsetTop
+  this.innerHTML = 'x坐标是' + x + 'y坐标是' + y
+})
+
+// 首先得到鼠标在页面的坐标，然后得到盒子和页面的距离，然后二者相减
 ```
 
 ## 有哪些方法可以通过浏览器向服务器发请求？
