@@ -1460,7 +1460,7 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 
 ### 元素偏移量 offset
 
-offset 就是偏移量，我们使用 offset 相关属性可以 **动态地** 获取元素的位置/偏移、大小等。
+offset 就是偏移量，我们使用 offset 相关属性可以 **动态地** 获取元素的位置/偏移等。
 
 比如当我们没有设置宽度高度时，或者缩小屏幕时，就可以方便地获取到元素的大小等信息
 
@@ -1473,7 +1473,7 @@ offset 就是偏移量，我们使用 offset 相关属性可以 **动态地** �
 | element.offsetParent | 返回该元素 **带有定位** 的父级元素，如果父级元素都没有定位则返回 body | 
 | element.offsetTop | 返回元素相对于 **带有定位** 的父元素上方的偏移 |
 | element.offsetLeft | 返回元素相对于 **带有定位** 的父元素左侧的偏移 |
-| element.offsetWidth | 返回自身包括 padding、boder、内容区的宽度 |
+| element.offsetWidth | 返回自身包括 padding、border、内容区的宽度 |
 | element.offsetHeight | 返回自身包括 padding、border、内容区的高度 |
 
 #### offset 和 style 的区别
@@ -1498,6 +1498,92 @@ box.addEventListener('mousemove ', function(e) {
 
 // 首先得到鼠标在页面的坐标，然后得到盒子和页面的距离，然后二者相减
 ```
+
+### 元素可视区 client
+
+client 的相关属性用来获取元素可视区的相关信息，可以动态地获取某元素的边框大小、元素大小等
+
+| 属性 | 功能 |
+| :---: | :---: |
+| element.clientTop | 返回元素上边框的大小 |
+| element.clientLeft | 返回元素左边框的大小 |
+| element.clientWidth | 返回自身包括 padding、内容区的宽度，**不含border**，返回数值不带单位 |
+| element.clientHeight | 返回自身包括 padding、内容区的高度，**不含border**，返回数值不带单位 |
+
+### 元素滚动 scroll
+
+scroll 的相关属性可以动态地得到某元素的大小、滚动距离等
+
+| 属性 | 功能 |
+| :---: | :---: |
+| element.scrollTop | 返回被卷去的上侧距离，返回数值不带单位，**常用** |
+| element.scrollLeft | 返回被卷去的左侧距离，返回数值不带单位，**常用** |
+| element.scrollWidth | 返回自身实际的宽度，不含 border，返回数值不带单位 |
+| element.scrollHeight | 返回自身实际的高度，不含 border，返回数值不带单位 |
+
+如果浏览器的高/宽度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。
+
+![scrollHeight-clientHeight区别](imgs/scrollHeight-clientHeight区别.png)
+
+#### scroll 事件
+
+如果浏览器的高（或宽)度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。滚动条在滚动时会触发onscroll事件。
+
+```js
+div.addEventListener('scroll', function() {
+  console.log(div.scrollTop)
+})
+```
+
+## 立即执行函数
+
+不需要调用，立即能够自己执行的函数
+
+```js
+(function() {})()
+
+// 或者
+
+(function() {} ());
+```
+
+```js
+(function() {
+  console.log(22222)
+})()
+
+// 打开浏览器会直接打印出 22222
+```
+
+```js
+(function sum(a, b) {
+  console.log('a = ' + a + ' b = ' + b + ', sum = ' + (a + b))
+})(3, 45)
+
+// 输出 a = 3 b = 45, sum = 48
+
+// 后面的小括号可以看做是在调用前面的函数
+// 后面的括号里面的参数就是实参，传递到前面的函数里
+```
+
+如果有多个立即执行函数，那么中间一定要用 `;` 隔开，否则会报错
+
+立即执行函数最大的作用就是 **独立创建了一个作用域**，里面所有的变量都是局部变量
+
+## 淘宝 flexible.js 源码分析
+
+### pageshow 事件
+
+下面三种情况都会刷新页面，触发 `load` 事件
+1. `a` 标签的超链接
+2. F5 或者刷新按钮（强制刷新）
+3. 前进后退按钮
+
+但是火狐中有个特点：往返缓存。这个缓存中不仅保存着页面数据，还保存了 DOM 和 JS 的状态。实际上就是将整个页面都保存在了内存里
+
+所以此时后退按钮不能刷新页面，那么就可以使用 `pageshow` 事件来触发。
+
+**这个事件在页面显示时触发，不论页面是否来自缓存**。在重新加载页面中，pageshow 会在 load 事件触发后触发；根据事件对象中的 `persisted` 来判断是否是缓存中的页面触发的 pageshow 事件，**注意这个事件要给 window 添加**
 
 ## 有哪些方法可以通过浏览器向服务器发请求？
 
