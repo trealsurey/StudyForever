@@ -1093,6 +1093,12 @@ ul.addEventListener('click', function(e) {
 - `onmouseup` 鼠标弹起触发
 - `onmousedown` 鼠标按下触发
 
+#### mouseenter 和 mouseover 的区别
+
+- `mouseover` 鼠标经过自身盒子会触发，经过子盒子还会触发、
+- `mouseenter` 只会经过自身盒子触发，**因为 mouseenter 不会冒泡**
+  - 和 `mouseenter` 搭配，鼠标离开 `mouseleave` 同样不会冒泡
+
 #### 禁止鼠标右键菜单
 
 `contextmenu` 主要控制应该何时显示上下文菜单，主要用于程序猿取消默认的上下文菜单
@@ -1574,6 +1580,69 @@ function getScroll() {
 返回的数值均不带单位
 
 ![offset-client-scroll区别](imgs/offset-client-scroll区别.png)
+
+### 动画原理
+
+核心原理：通过 `setInterval()` 不断移动盒子
+
+1. 获得盒子当前位置
+2. 让盒子在当前位置加上 1 个移动距离
+3. 利用定时器不断重复这个操作
+4. 结束定时器
+
+**注意此元素需要添加定位，才能使用 `element.style.left`**
+
+```js
+function animate(obj, distance) {
+  // 防止每一次调用都需要在内存中定义一个新的 time
+  // 所以在对象中添加一个 timer 属性就可以了
+  obj.timer = setInterval(function() {
+    if (obj.offsetLeft == distance) {
+      clearInterval(obj.timer)
+    }
+    // 或者可以写成 div.style.left = left++ + "px"
+    obj.style.left = obj.offsetLeft + 1 + 'px'
+  }, 50)
+}
+```
+
+还可以给 function 添加回调函数
+
+```js
+function animate(obj, distance, callback) {
+  obj.timer = setInterval(function() {
+    if (obj.offsetLeft == distance) {
+      clearInterval(obj.timer)
+      if (callback) {
+        callback()
+      }
+    }
+    obj.style.left = obj.offsetLeft + 1 + 'px'
+  }, 50)
+}
+
+// 调用
+btn.addEventListener("click", function () {
+  animate(div, 30, function () {
+    alert("sssssssssssssssssssss");
+  });
+});
+```
+
+### 缓动动画效果原理
+
+缓动动画就是让元素运动速度有所变化，最常见的是让速度慢慢停下来
+
+核心算法：`(目标值 - 现在的位置) / 10` 作为每次移动的距离/步长
+
+注意：步长值需要取整，因为如果不取整，那么其实永远也达不到设定的值
+
+这时候需要 **向上** 取整。因为如果最后只剩 0.9 再向下取整的话就是 0，也不会到达设定值；同理，当步长是负数时，就需要 **向下** 取整
+
+```js
+var step = (distance - obj.offsetLeft) / 10
+step = step > 0 ? Math.ceil(step) : Math.floor(step)
+``` 
 
 ## 立即执行函数
 
