@@ -1947,6 +1947,25 @@ JavaScript Object Notation(JavaScript对象标记)
 - 一种标准的轻量级数据交换格式。体积小，易解析。
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
 
+## JavaScript 库
+
+JavaScript 库：即 library，是一个封装好的特定的集合(方法和函数)。从封装一大堆函数的角度理解库，就是在这个库中，封装了很多预先定义好的函数在里面，比如动画 animate、hide、show，比如获取元素等
+
+简单理解：就是一个 JS 文件，里面对我们原生 JS 代码进行了封装，存放到里面。这样我们可以快速高效的使用这些封装好的功能了
+
+比如 `jQuery`，就是为了快速方便的操作 DOM，里面基本都是函数(方法）
+
+常见的 JavaScript 库：
+
+- jQuery
+- Prototype
+- YuI
+- Dojo
+- Ext JS
+- 移动端的zepto
+
+这些库都是对原生 JavaScript 的封装，内部都是用 JavaScript 实现的
+
 ## ES6
 
 [ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
