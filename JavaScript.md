@@ -1613,9 +1613,10 @@ function animate(obj, distance, callback) {
   obj.timer = setInterval(function() {
     if (obj.offsetLeft == distance) {
       clearInterval(obj.timer)
-      if (callback) {
-        callback()
-      }
+      // if (callback) {
+      //   callback()
+      // }
+      callback && callback()  // 作用同上
     }
     obj.style.left = obj.offsetLeft + 1 + 'px'
   }, 50)
@@ -1643,6 +1644,196 @@ btn.addEventListener("click", function () {
 var step = (distance - obj.offsetLeft) / 10
 step = step > 0 ? Math.ceil(step) : Math.floor(step)
 ``` 
+
+### 节流阀
+
+可以防止轮播图按钮连续点击造成播放过快
+
+效果：当上一个函数动画内容执行完毕，再去执行下一个函数动画，让事件无法连续触发
+
+核心实现思路：利用回调函数，添加一个变量来控制，锁住函数和解锁函数
+
+```js
+var flag = true
+if (flag) {
+  flag = false
+  do something  // 关闭水龙头
+}
+
+// 回调函数动画执行完毕
+flag = true // 打开水龙头
+```
+
+### 返回顶部
+
+滚动窗口至文档中的特定位置
+
+```js
+window.scroll(x, y)
+```
+
+**x 和 y 不需要加单位**
+
+#### 带有动画的返回顶部
+
+将 `animate.js` 中所有与 left 相关的值改为和页面垂直滚动距离相关的值就可以了
+
+页面滚动了多少，可以通过 `window.pageYOffset` 得到
+
+最后再使用 `window.scroll(x, y)` 实现页面滚动
+
+```js
+// animate.js 函数中加上
+window.scroll(0, window.pageYOffset + step)
+
+// 调用
+goback.addEventListener('click', function() {
+  animate(window, 0)  
+})
+```
+
+## 移动端网页特效
+
+### 触屏事件
+
+移动端浏览器兼容性较好，不需要考虑以前 JS 的兼容问题，可以放心的使用原生 JS 书写效果
+
+移动端也有自己独特的地方，比如 **触屏事件（也叫触摸事件) touch**，Android 和 iOS 都有
+
+`touch` 对象代表一个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。触屏事件可响应用户手指（或触控 笔）对屏幕或者触控板操作
+
+常见的触屏事件如下：
+
+| 触屏 | touch 事件说明 |
+| :---: | :---: |
+| touchstart | 手指触摸到一个 DOM 元素时触发 |
+| touchmove	| 手指在一个 DOM 元素上滑动时触发 |
+| touchend | 手指从一个 DOM 元素上移开时触发 |
+
+### 触摸事件对象 TouchEvent
+
+`TouchEvent` 是一类描述手指在触摸平面（触摸屏、触摸板等）的状态变化的事件。这类事件用于描述一个或多个触点，使开发者可以检测触点的移动，触点的增加和减少，等等
+
+`touchstart`、`touchmove`、`touchend` 三个事件都会各自有事件对象。
+
+触摸事件对象我们重点看三个常见对象列表
+
+| 触摸列表 | 说明 |
+| :---: | :---: |
+| touches | 正在触摸屏幕的所有手指的列表 |
+| targetTouches	| 正在触摸当前 DOM 元素的手指列表 |
+| changedTouches | 手指状态发生了改变的列表，从无到有，从有到无变化 |
+
+当手指离开屏幕的时候，就没有 touches 和  targetTouches 列表，但是会有 changedTouches
+
+`targetTouches[0]` 可以得到正在触摸 DOM 元素的第一个手指的相关信息，比如：手指的坐标等
+
+平时我们都是给元素注册触摸事件，所以**重点记住 `targetTocuhes`**
+
+### 移动端拖动元素
+
+`touchstart`、`touchmove`、`touchend` 可以实现拖动元素
+
+拖动元素需要当前手指的坐标值我们可以使用 `targetTouches[0]` 里面的 `pageX` 和 `pageY`
+
+移动端拖动的原理：盒子的位置 = 盒子原来的位置 + 手指移动的距离
+
+手指移动的距离 = 手指滑动中的位置 - 手指刚开始触摸的位置
+
+**拖动元素三步曲**
+
+1. 触摸元素 `touchstart`：获取手指初始坐标，同时获得盒子原来的位置
+2. 移动手指 `touchmove`：计算手指的滑动距离，并且移动盒子
+3. 离开手指 `touchend`
+
+注意：手指移动也会触发滚动屏幕所以这里要阻止默认的屏幕滚动 `e.preventDefault()`
+
+```js
+var div = document.querySelector("div");
+var startX = 0; // 手指初始坐标
+var startY = 0;
+var x = 0; // 盒子原来的位置
+var y = 0;
+
+div.addEventListener("touchstart", function (e) {
+  startX = e.targetTouches[0].pageX;
+  startY = e.targetTouches[0].pageY;
+  x = this.offsetLeft;
+  y = this.offsetTop;
+});
+
+div.addEventListener("touchmove", function (e) {
+  // 计算手指的移动距离
+  var moveX = e.targetTouches[0].pageX - startX;
+  var moveY = e.targetTouches[0].pageY - startY;
+  // 移动盒子
+  div.style.left = x + moveX + "px";
+  div.style.top = y + moveY + "px";
+  e.preventDefault();
+});
+```
+
+### 移动端常见特效
+
+#### classList
+
+`classList` 属性是 HTML5 新增的一个属性，返回元素的类名。但是 IE10 以上版本支持。该属性用于在元素中添加，移除及切换 CSS 类。有以下方法:
+
+- `focus.classList.add('current')` 添加类
+- `focus.classList.remove('current')` 移除类
+- `focus.classList.toggle('current')` 切换类
+
+注意以上方法里，所有类名都不带 `.`
+
+#### click 延时解决方案
+
+移动端 `click` 事件会有 300ms 的延时，原因是移动端屏幕双击会缩放（double tap to zoom）页面。 解决方案：
+
+1. **禁用缩放**: 浏览器禁用默认的双击缩放行为并且去掉 300ms 的点击延迟。
+```html
+<meta name="viewport" content="user-scalable=no">
+```
+2. **利用 `touch` 事件自己封装这个事件解决延迟**
+   1. 原理
+      1. 当我们手指触摸屏幕，记录当前触摸时间
+      2. 当我们手指离开屏幕，用离开的时间减去触摸的时间
+      3. 如果时间小于 150ms，并且没有滑动过屏幕，那么就定义为点击
+```js
+//封装 tap，解决 click 300ms 延时
+function tap(obj, callback) {
+  var isMove = false;
+  var startTime = 0; // 记录触摸时候的时间变量
+  obj.addEventListener('touchstart', function(e) {
+    startTime = Date.now(); // 记录触摸时间
+  });
+  obj.addEventListener('touchmove', function(e) {
+    isMove = true; // 看看是否有滑动，有滑动算拖拽，不算点击
+  });
+  obj.addEventListener('touchend', function(e) {
+    // 如果手指触摸和离开时间小于 150ms 算点击
+    if (!isMove && (Date.now() - startTime) < 150) { 
+      callback && callback(); // 执行回调函数
+    }
+    isMove = false; // 取反重置
+    startTime = 0;
+  });
+}
+//调用
+tap(div, function() { // 执行代码});
+```
+3. **使用插件 fastclick**
+   1. 官网：https://github.com/ftlabs/fastclick
+   2. 使用：
+      1. 引入
+      2. 按照文档说明使用
+      3. 例如，在原生 JS 中：
+```js
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
+  }, false);
+}
+```
 
 ## 立即执行函数
 
