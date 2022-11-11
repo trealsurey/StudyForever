@@ -1777,9 +1777,9 @@ div.addEventListener("touchmove", function (e) {
 
 #### classList
 
-`classList` 属性是 HTML5 新增的一个属性，返回元素的类名。但是 IE10 以上版本支持。该属性用于在元素中添加，移除及切换 CSS 类。有以下方法:
+返回元素的类名。HTML5 新增的一个属性，IE10 以上版本支持。该属性用于在元素中添加，移除及切换 CSS 类。有以下方法:
 
-- `focus.classList.add('current')` 添加类
+- `focus.classList.add('current')` 添加类，不会覆盖之前的类名
 - `focus.classList.remove('current')` 移除类
 - `focus.classList.toggle('current')` 切换类
 
@@ -1834,6 +1834,50 @@ if ('addEventListener' in document) {
   }, false);
 }
 ```
+
+### 常用插件
+
+1. [Swiper](https://www.swiper.com.cn/)
+2. [SuperSlide](http://www.superslide2.com/)
+3. [iscroll](https://github.com/cubiq/iscroll)
+4. [移动端视频插件 zyMedia](https://github.com/ireaderlab/zyMedia)
+
+## 本地存储
+
+随着互联网的快速发展，基于网页的应用越来越普遍，同时也变的越来越复杂，为了满足各种各样的需求，会经 常性在本地存储大量的数据，HTML5 规范提出了相关解决方案
+
+### 本地存储特性
+
+- 数据存储在用户浏览器中
+- 设置、读取方便，甚至页面刷新不丢失数据
+- 容量较大，`sessionStorage` 约 5M，`localStorage` 约 20M
+- 只能存储字符串，可以将对象 `JSON.stringify()` 转为字符串后存储
+
+### sessionStorage
+
+- 生命周期为 **关闭浏览器窗口**
+- 在同一个窗口（页面）下数据可以共享
+- 以键值对的形式存储使用
+
+#### 相关操作
+
+1. 存储数据 `sessionStorage.setItem(key, value)`
+2. 获取数据 `sessionStorage.getItem(key)`
+3. 删除数据 `sessionStorage.removeItem(key)`
+4. 删除所有数据 `sessionStorage.clear()`
+
+### localStorage
+
+- 生命周期 **永久生效**，除非手动删除否则关闭页面也会存在
+- 可以多窗口共享（同一浏览器可以共享）
+- 以键值对的形式存储使用
+
+#### 相关操作
+
+1. 存储数据 `localStorage.setItem(key, value)`
+2. 获取数据 `localStorage.getItem(key)`
+3. 删除数据 `localStorage.removeItem(key)`
+4. 删除所有数据 `localStorage.clear()`
 
 ## 立即执行函数
 
