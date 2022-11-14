@@ -384,3 +384,86 @@ $(function() {
 
 - `val()` 获取表单的值
 - `val('设置的值')` 设置表单的值
+
+### 元素操作
+
+#### 遍历元素
+
+jQuery 隐式迭代是对同一类元素做了同样的操作。 如果想要 **给同一类元素做不同操作**，就需要用到遍历
+
+1. `$('div').each()`
+
+```js
+$('div').each(function(index, domElem) {
+    $(domElem)
+})
+```
+
+- `each()` 方法遍历匹配的每一个元素，主要用 DOM 处理
+- 里面的回调函数有 2 个参数：index 是每个元素的索引号；domElem 是每个 DOM 元素对象，不是 jQuery 对象
+- 要想使用 jQuery 方法，需要给这个 DOM 元素先转换为 jQuery 对象：`$(domElem)`
+
+2. `$.each()`
+
+```js
+$.each(object，function (index, element) { })
+```
+
+- `$.each()` 方法可用于遍历任何对象。主要用于数据处理，比如数组，对象
+- 里面的函数有 2 个参数 index 是每个元素的索引号；element 遍历内容
+
+其中，object 对象可以是 DOM 对象，数组，一般对象等
+
+- 当 object 为 DOM 对象
+
+```js
+$.each($('li'), function(i, domElem) {
+    $(domElem); // 转换为 jQuery 对象
+})
+```
+
+- 当 object 为数组
+
+```js
+$.each(arr, function(index, value) {
+    // arr 为原数组
+    // index 为当前索引
+    // value 为当前数组值
+})
+```
+
+- 当 object 为一般对象
+
+```js
+$.each(obj, function(key, value) {
+    console.log(key, value);
+    // obj: 对象
+    // key: 对象的键
+    // value: 对象的值
+})
+```
+
+#### 创建元素
+
+`$('<li></li>')` 动态地创建了一个 li 
+
+#### 添加元素
+
+1. 内部添加：
+   1. `element.append('添加的内容')` 把内容放入匹配元素内部最后面，类似原生 `appendChild` 
+   2. `element.prepend('添加的内容') 把内容放入匹配元素内部最前面
+2. 外部添加
+   1.  `element.after('添加的内容')` 把内容放入目标元素后面
+   2.  `element.before('添加的内容')` 把内容放入目标元素前面
+
+**内部添加元素，生成之后，它们是父子关系**
+
+**外部添加元素，生成之后，它们是兄弟关系**
+
+#### 删除元素
+
+1. `element.remove()` 删除匹配的元素 **本身**
+2. `element.empty()` 删除匹配的元素集合中所有的子节点
+3. `element.html('div')` 清空的匹配内容
+
+`empty()` 和 `html()` 的作用等价，都可以删除元素里面的内容，只不过 html 还可以设置内容
