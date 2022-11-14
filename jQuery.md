@@ -340,7 +340,7 @@ $('div').data('index')
 
 #### 购物车全选案例
 
-```js
+```javascript
 // 上下两个全选按钮属性为 checkall
 // 每个小复选框的属性为 j-checkbox
 $(function() {
