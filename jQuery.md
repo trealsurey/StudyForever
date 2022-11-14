@@ -92,6 +92,10 @@ $('div').get(0)
 
 `$('选择器')`
 
+以下表格中列出的选择器均为部分
+
+[jQuery全部选择器](https://api.jquery.com/category/selectors/)
+
 #### 基础选择器
 
 | 名称 | 用法 | 描述 |
@@ -289,3 +293,94 @@ $(function() {
     })
 })
 ```
+
+### 属性操作
+
+#### 设置或获取元素固有属性值
+
+所谓元素固有属性就是元素本身自带的属性，比如 `<a>` 元素里面的 `href`，比如 `<input>` 元素里面的 `type`
+
+- 获取属性 `prop('属性名')`
+- 设置属性 `prop('属性名', '属性值')`
+
+```js
+// 只要复选框发生改变，那么就会打印 checked 这个属性的值
+$('input').change(function() {
+    console.log($(this).prop('checked'))
+})
+```
+
+#### 设置或获取元素自定义属性值
+
+用户自己给元素添加的属性，我们称为自定义属性，比如给 `div` 添加 `index='1'`
+
+- 获取属性 `attr('属性名')` 类似原生 `getAttribute()`
+- 设置属性 `attr('属性名', '属性值')` 类似原生 `setAttribute()`
+
+同时，还可以读取 HTML5 的自定义属性
+
+```js
+// 获取 data-index 属性
+$('div').attr('data-index')
+```
+
+#### 数据缓存
+
+`data()` 方法可以在指定的元素上存取数据，并不会修改 DOM 元素结构，数据存放在元素的内存中。一旦页面刷新，之前存放的数据都将被移除
+
+- 获取数据 `data('key')` 
+- 添加数据 `data('key', 'value')`
+
+也可以读取 HTML5 的自定义属性
+
+```js
+// 获取 data-index 属性，不用 data- 开头，而且返回的是数字型；注意和 attr() 区分
+$('div').data('index')
+```
+
+#### 购物车全选案例
+
+```js
+// 上下两个全选按钮属性为 checkall
+// 每个小复选框的属性为 j-checkbox
+$(function() {
+    // 选中全选之后，所有小复选框和上下两个全选框全部选中
+    $('.checkall').change(function() {
+        $('.j-checkbox, .checkall').prop('checked', $(this).prop('checked'))
+    })
+    // 如果小复选框被选中的个数等于复选框个数，那么就选中全选按钮
+    $('.j-checkbox').change(function() {
+        // :checked 筛选选择器
+        if ($('.j-checkout:checked').length === $('.j-checkout').length) {
+            $('.checkall').prop('checked', true)
+        } else {
+            $('.checkall').prop('checked', false)
+        }
+    })
+})
+```
+
+### 文本属性值
+
+主要针对元素的内容和表单的值操作
+
+#### 普通元素内容
+
+相当于 `innerHTML`
+
+- `html()` 获取元素的内容
+- `html('设置的值')` 设置元素的内容
+
+#### 普通元素文本内容
+
+相当于 `innerText`
+
+- `text()` 获取元素的文本内容
+- `text('设置的值')` 设置元素的文本内容
+
+#### 表单的值
+
+相当于 `value`
+
+- `val()` 获取表单的值
+- `val('设置的值')` 设置表单的值
