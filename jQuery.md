@@ -84,3 +84,208 @@ $('div').get(0)
 
 ## 常用 API
 
+[jQuery API Documentation](https://api.jquery.com/)
+
+### 选择器
+
+原生 JS 获取元素方式很多，很杂，而且兼容性情况不一致，因此 jQuery 给我们做了封装，使获取元素统一标准
+
+`$('选择器')`
+
+#### 基础选择器
+
+| 名称 | 用法 | 描述 |
+| :---: | :---: | :---: |
+| ID 选择器 | `$('#id')` | 获取指定 ID 的元素 |
+| 全选选择器 | `$('*')` | 匹配所有元素 |
+| 类选择器 | `$('.class')` | 获取同一类 class 的元素 |
+| 标签选择器 | `$('div')` | 获取同一类标签的所有元素 |
+| 并集选择器 | `$('div,p,li')` | 选取多个元素 | 
+| 交集选择器 | `$('li.current')` | 交集元素 |
+
+#### 层级选择器
+
+| 名称 | 用法 | 描述 |
+| :---: | :---: | :---: |
+| 子代选择器 | `$('ul>li')` | 获取亲儿子层级的元素；注意，并不会获取孙子层级的元素 |
+| 后代选择器 | `$('ul li')	` | 获取 ul 下的所有 li 元素，包括孙子等 |
+
+#### 筛选选择器
+
+| 语法 | 用法 | 描述 |
+| :---: | :---: | :---: |
+| :first | `$('li:first')` | 获取第一个 li 元素 |
+| :last | `$('li:last')` | 获取最后一个 li 元素 |
+| :eq(index) | `$('li:eq(2)')` | 获取到的 li 元素中，选择索引号为 2 的元素，索引号 index 从 0 开始 |
+| :odd | `$('li:odd')` | 获取到的 li 元素中，选择索引号为奇数的元素 |
+| :even | `$('li:even')` | 获取到的 li 元素中，选择索引号为偶数的元素 | 
+
+#### 筛选方法
+
+| 语法 | 用法 | 描述 |
+| :---: | :---: | :---: |
+| **parent()**| `$('li').parent()` | 查找最近的父级 |
+| **children(selector)** | `$('ul').children('li')` | 相当于 `$('ul>li')`，最近一级(亲儿子) |
+| **find(selector)** | `$('ul').find('li')` | 相当于 `$('ul li')`，后代选择器 |
+| **siblings(selector)** | `$('.first').siblings('li')` | 查找兄弟节点，不包括自己本身 |
+| **eq(index)** | `$('li').eq(2)` | 相当于 `$('li:eq(2)')`，index从 0 开始 | 
+| nextAll([expr]) | `$('.first').nextAll()` | 查找当前元素之后所有的同辈元素 | 
+| prevAll([expr]) | `$('.last').prevAll()` |查找当前元素之前所有的同辈元素 | 
+| hasClass(class) | `$('div').hasClass('protected')` | 检查当前的元素是否含有某个特定的类，如果有，则返回 true | 
+| parents() | `$('div').parents('.one')` | 获取元素所有父级，然后指定其中一个父级 | 
+
+### 样式操作
+
+jQuery 可以使用 CSS 方法来修改简单元素样式； 也可以操作类，修改多个样式
+
+1. 参数只写属性名，则是返回属性值  `$(this).css('color')`
+2. 参数是属性名和属性值，是设置一组样式  `$('div').css('属性', '值')`，值如果是数字可以不加单位和引号
+3. 参数可以使对向行驶，方便设置多组样式。属性名和属性值用冒号隔开，属性名可以不用加引号  `$(this).css({'color':'pink','font-size':'20px'})`
+
+#### 隐式迭代 :star:
+
+遍历内部 DOM 元素（伪数组形式存储）的过程就叫做 **隐式迭代**。 简单理解：给匹配到的所有元素进行循环遍历，执行相应的方法，而不用我们再进行循环，简化我们的操作，方便我们调用
+
+```html
+<div>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+</div>
+<script>
+    $('div div').css('color', 'red');
+</script>
+```
+
+#### 设置类样式方法
+
+作用等同于以前的 `classList`，可以操作类样式。
+
+注意： 操作类里面的参数不要加 `.`
+
+1. 添加类 `$('div').addClass('current')`
+2. 移除类 `$('div').removeClass('current')`
+3. 切换类 `$('div').toggleClass('current')`
+
+#### 类操作和 className 的区别
+
+- 原生 JS 中 `className` 会覆盖元素原先里面的类名
+- jQuery 里面类操作只是对指定类进行操作，不影响原来的类名
+
+### jQuery 效果
+
+#### 显示/隐藏效果
+
+1. **显示效果**  `show([speed, [easing], [fn]])`
+   1. `speed`：三种预定速度之一的字符串（`'slow'`, `'normal'`, `'fast'`）或表示动画时长的毫秒数值(如：1000)
+   2. `easing`：用来指定切换效果，默认是 `'swing'`，可用参数 `'linear'`
+   3. `fn`：回调函数，在动画完成时执行的函数，每个元素执行一次
+   4. 参数都可以省略，无动画直接显示
+2. **隐藏效果** `hide([speed, [easing], [fn]])`
+3. **切换语法** `toggle([speed, [easing], [fn]])`
+
+参数规则同上
+
+**建议**：一般不带参数，直接显示隐藏即可
+
+#### 滑动效果
+
+1. **下滑效果** `slideDown([speed, [easing], [fn]])`
+2. **上滑效果** `slideUp([speed, [easing], [fn]])`
+3. **切换** `slideToggle([speed, [easing], [fn]])`
+
+参数规则同上
+
+#### 事件切换
+
+`hover([over,] out)`
+
+- `over`：鼠标移到元素上要触发的函数，相当于 `mouseenter` 
+- `out`：鼠标移出元素要触发的函数，相当于 `mouseleave`
+- **如果只写一个函数，则鼠标经过和离开都会触发它**
+
+```js
+// tab 页在鼠标经过向下滑动弹出，鼠标离开向上滑动消失
+$('.nav>li').hover(function() {
+    $(this).children('ul').slideDown(500)
+}, function() {
+    $(this).children('ul').slideUp(500)
+})
+
+// 或者
+
+$('.nav>li').hover(function() {
+    $(this).children('ul').slideToggle()
+})
+```
+
+#### 动画队列极其停止排队方法
+
+1. **动画或效果队列**：动画或者效果一旦触发就会执行，如果多次触发，就造成多个动画或者效果排队执行
+2. **停止排队** `stop`：用于停止动画或效果
+   1. 写在动画或效果的 **前面**
+
+```js
+// 这样在切换 tab 时就会先将前一个动画停止再执行下一个
+$('.nav>li').hover(function() {
+    $(this).children('ul').stop().slideToggle()
+})
+```
+
+#### 淡入淡出效果
+
+1. **淡入** `fadeIn([speed, [easing], [fn]])`
+2. **淡出** `fadeOut([speed, [easing], [fn]])`
+3. **切换** `fadeToggle([speed, [easing], [fn]])`
+4. **渐进方式调整到指定的不透明度** `fadeTo([speed, opacity, [easing], [fn]])`
+   1. `opacity` 必须写，取值 0-1 之间
+   2. `speed` 必须
+
+```js
+// 图片高亮突出显示
+$('.wrap li').hover(function () {
+    $(this).siblings().stop().fadeTo(400, .5);
+}, function () {
+    $(this).siblings().stop().fadeTo(400, 1);
+});
+```
+
+#### 自定义动画
+
+`animate(params,[speed],[easing],[fn])`
+
+1. `params`: 想要更改的样式属性，**以对象形式传递，必须写**。属性名可以不用带引号，如果是复合属性则需要采取驼峰命名法 `borderLeft`。其余参数都可以省略
+2. `speed`：三种预定速度之一的字符串（`'slow'`, `'normal'`, `'fast'`）或表示动画时长的毫秒数值(如：1000)
+3. `easing`：用来指定切换效果，默认是 `'swing'`，可用参数 `'linear'`
+4. `fn`：回调函数，在动画完成时执行的函数，每个元素执行一次
+
+```js
+$('button').click(function() {
+    $('div').animate({
+        left: 500,
+        top: 500,
+        opacity: .5,
+        width: 400,
+        height: 400
+    })
+})
+```
+
+#### 仿王者荣耀手风琴案例
+
+![王者荣耀手风琴示意图](./imgs/王者荣耀手风琴案例.png)
+
+```js
+$(function() {
+    $('.king li').mouseenter(function() {
+        // 1. 当前 li 宽度变为 224，同时里面的小图片淡出，大图片淡入
+        $(this).stop().animate({
+            width: 224
+        }).find('.small').stop().fadeOut().siblings('.big').stop().fadeIn()
+        // 2. 其余兄弟 li 宽度变为 69，小图片淡入，大图片淡出
+        $(this).siblings(li).stop().animate({
+            width: 69
+        }).find('.small').stop().fadeIn().siblings('.big').stop().fadeOut()
+    })
+})
+```

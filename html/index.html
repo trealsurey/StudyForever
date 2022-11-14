@@ -13,20 +13,27 @@
       margin: 0;
       padding: 0;
     }
-    div {
-      height: 200px;
-      width: 200px;
-      background-color: lavender;
+    ul {
+      margin-left: 200px;
     }
   </style>
 
   <body>
-    <div class="main"></div>
+    <ul class="list">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+    </ul>
   </body>
 
   <script>
-    // var div = document.querySelector('div')
-    console.log($(''));
+    $(function() {
+      $('li').click(function() {
+        $(this).css('color', 'coral')
+        $(this).siblings('li').css('color', 'black')
+      })
+    })
   </script>
 </html>
 
