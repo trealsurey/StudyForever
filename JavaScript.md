@@ -1645,7 +1645,7 @@ var step = (distance - obj.offsetLeft) / 10
 step = step > 0 ? Math.ceil(step) : Math.floor(step)
 ``` 
 
-### 节流阀
+### 节流阀 / 互斥锁
 
 可以防止轮播图按钮连续点击造成播放过快
 

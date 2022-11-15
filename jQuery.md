@@ -395,15 +395,16 @@ jQuery 隐式迭代是对同一类元素做了同样的操作。 如果想要 **
 
 ```js
 $('div').each(function(index, domElem) {
-    $(domElem)
+    
 })
 ```
 
 - `each()` 方法遍历匹配的每一个元素，主要用 DOM 处理
-- 里面的回调函数有 2 个参数：index 是每个元素的索引号；domElem 是每个 DOM 元素对象，不是 jQuery 对象
+- 里面的回调函数有 2 个参数：index 是每个元素的索引号；domElem 是每个 DOM 元素对象，不是 jQuery 对象。两个参数都可以自定义变量名 
 - 要想使用 jQuery 方法，需要给这个 DOM 元素先转换为 jQuery 对象：`$(domElem)`
 
-2. `$.each()`
+
+1. `$.each()`
 
 ```js
 $.each(object，function (index, element) { })
@@ -463,7 +464,166 @@ $.each(obj, function(key, value) {
 #### 删除元素
 
 1. `element.remove()` 删除匹配的元素 **本身**
-2. `element.empty()` 删除匹配的元素集合中所有的子节点
-3. `element.html('div')` 清空的匹配内容
+2. `element.empty()` 删除匹配的元素集合中 **所有的子节点**
+   1. 不可以加任何参数
+   2. 也会删掉元素中的 text
+3. `element.html('')` 清空匹配内容，相当于用 html() 设置内容为空
 
-`empty()` 和 `html()` 的作用等价，都可以删除元素里面的内容，只不过 html 还可以设置内容
+### 尺寸 位置操作
+
+#### 尺寸
+
+| 语法 | 说明 |
+| :---: | :---: |
+| `width()` / `height()` | 获取元素宽度和高度值 width / height |
+| `innerWidth()` / `innerHeight()` | 获取元素宽度和高度值 width / height + padding |
+| `outerWidth()` / `outerHeight()` | 获取元素宽度和高度值 width / height + padding + border |
+| `outerWidth(true)` / `outerHeight(true)` | 获取元素宽度和高度值 width / height + padding + border + margin |
+
+- 以上方法若参数为空，则是获取相应值，返回的是数字型
+- 输入参数为数字，则是修改响应值
+- 可以不写单位
+
+#### 位置
+
+1. **`offset()` 设置或获取元素偏移**
+   1. 该方法设置或返回被选元素相对于 **文档** 的偏移坐标，跟父级没有关系
+   2. 两个属性：left top `offset().left/top`
+   3. 可以设置元素的偏移 `$('div').offset({top: 10, left: 30})`
+2. **`position()` 获取元素偏移**
+   1. 返回被选元素相对于 **带有定位的父级** 的偏移坐标，如果父级都没有定位，则以文档为准
+   2. 两个属性：left top
+   3. 只能用来获取，不能设置
+3. **scrollTop() / scrollLeft() 设置或获取元素被卷去的头部/左侧**
+   1. 不带参数是获取，参数为不带单位的数字则是设置被卷曲的头部/左侧
+
+```js
+// 返回顶部功能
+$('.back').click(function () {
+    $('body, html').stop().animate({
+        scrollTop: 0
+    });
+});
+
+// 注意：不能是文档 document 或浏览器，而是 html 和 body 等 DOM 元素  做动画
+```
+
+## jQuery 事件
+
+### 事件注册
+
+`element.事件(function() { })`
+
+```js
+$('.div').click(function() {
+    console.log('有人扒拉我')
+})
+```
+
+其他事件和原生 JS 基本一致
+
+### 事件处理
+
+#### on() 绑定事件
+
+`on()` 方法在元素上绑定一个或多个事件的事件处理函数
+
+`element.on(events, [selector,] fn)`
+
+- `events`：一个或多个用空格分隔的事件类型，如 `click` `keydown`
+- `selector`：元素的子元素选择器
+- `fn`：回调函数
+
+可以绑定多个事件，也可以进行 **事件委派**，还可以**给动态元素绑定事件**
+
+```js
+// 绑定多个事件
+ $('div').on({
+    mouseover: function(){},
+    mouseout: function(){},
+    click: function(){}
+});
+
+// 如果事件处理程序相同
+$('div').on('mouseover mouseout', function() {
+    $(this).toggleClass('current');
+}); 
+```
+
+事件委派的定义就是，把原来加给子元素身上的事件绑定在父元素身上，就是把事件委派给父元素。这样就不要给多个子元素多次绑定事件了
+
+```js
+// 事件委派
+$('ul').on('click', 'li', function() {
+    alert('hello world!');
+});
+```
+
+**动态创建的元素（暂时还没创建未来即将创建），click 无法绑定，可以用 on 绑定**
+
+```js
+// 给动态元素绑定事件
+$('div').on('click', 'p', function(){
+    alert('给动态生成的元素绑定事件')
+});
+
+$('div').append($('<p>我是动态创建的p</p>'));
+```
+
+#### off() 解绑事件
+
+`off()` 方法可以移除通过 `on()` 方法添加的事件处理程序
+
+```js
+// 解绑p元素所有事件处理程序
+$('p').off()
+
+// 解绑p元素上面的点击事件
+$('p').off( 'click') 
+
+// 解绑事件委托
+$('ul').off('click', 'li')
+```
+
+如果有的事件只想触发一次， 可以使用 `one()` 来绑定事件
+
+#### trigger() 自动触发事件
+
+有些事件希望自动触发, 比如轮播图自动播放功能跟点击右侧按钮一致。可以利用定时器自动触发右侧按钮点击事件，不必鼠标点击触发
+
+- 简写模式 `element.click()`
+
+- 自动触发模式 `element.trigger('type')`
+
+```js
+$('p').on('click', function () {
+    alert('hi~')
+}); 
+
+// 此时自动触发点击事件，不需要鼠标点击
+$('p').trigger('click'); 
+```
+
+- `element.triggerHandler('type')` **不会触发元素的默认行为**，和前两种进行区别
+ 
+### 事件对象
+
+事件被触发，就会有事件对象的产生
+
+`element.on(events, [selector,] function(event) { })`
+
+- `event.preventDefault()` 或者 `return false` 阻止默认行为 
+- `event.stopPropagation()` 阻止冒泡 
+
+## jQuery 其他方法
+
+### 拷贝对象
+
+
+### 多库共存
+
+### 插件
+
+#### jQuery 插件
+
+#### Bootstrap JS 插件
