@@ -619,11 +619,99 @@ $('p').trigger('click');
 
 ### 拷贝对象
 
+如果想要把某个对象拷贝（合并）给另外一个对象使用，此时可以使用 `$.extend()` 方法
+
+```js
+$.extend([deep, ]target, object1[, objectN])
+```
+
+- `deep`：如果设为 true 为深拷贝，不写默认为浅拷贝
+- `target`：要拷贝的目标对象（拷贝到的、被覆盖的那个） to
+- `object1`：被拷贝到第一个对象的对象（被拷贝的那个） from  
+- `objectN`：被拷贝到第 N 个对象的对象
+
+浅拷贝是把被拷贝的对象 **复杂数据类型中的地址** 拷贝给目标对象，修改目标对象会影响被拷贝对象。对于简单数据类型属性，则不会拷贝地址
+
+深拷贝，前面加 true， 完全克隆（拷贝的对象,而不是地址），修改目标对象不会影响被拷贝对象。
+
+```js
+// case 1 浅拷贝
+
+var target = {
+    id: 1,
+    name: 'wbk',
+    msg: {
+        sex: 'male'
+    }
+}
+var obj = {
+    id: 2,
+    name: 'jojo',
+    msg: {
+        age: 2
+    }
+}
+
+$.extend(target, obj)
+console.log(target) // obj.msg 会覆盖 target.obj
+
+target.msg.age = 20
+console.log(obj)    
+
+// 因为是浅拷贝，所以更改 target 的复杂属性 msg 中的值，obj 也会一起变化
+```
+
+![浅拷贝](imgs/ShallowCopy.png)
+
+![深拷贝](imgs/DeepCopy.png)
 
 ### 多库共存
+
+ jQuery 使用 $ 作为标示符，随着 jQuery 的流行，其他 JS 库也会用这 $ 作为标识符， 这样一起使用会引起冲突。那么就需要一个解决方案，让 jQuery 和其他的 JS 库不存在冲突，可以同时存在，这就叫做多库共存
+
+ jQuery 提供的解决方案如下
+
+ 1. 把 `$` 统一改为 `jQuery`。即写成 `jQuery('div')` 等
+ 2. jQuery 变量规定新的名称 `$.noConflict()`
+
+```js
+var jq = $.noConflict()
+jq('div').click(function() {
+    console.log('我没冲突了')
+})
+```
 
 ### 插件
 
 #### jQuery 插件
 
+jQuery 功能比较有限，想要更复杂的特效效果，可以借助于 jQuery 插件完成
+
+注意: 这些插件也是依赖于 jQuery 来完成的，所以必须要先引入 jQuery 文件，因此也称为 jQuery 插件
+
+常用插件网站
+
+- [jQuery 插件库](http://www.jq22.com/)
+- [jQuery 之家](http://www.htmleaf.com/)
+
+插件使用步骤
+
+1. 引入相关文件（jQuery 文件和插件文件）
+2. 复制相关 html css js（调用插件）
+
+插件演示
+
+- 瀑布流
+- **图片懒加载**：图片是用延迟加载可以提高网页下载速度，也能帮助减轻服务器负载。
+  - 当我们页面滑动到可视区域再显示图片
+  - 使用 jQuery 插件库 EasyLazyload （注意此时的 JS 引用和 JS 调用必须写到 DOM 元素（图片）最后面
+- 全屏滚动 fullpage.js
+  - [github 网址](https://github.com/alvarotrigo/fullPage.js)
+  - [中文翻译网站](http://www.dowebok.com/demo/2014/77/)
+
 #### Bootstrap JS 插件
+
+Bootstrap 框架也是依赖于 jQuery 开发的，因此里面的 JS 插件使用 ，也必须引入 jQuery 文件
+
+- [Bootstrap 中文网](https://www.bootcss.com)
+- [Bootstrap JS 中文网](https://v3.bootcss.com/javascript)
