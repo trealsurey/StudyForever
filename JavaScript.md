@@ -1929,24 +1929,6 @@ if ('addEventListener' in document) {
 
 **这个事件在页面显示时触发，不论页面是否来自缓存**。在重新加载页面中，pageshow 会在 load 事件触发后触发；根据事件对象中的 `persisted` 来判断是否是缓存中的页面触发的 pageshow 事件，**注意这个事件要给 window 添加**
 
-## 有哪些方法可以通过浏览器向服务器发请求？
-
-1. 直接在浏览器地址栏输入 URL 然后回车
-2. 表单 form 的提交 form.submit
-3. 超链接
-4. document.location (.href可省略)
-5. window.location.href (.href可省略)
-6. window.open("url")
-
-以上所有的请求方式均可以携带数据给服务器，但只有表单提交的数据是动态的
-
-## JSON
-
-JavaScript Object Notation(JavaScript对象标记)
-
-- 一种标准的轻量级数据交换格式。体积小，易解析。
-- 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
-
 ## JavaScript 库
 
 JavaScript 库：即 library，是一个封装好的特定的集合(方法和函数)。从封装一大堆函数的角度理解库，就是在这个库中，封装了很多预先定义好的函数在里面，比如动画 animate、hide、show，比如获取元素等
@@ -1965,6 +1947,42 @@ JavaScript 库：即 library，是一个封装好的特定的集合(方法和函
 - 移动端的zepto
 
 这些库都是对原生 JavaScript 的封装，内部都是用 JavaScript 实现的
+
+## 数据可视化
+
+数据可视化可以将数据从冰冷的数字转换成图形，解释蕴含在数据中的规律和道理
+
+目的：借助于图形化手段，清晰有效地传达与沟通信息，让数据更加直观，数据特点更加突出
+
+场景：通用报表、移动端图表、大屏可视化、图编辑&图分析、地理可视化
+
+### 常见的数据可视化库
+
+- D3.js：目前 Web 端评价最高的 JS 可视化工具库（入手难）
+- ECharts.js：百度出品的一个开源 JS 数据可视化库
+- Highcharts.js：国外的前端数据可视化库，非商用免费，被许多国外大公司所使用
+- AntV：蚂蚁金服全新一代数据可视化解决方案
+- ……
+
+## 有哪些方法可以通过浏览器向服务器发请求？
+
+1. 直接在浏览器地址栏输入 URL 然后回车
+2. 表单 form 的提交 form.submit
+3. 超链接
+4. document.location (.href可省略)
+5. window.location.href (.href可省略)
+6. window.open("url")
+
+以上所有的请求方式均可以携带数据给服务器，但只有表单提交的数据是动态的
+
+## JSON
+
+JavaScript Object Notation(JavaScript对象标记)
+
+- 一种标准的轻量级数据交换格式。体积小，易解析。
+- 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
+
+
 
 ## ES6
 
