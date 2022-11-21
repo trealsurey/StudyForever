@@ -713,8 +713,8 @@ margin-left: -100px;
 ## 元素的显示和隐藏
 ### display
 
-- `none;` ：隐藏对象
-- `block;` ：除了转换为块级元素之外，同时还有显示元素的意思。
+- `none` ：隐藏对象
+- `block` ：除了转换为块级元素之外，同时还有显示元素的意思。
 
 **display 隐藏元素后，不再占有原来的位置**
 
@@ -804,3 +804,49 @@ div {
 ```css
 cursor: default | pointer(小手) | move(移动，4个箭头) | text | not-allowed;
 ```
+
+### 轮廓线 outline
+
+去掉选中表单时默认的蓝色边框
+
+```css
+input { outline: 0 | none; }
+```
+
+### 防止拖拽文本域
+
+```css
+textarea { resize: none; }
+```
+
+## vertical-align 的应用
+
+### 图片、表单和文字对齐
+
+`vertical-align` 经常用于设置图片或者表单（行内块元素）和文字垂直对齐
+
+**只针对于行内元素或者行内块元素有效**
+
+- `baseline`：默认，元素放在父元素的基线上
+- `top`：把元素的顶端与行中最高元素的顶端对齐
+- `middle`：把元素放在父元素的中部
+- `bottom`：把元素顶端与行中最低的元素的顶端对齐
+
+![顶线中线基线底线](imgs/%E9%A1%B6%E7%BA%BF%E4%B8%AD%E7%BA%BF%E5%9F%BA%E7%BA%BF%E5%BA%95%E7%BA%BF.png)
+
+### 解决图片底部默认空白缝隙的问题
+
+bug：给包裹图片的 div 设置 border，图片底侧与 border 之间会有一个空白缝隙，原因是行内块元素会和文字的基线对齐。主要解决方法有两种：
+
+1. 给图片添加 `vertical—align: middle topl bottom;`，只要不是基线对齐（提倡使用的）
+2. 把图片转换为块级元素 `display: block;`，会影响其他元素布局，不是很推荐
+
+## 溢出的文字省略号显示
+
+## margin 负值巧妙利用
+
+## 文字围绕浮动元素巧妙运用
+
+## 行内块元素巧妙运用
+
+## CSS 初始化
