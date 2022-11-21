@@ -1988,14 +1988,130 @@ JavaScript Object Notation(JavaScript对象标记)
 - 一种标准的轻量级数据交换格式。体积小，易解析。
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
 
-
-
 ## ES6
+
+![ES6](imgs/es6.jpeg)
 
 [ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
 
-## var let const 区别
+[阮一峰 -- ES6 入门教程](https://es6.ruanyifeng.com/)
 
- [蛋老师讲解三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
+ES5 的先天性不足：比如变量提升、内置对象的方法不灵活、模块化实现不完善
 
-ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 {} 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
+ES6 在 2015 年 6 月正式发布。ES6 既是一个历史名词，也是一个泛指，指代 5.1 版本以后的 JS 下一代标准，涵盖了 ES2015、2016、2017 等，而 ES2015 则是正式名称，特指该年发布的正式版本的语言标准
+
+### ES6 新特性
+
+- let 和 const
+- ES6 的模板字符串
+- 增强的函数
+- 扩展的字符串、对象、数组功能
+- 解构赋值
+- Symbol
+- Map 和 Set
+- 迭代器和生成器
+- Promise 对象
+- Proxy 对象
+- async 的用法
+- 类 class
+- 模块化实现
+
+有些浏览器可能不支持 ES6+，可以使用 **Bable** 进行编译，从而让浏览器获得支持
+
+### let 和 const
+
+[蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
+
+ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 `{ }` 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
+
+#### let
+
+1. 声明变量，没有变量提升
+
+```js
+console.log(a)
+let a = 2
+
+// 会报错，因为不存在变量提升
+```
+
+2. 是一个块级作用域
+
+```js
+console.log(b)  // 报错 not defined
+if (1 === 1) {
+  console.log(b)  // 报错 connot access 'b' before initialization
+  let b = 10
+}
+console.log(b)  // 报错 not defined
+```
+
+3. 不能重复声明，但是可以更改
+
+```js
+let a = 1
+let a = 333 
+console.log(a)
+
+// 报错 Identifier 'a' has already been declared，第二行去掉 let 就可以正常运行
+```
+
+#### const
+
+1 2 3 点同 let，此外还有 `const` 一般用来声明常量，一旦被声明无法修改
+
+```js
+const MAX = 10
+MAX = 20000
+console.log(MAX)  // 报错 Assignment to constant variable
+
+// ---------------------- //
+
+const person = {
+  name: 'wbk'
+}
+
+person.name = 'jojo' // 没有问题
+
+person = {
+  name: 'jojo'  // 报错
+}
+```
+
+一个经典例子
+
+如果不明白需要再参考 **事件循环、闭包、回调函数** 的原理
+
+```js
+const arr = []
+
+for (var i = 0; i < 10; i ++) {
+  arr[i] = function() {
+    return i
+  }
+}
+
+console.log(arr[5]())
+
+/**
+ * 结果会输出 10，并不会输出 5
+ * 因为 var 会变量提升，将 var i 提到 for 循环外面，
+ * 而 for 里面的 function 是一个回调函数，且 var 又没有形成块级作用域，
+ * 所以会等到 for 循环完毕，才会去调用栈里面查找 i 的值，也就是 10
+ * 所以等到 arr[5]() 调用的时候就会输出 10
+ * 
+ * 想要输出 5 就需要将 var 改为 let，此时 i 有自己的作用域
+ * /
+```
+
+let 和 const 不会污染全局变量
+
+```js
+let RegExp = 10
+console.log(RegExp) // 输出 10
+console.log(window.RegExp)  // 依然输出 ƒ RegExp() { [native code] }
+```
+
+**在默认情况下用 const，当你在知道变量值需要被修改的情况下建议使用 let**
+
+![var let const 的区别](imgs/var-let-const%E5%8C%BA%E5%88%AB.png)

@@ -787,7 +787,7 @@ margin-left: -100px;
 div {
    width: 0;
    height: 0;
-   line-height: 0;
+   line-height: 0; /* 为了兼容性 */
    font-size: 0;
    border: 10px solid transparent;
    /* 就可以得到一个向上的箭头/三角形 */
@@ -795,3 +795,12 @@ div {
 }
 ```
 
+## CSS 用户界面样式
+
+所谓的界面样式，就是更改一些用户操作央视，以便提高更好的用户体验
+
+### 鼠标样式 cursor
+
+```css
+cursor: default | pointer(小手) | move(移动，4个箭头) | text | not-allowed;
+```
