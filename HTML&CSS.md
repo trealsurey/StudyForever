@@ -843,6 +843,41 @@ bug：给包裹图片的 div 设置 border，图片底侧与 border 之间会有
 
 ## 溢出的文字省略号显示
 
+### 单行文本
+
+```css
+div {
+   /* 如果文字显示不开，不换行，在一行展示 */
+   white-space: nowrap;
+   /* 溢出的部分隐藏 */
+   overflow: hidden;
+   /* 超出的部分用省略号代替 */
+   text-overflow: ellipsis;
+}
+```
+
+### 多行文本
+
+有较大兼容性问题，适合于 webkit 浏览器或者移动端（移动端大部分是 webkit 内核）
+
+了解即可
+
+更推荐后端来做，因为后端可以设置显示多少个字，操作更简单
+
+```css
+div {
+   overflow: hidden;
+   text-overflow: ellipsis;
+
+   /* 弹性伸缩盒子模型显示 */
+   display: -webkit-box;
+   /* 限制在一个块元素显示的文本行数 */
+   -webkit-line-clamp: 2;
+   /* 设置或检索伸缩盒对象的子元素的排列方式 */
+   -webkit-box-orient: vertical;
+}
+```
+
 ## margin 负值巧妙利用
 
 ## 文字围绕浮动元素巧妙运用
