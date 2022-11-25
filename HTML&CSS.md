@@ -1,12 +1,61 @@
+[pink 老师黑马教程](https://www.bilibili.com/video/BV14J4114768?p=8&vd_source=c727c2934b167656e7856cce)
+
 # HTML
 HyperText Markup Language 超文本标记语言
-
-> [pink老师黑马教程](https://www.bilibili.com/video/BV14J4114768?p=8&vd_source=c727c2934b167656e7856cce)
 
 *todo*
 1. 表单元素都有哪些（HTML5新增了哪些）
 2. .innerText 和 .value 的区别
 3. form 和 table 有什么区别
+
+## HTML5 新特性
+
+针对以前的不足，增加了一些新的标签、新的表单和新的表单属性等
+
+这些新特性基本都有 **兼容性问题**，基本都是 IE9+ 才支持
+
+### 新增语义化标签
+
+以前布局，基本都用 div 来做，对于搜索引擎来说都没有语义并不友好
+
+- `<header>`：头部标签
+- `<nav>`：导航标签
+- `<article>`：内容标签
+- `<section>`：定义文档某个区域，可以看做是一个大 div
+- `<aside>`：侧边栏标签
+- `<footer>`：尾部标签
+
+在 IE9 中，要把这些元素转换为块级元素 `display: block;`
+
+在 **移动端** 更常用
+
+![语义化标签示意图](imgs/%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE%E7%A4%BA%E6%84%8F%E5%9B%BE.png)
+
+### 新增多媒体标签
+
+#### 视频 video
+
+当前 `<video>` 元素支持三种格式：.mp4 .webm .ogg
+
+所有浏览器支持 mp4 格式，尽量使用 mp4 格式
+
+- `autoplay="autoplay"`
+- `controls="controls"`：显示控件
+- `width`：设置宽度
+- `height`：设置高度
+- `loop=loop`：设置循环播放
+- `preload="auto/none"`：是否预加载
+- `src=url`：视频地址
+- `poster=url`：封面图片
+- `muted=muted`：静音播放
+
+#### 音频 audio
+
+所有浏览器支持 mp3 格式
+
+- `controls`：显示控件
+- `autoplay`：（谷歌禁用）
+- `loop=loop`：设置循环播放
 
 # CSS
 
@@ -838,7 +887,7 @@ textarea { resize: none; }
 
 bug：给包裹图片的 div 设置 border，图片底侧与 border 之间会有一个空白缝隙，原因是行内块元素会和文字的基线对齐。主要解决方法有两种：
 
-1. 给图片添加 `vertical—align: middle topl bottom;`，只要不是基线对齐（提倡使用的）
+1. 给图片添加 `vertical—align: middle top bottom;`，只要不是基线对齐（提倡使用的）
 2. 把图片转换为块级元素 `display: block;`，会影响其他元素布局，不是很推荐
 
 ## 溢出的文字省略号显示
@@ -878,10 +927,108 @@ div {
 }
 ```
 
-## margin 负值巧妙利用
+## 常见布局技巧
 
-## 文字围绕浮动元素巧妙运用
+### margin 负值巧妙利用
 
-## 行内块元素巧妙运用
+多个并排盒子同时设置边框，之间盒子的边框会进行叠加，宽度会加倍。此时可以通过添加 `margin-left: -1px;` 来解决
+
+**【注意】**
+此时如果想要添加其他效果，比如 “鼠标经过边框改变颜色” 等，那么因为设置了 margin 负值，右侧盒子就会盖住左侧盒子，导致效果部分失效。此时可以采取以下两种解决方案：
+
+1. 如果盒子没有定位，则鼠标经过添加 **相对定位** 即可，因为相对定位可以保留位置盖住其他盒子
+2. 如果盒子有定位，那么可以通过 `z-index` 提高优先级
+
+### 文字围绕浮动元素巧妙运用
+
+![文字环绕盒子样例](imgs/%E6%96%87%E5%AD%97%E5%9B%B4%E7%BB%95%E7%9B%92%E5%AD%90%E6%A0%B7%E4%BE%8B.png)
+
+如上图的文字环绕盒子效果，不需要左右两个盒子同时设置浮动再调整位置，只需要把昨天的图片盒子浮动就可以了，因为浮动本来最开始就是为了让文字环绕而出现的，详情参见浮动那章
+
+```css
+* {
+   margin: 0;
+   padding: 0;
+}
+
+.box {
+   width: 300px;
+   height: 70px;
+   background-color: lightblue;
+}
+
+.pic {
+   width: 120px;
+   height: 60px;
+   float: left;
+}
+
+.pic img {
+   width: 100%;
+}
+```
+
+### 行内块元素巧妙运用
+
+淘宝、京东等购物车或者搜索结果下面的页码显示和翻页操作样式，就可以通过行内块元素实现
+
+行内块元素之间天然就带 margin
+
+```css
+.box {
+   text-align: center;
+}
+
+.box a {
+   display: inline-block;
+   width: 36px;
+   height: 36px;
+   background-color: #f7f7f7;
+   border: 1px solid #ccc;
+   text-align: center;
+   line-height: 36px;
+   text-decoration: none;
+   color: #333;
+}
+
+/* 注意这里必须要加 .box 否则权重不够 */
+.box .prev,
+.box .next {
+   width: 100px;
+   font-size: 13px;
+}
+```
+
+```html
+<body>
+   <div class="box">
+      <a href="#" class="prev">&lt;&lt; 上一页</a>
+      <a href="#">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#" class="next">下一页 &gt;&gt;</a>
+   </div>
+</body>
+```
+
+### CSS 三角强化
+
+实现一个直角不等腰三角形
+
+```css
+width: 0;
+height: 0;
+border-color: transparent red transparent transparent;
+border-style: solid;
+border-width: 22px 8px 0 0;
+```
 
 ## CSS 初始化
+
+不同浏览器对有些标签的默认值是不同的，为了消除不同浏览器对 HTML 文本呈现的差异，照顾浏览器的兼容，我们需要对 CSS 初始化
+
+CSS 初始化是指重设浏览器的样式（也称为 CSS reset ）**每个网页都必须首先进行 CSS 初始化**
+
+Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来代替，这样就可以有效的避免浏览器解释 CSS 代码时候出现乱码的问题。
+
+比如： 黑体：`\9ED1\4F53` 宋体：`\5B8B\4F53` 微软雅黑：`\5FAE\8F6F196C519ED1`
