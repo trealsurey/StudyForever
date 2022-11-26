@@ -39,15 +39,19 @@ HyperText Markup Language 超文本标记语言
 
 所有浏览器支持 mp4 格式，尽量使用 mp4 格式
 
-- `autoplay="autoplay"`
-- `controls="controls"`：显示控件
+- `autoplay="autoplay"`：视频就绪自动播放（谷歌浏览器需要添加 muted 来解决自动播放问题）
+- `controls="controls"`：显示播放控件
 - `width`：设置宽度
 - `height`：设置高度
-- `loop=loop`：设置循环播放
-- `preload="auto/none"`：是否预加载
+- `loop="loop"`：设置循环播放
+- `preload="auto/none"`：是否预加载（如果有 autoplay 就忽略该属性）
 - `src=url`：视频地址
-- `poster=url`：封面图片
-- `muted=muted`：静音播放
+- `poster=url`：加载等待的画面图片
+- `muted="muted"`：静音播放
+
+```css
+<video src="url" controls="controls"></video>
+```
 
 #### 音频 audio
 
@@ -56,6 +60,43 @@ HyperText Markup Language 超文本标记语言
 - `controls`：显示控件
 - `autoplay`：（谷歌禁用）
 - `loop=loop`：设置循环播放
+- `src=url`：音频地址
+- `muted="muted"`：静音播放
+- `preload="auto/metadata/none"`：当网页加载时，音频是否默认被加载以及如何被加载
+
+```css
+<audio src="url" controls="controls"></video>
+```
+
+### 新增 input 类型
+
+- `type="email"
+- `type="url"
+- `type="date"
+- `type="time"
+- `type="month"
+- `type="week"
+- `type="number"
+- `type="tel"
+- `type="search"：搜索框
+- `type="color"：生成一个颜色选择表单
+
+### 新增表单属性
+
+| 属性 | 值 | 说明 |
+| :---: | :---: | :---: |
+| `required` | required | 该表单项必填，内容不能为空 |
+| `placeholder` | 提示文本 | 提示信息 |
+| `autofocus` | autofocus | 自动聚焦属性，页面加载完成自动聚焦到指定表单 |
+| `autocomplete` | off/on | 当用户在字段开始键入时，浏览器基于之前键入过的值，应该显示出在字段中填写的选项（就是在搜索时，会提示搜索记录）。默认已经打开，如 `autocomplete="on"`，关闭 `autocomplete="off"`。需要放在表单内，同时加上 name 属性，同时成功提交 |
+| `multiple` | multiple | 可以多选文件 |
+
+```css
+/* 修改 placeholder 中的字体颜色 */
+input::placeholder {
+   color: pink;
+}
+```
 
 # CSS
 
@@ -1032,3 +1073,43 @@ CSS 初始化是指重设浏览器的样式（也称为 CSS reset ）**每个网
 Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来代替，这样就可以有效的避免浏览器解释 CSS 代码时候出现乱码的问题。
 
 比如： 黑体：`\9ED1\4F53` 宋体：`\5B8B\4F53` 微软雅黑：`\5FAE\8F6F196C519ED1`
+
+## CSS3 新特性
+
+### 现状
+
+- CSS3 有兼容性问题，IE9+ 才支持
+- 移动端支持优于 PC 端
+- 应用相对广泛
+- 还在不断改进中...
+
+### 新增选择器
+
+#### 属性选择器
+
+- 可以根据元素的特定属性来选择元素，不需要借助于类或者 id
+- 可以选择属性 `=` 某些值的元素
+- 可以选择属性值开头的某些元素
+- 可以选择属性值结尾的某些元素
+
+```html
+<style>
+   /* 可以选择出第一个带 value 属性的 input */
+   input[value] {
+      color: pink;
+   }
+</style>
+
+<body>
+   <input type="text" value="请输入用户名">
+   <input type="text">
+</body> 
+```
+
+
+
+**权重为 10**
+
+#### 结构伪类选择器
+
+#### 伪元素选择器
