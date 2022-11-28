@@ -1115,6 +1115,11 @@ Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来�
    div[class^=icon] {
       color: lightblue;
    }
+
+   /* 不会生效，因为类选择器权重是 10，而上面的 div[class^=icon] 的权重是 div 1 + class 10 = 11 */
+   .icon {
+      color: red;
+   }
 </style>
 
 <body>
@@ -1129,8 +1134,172 @@ Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来�
 
 :star: **类选择器、属性选择器、伪类选择器，权重都为 10**
 
-
-
 #### 结构伪类选择器
 
+主要根据 **文档结构** 来选择元素，常用于选择父元素里面的子元素
+
+| 选择器 | 说法 |
+| :---: | :---: |
+| E:first-child | 匹配父元素中的第一个子元素 E|
+| E:last-child	| 匹配父元素中最后一个 E 元素 |
+| E:nth-child(n) | 匹配父元素中的一个（第 n 个）或多个子元素 E |
+| E:first-of-type | 指定类型 E 的第一个 |
+| E:last-of-type | 指定类型 E 的最后一个 |
+| E:nth-of-type(n) | 指定类型 E 的第 n 个 |
+
+对于 `nth-child(n)`  `nth-of-type(n)`
+- n 可以是**数字、关键字、公式**
+- n 如果是数字，就是选择第 n 个子元素
+- n 可以是 `even` `odd` 等关键字
+- n 可以是公式（如果是公式，那么从 0 开始计算，但是第 0 个元素或者超出了元素的个数会被忽略）
+  - 括号中只能是 n 不可以用其他字母
+  - 如果写成 `nth-child(n)` 就等于全选：n 从 0 开始，每次 n++
+  - 写成 `nth-child(2n) 就代表选出所有偶数位元素
+  - 写成 `nth-child(2n+1)` 就代表选出所有奇数位元素
+  - 写成 `nth-child(3n+1)` 就会每 3 个选择一个
+  - `n+5` 表示从第 5 个开始（包括第五个）到最后
+  - `-n+5` 表示前 5 个（包括第 5 个）
+
+`nth-child(1)` 和 `nth-of-type(1)` 的区别
+- `child` 是将所有的元素排序，先找到第 1 个，然后再回去看是什么元素
+- `type` 是先将匹配的元素都找到，然后再将匹配到的元素排序，再拿其中的第 1 个
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    ul li:first-child {
+      color: red;
+    }
+    ul li:last-child {
+      color: yellowgreen;
+    }
+    ul li:nth-child(2) {
+      color: lightblue;
+    }
+    /* 把偶数位上的元素字体变大 */
+    ul li:nth-child(even) { 
+      font-size: 25px;
+    }
+    ul li:nth-child(5n+1) {
+      background-color: bisque;
+    }
+
+   /* 
+      不会生效 
+      因为会先将 section 中的所有元素排序，然后找到第一个元素也就是 p，再回去匹配
+      因为不是 div 所以相当于这个选择器没有符合条件的元素，所以不会有任何效果
+   */
+   section div:nth-child(1) {
+      font-size: 10px;
+   }
+   /* type 则是先找到 section 中的所有 div，然后排序并找到第一个，也就是熊大 */
+   section div:nth-of-type(1) {
+      color: plum;
+   }
+  </style>
+
+  <body>
+    <ul>
+      <li>我是第1个孩子</li>
+      <li>我是第2个孩子</li>
+      <li>我是第3个孩子</li>
+    </ul>
+
+    <section>
+      <p>光头强</p>
+      <div>熊大</div>
+      <div>熊二</div>
+    </section>
+  </body>
+</html>
+```
+
 #### 伪元素选择器
+
+伪元素选择器可以帮助我们利用 CSS 创建新标签元素，而不需要新建 HTML 标签，从而简化 HTML 结构
+
+- `::before` 在元素内部的前面插入内容
+- `::after` 在元素内部的后面插入内容
+
+**注意：**
+- before 和 after 创建一个元素，但是属于行内元素，想设置宽高要转成块级元素
+- 新创建的这个元素在文档树中是找不到的，所以我们称为伪元素
+- 语法：`element::before/after { }`
+- before 和 after **必须有 content 属性**
+- before 在父元素里面内容的前面创建元素， after 在父元素里面内容的后面插入元素
+- 伪元素选择器和标签选择器一样，**权重为 1**
+
+```html
+<!-- case 1：伪元素字体图标 -->
+<style>
+   div {
+      /* 伪元素是 div 的子元素，子绝父相 */
+      position: relatve;
+      width: 200px;
+      height: 35px;
+      border: 1px solid red;
+   }
+   div::after {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      /* 记得引入 icomoon */
+      content: '\e91e';
+      color: red;
+      font-size: 18px;
+   }
+</style>
+<body>
+   <div></div>
+</body>
+```
+
+```css
+/* case 2：仿元素遮罩层 */
+/* 原来的遮罩层 div 就不需要了 */
+.tudou::before {
+   content: '';
+   display: none;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, .3) url(images/arr.png) no-repeat center;
+}
+.tudou:hover::before {
+   display: block;
+}
+```
+
+```css
+/* case 3：伪元素清除浮动 */
+.clearfix::after {
+    content: '';
+    display: block; 
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+```
+
+```css
+/* case 4：双伪元素清除浮动 */
+.clearfix::before,
+.clearfix::after {
+    content: '';
+    /* 转换为块级元素并在一行显示 */
+    display: table;
+}
+.clearfix::after {
+    clear: both;
+}
+```
+
+### 盒子模型
+
