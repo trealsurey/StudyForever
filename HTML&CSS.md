@@ -1088,27 +1088,48 @@ Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来�
 #### 属性选择器
 
 - 可以根据元素的特定属性来选择元素，不需要借助于类或者 id
-- 可以选择属性 `=` 某些值的元素
+- 可以选择属性 `=` 某些值的元素 :star:
 - 可以选择属性值开头的某些元素
 - 可以选择属性值结尾的某些元素
+- **权重为 10**
+
+| 选择符 | 说明 |
+| :---: | :---: |
+| E[attr] | 选择具有 attr 属性的 E 元素 |
+| E[attr=val] | 选择具有 attr 属性且属性值为 val 的 E 元素 |
+| E[attr^=val] | 匹配具有 attr 属性且值以 val 开头的 E 元素 |
+| E[attr$=val] | 匹配具有 attr 属性且值以 val 结尾的 E 元素 |
+| E[attr*=val] | 匹配具有 attr 属性且值中包含 val 的 E 元素 |
 
 ```html
 <style>
-   /* 可以选择出第一个带 value 属性的 input */
+   /* 可以选择出带 value 属性的 input */
    input[value] {
       color: pink;
+   }
+   /* 选择出 type 值为 password 的 input */
+   input[type=password] {
+      color: lightcoral;
+   }
+   /* 选择出 div 中 class 以 icon 开头的 */
+   div[class^=icon] {
+      color: lightblue;
    }
 </style>
 
 <body>
    <input type="text" value="请输入用户名">
-   <input type="text">
+   <input type="password">
+
+   <div class="icon1">小图标1</div>
+   <div class="icon2">小图标2</div>
+   <div class="icon3">小图标3</div>
 </body> 
 ```
 
+:star: **类选择器、属性选择器、伪类选择器，权重都为 10**
 
 
-**权重为 10**
 
 #### 结构伪类选择器
 
