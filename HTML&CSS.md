@@ -1409,6 +1409,83 @@ width: calc(100% - 80px);
 
 ### 2D 转换
 
+转换（transform）是 CSS3 中具有颠覆性的特征之一，可以实现元素的 **位移、旋转、缩放** 等效果
+
+#### 位移 translate
+
+改变元素在页面中的位置，类似定位
+
+记得带单位 px
+
+```css
+transform: translate(x, y);
+/* 或者分开写 */
+transform: translateX(n);
+transform: translateY(n);
+
+transform: translate(100px, 100px);
+```
+
+注意：
+- **最大的优点：不会影响其他元素位置**
+- 数值可以写百分比，但是是相对于自身元素大小的百分比
+- 对行内标签没有效果
+
+```css
+/* 水平垂直居中 */
+in {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+```
+
+#### 旋转 rotate
+
+让元素在二维平面内顺时针旋转或者逆时针旋转
+
+```css
+transform: rotate(度数)
+```
+
+注意：
+- 度数单位是 deg，比如 `rotate(45deg)`
+- 角度为正时，顺时针；角度为负时，逆时针
+- 默认旋转的中心点是元素的中心点
+
+```css
+/* 鼠标 hover 到图片上，图片顺时针旋转 360 度 */
+img {
+   width: 200px;
+   border: 5px solid coral;
+   border-radius: 50%;
+   transition: all 0.5s;
+}
+img:hover {
+   transform: rotate(360deg);
+}
+```
+
+设置旋转中心点 `transform-origin: x y;`
+- x 和 y 用空格隔开
+- x y 默认转换的中心点是元素的中心点（50% 50%）也就是 center center
+- 还可以给 x y 设置像素或者方位名词 top/bottom/left/right/center
+ 
+```css
+div {
+   width: 200px;
+   height: 200px;
+   background-color: lightblue;
+   margin: 100px auto;
+   transition: all 1s;
+   /* 以左下角的那个点为中心旋转 */
+   margin-origin: left bottom;
+}
+div:hover {
+   transform: rotate(360deg);
+}
+```
 
 ### CSS3 动画
 
