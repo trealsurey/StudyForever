@@ -12,29 +12,32 @@
     * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    div {
-      /* 伪元素是 div 的子元素，子绝父相 */
-      position: relatve;
+    .bar {
+      height: 20px;
       width: 200px;
-      height: 35px;
       border: 1px solid red;
-   }
-   div::after {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      /* 记得引入 icomoon */
-      font-family: 'icomoon';
-      content: '\e91be';
-      color: red;
-      font-size: 18px;
-   }
-
+      border-radius: 15px;
+      margin: 0 auto;
+      margin-top: 100px;
+    }
+    .in {
+      height: 100%;
+      width: 50%;
+      background-color: red;
+      border-radius: 15px;
+      transition: all 0.5s ease;
+    }
+    .bar:hover .in {
+      width: 100%;
+    }
   </style>
 
   <body>
-    <div></div>
+    <div class="bar">
+      <div class="in"></div>
+    </div>
   </body>
 
   <script>

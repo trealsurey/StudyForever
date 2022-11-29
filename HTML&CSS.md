@@ -12,6 +12,8 @@ HyperText Markup Language 超文本标记语言
 
 针对以前的不足，增加了一些新的标签、新的表单和新的表单属性等
 
+广义的 HTML5 = HTML5 本身 + CSS3 + JS
+
 这些新特性基本都有 **兼容性问题**，基本都是 IE9+ 才支持
 
 ### 新增语义化标签
@@ -1302,4 +1304,115 @@ Unicode 编码字体： 把中文字体的名称用相应的 Unicode 编码来�
 ```
 
 ### 盒子模型
+
+CSS3中可以通过 `box-sizing` 来指定盒模型，有2个值：即可指定为 `content-box` 或者 `border-box`，这样我们计算盒子大小的方式就发生了改变
+
+- `box-sizing: content-box;` 盒子大小为 width + padding + border（和之前的计算方式一样
+- `box-sizing: border-box;` 盒子大小为 width，padding 和 border 不会撑大盒子（前提是，padding 和 border 不会超过 width 大小） 
+
+### 过渡/渐变 :star:
+
+过渡（transition）是 CSS3 中具有颠覆性的特征之一，可以在不使用 Flash 或者 JS 的情况下，当元素从一种样式变换到另一种样式时为元素添加效果，IE9+
+
+经常和 `:hover` 一起搭配使用
+
+**谁做变化给谁加 transition**
+
+```css
+transition: 要过渡的属性 花费时间 运动曲线 何时开始;
+```
+
+- **要过渡的属性**：想要变化的 CSS 属性。宽度、高度、背景颜色、内外边距都可以。如果想要所有属性都变化，那就写 `all`。如果是多个属性变化，用逗号隔开
+- **花费时间**：单位是秒，比如 0.5s （必须写单位 s）
+- **运动曲线**：详细规则参考 MDN
+  - ease（默认，可以省略）：逐渐慢下来
+  - linear：匀速
+  - ease-in：加速
+  - ease-out：减速
+  - ease-in-out：先加速再减速
+- **何时开始**：设置延迟触发事件，默认是 0s（可以省略），单位是秒（必须写单位）
+
+```css
+div {
+   height: 100px;
+   width: 100px;
+   background-color: lightblue;
+   transition: all 0.5s;
+   /* 或者分开写 */
+   transition: width 0.5s, height 0.5s;
+}
+div:hover {
+   height: 200px;
+   width: 200px;
+   background-color: bisque;
+}
+```
+
+```html
+<!-- 进度条案例 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .bar {
+      height: 20px;
+      width: 200px;
+      border: 1px solid red;
+      border-radius: 15px;
+    }
+    .in {
+      height: 100%;
+      width: 50%;
+      background-color: red;
+      border-radius: 15px;
+      transition: all 0.5s ease;
+    }
+    .bar:hover .in {
+      width: 100%;
+    }
+  </style>
+
+  <body>
+    <div class="bar">
+      <div class="in"></div>
+    </div>
+  </body>
+</html>
+```
+
+### 其他特性
+
+#### 图片变模糊
+
+`filter`：CSS 属性，将模糊或颜色偏移等图形效果应用于元素
+
+```css
+/* 其他函数参考 MDN */
+filter: 函数();
+
+/* blur 模糊处理，数值越大越模糊，注意加单位 */
+filter: blur(5px)
+```
+
+#### 计算盒子宽度 calc 函数
+
+`calc()` 函数可以在声明 CSS 属性值时执行一些计算，括号里可以使用 + - * / 来计算
+
+```css
+width: calc(100% - 80px);
+```
+
+### 2D 转换
+
+
+### CSS3 动画
+
+### 3D 转换
+
+### 浏览器私有前缀
 
