@@ -1580,7 +1580,11 @@ div {
    /* 在 1 秒钟之内变化，以 ease 的速度，无限循环，按照 from 到 to 的顺序，当然拆开写也可以 */
    /* 如果循环有限次，那么 forwards 表示循环结束时会停在最后的状态 */
    /* 其他更详细参数参见 MDN */
-   animation: move 1s ease infinite alternate forwards ;
+   animation: move 1s ease infinite alternate forwards;
+}
+div:hover {
+   /* 鼠标经过暂停动画 */
+   animation-play-state: paused;
 }
 ```
 
