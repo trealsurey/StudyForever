@@ -14,29 +14,26 @@
       padding: 0;
       box-sizing: border-box;
     }
+    @keyframes move {
+      from {
+        width: 200px;
+      }
+      to {
+        width: 400px;
+        background-color: lightblue;
+      }
+    }
     .bar {
-      height: 20px;
       width: 200px;
-      border: 1px solid red;
-      border-radius: 15px;
-      margin: 0 auto;
-      margin-top: 100px;
-    }
-    .in {
-      height: 100%;
-      width: 50%;
-      background-color: red;
-      border-radius: 15px;
-      transition: all 0.5s ease;
-    }
-    .bar:hover .in {
-      width: 100%;
+      height: 200px;
+      background-color: lightgreen;
+      animation: move 1s ease infinite alternate forwards ;
     }
   </style>
 
   <body>
     <div class="bar">
-      <div class="in"></div>
+      
     </div>
   </body>
 
