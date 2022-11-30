@@ -1532,8 +1532,35 @@ transform: scale(x, y);
 
 - `0%` 是动画的开始，`100%` 是动画的完成。这样的规则就是 **动画序列**
 - 在 `@keyframes` 中规定某项 CSS 样式，就能创建由当前样式逐渐改为新样式的动画效果
+  - 可以做多个状态的变化，设置 keyframes 不同百分比的关键帧即可
 - 动画是使元素从一种样式逐渐变化为另一种样式的效果，可以改变任意多样式任意多的次数
 - 用 **百分比** 来规定变化发生的时间。或者用 `from` 和 `to`，等同于 0% 和 100%
+  - 百分比必须是整数
+  - 百分比是总时间 `animation-duration` 的百分比
+
+| 属性 | 描述 |
+| :---: | :---: |
+| `keyframes` | 定义动画 |
+| `animation` | 所有动画属性的简写属性, 除了 animation-play-state 属性 |      
+| `animation-name` | 规定 @keyframes 动画的名称（必需） |
+| `animation-duration` | 规定动画完成一个周期所花费的秒或毫秒，默认是 0（必需） |
+| `animation-timing-function` | 规定动画的速度曲线，默认是 ease |
+| `animation-delay` | 规定动画何时开始，默认是 0 |
+| `animation-iteration-count` | 规定动画被播放的次数，默认是 1，还有 infinite |
+| `animation-direction` | 规定动画是否在下一周期逆向播放，默认是 normal，alternate 逆播放 |
+| `animation-play-state` |	规定动画是否正在运行或暂停，默认是 running，还有 paused |
+| `animation-fill-mode`	| 规定动画结束后状态，保持 forwards 回到起始 backwards，默认是 backwards |
+
+#### 动画综合写法
+
+```css
+animation: 动画名称 持续时间 运动曲线 何时开始 播放次数 是否反方向 动画起始或者结束的状态;
+```
+
+- 简写属性里面不包含 `animation-play-state`
+- 暂停动画: `animation-play-state: puased;`
+- 经常和鼠标经过等其他配合使用想要动画走回来，而不是直接跳回来: `animation-direction: alternate;`
+- 盒子动画结束后，停在结束位置：`animation-fill-mode: forwards;`
 
 ```css
 @keyframes move {
@@ -1550,7 +1577,7 @@ div {
    width: 200px;
    height: 200px;
    background-color: lightgreen;
-   /* 在 1 秒钟之内变化，以 ease 的速度，无限循环，按照 from 到 to 的顺序 */
+   /* 在 1 秒钟之内变化，以 ease 的速度，无限循环，按照 from 到 to 的顺序，当然拆开写也可以 */
    /* 如果循环有限次，那么 forwards 表示循环结束时会停在最后的状态 */
    /* 其他更详细参数参见 MDN */
    animation: move 1s ease infinite alternate forwards ;
