@@ -1588,7 +1588,105 @@ div:hover {
 }
 ```
 
+#### 关于 animation-timing-function 中的 steps()
+
+`animation-timing-function` 参数除了可以选择 ease、linear 等值之外，还可以指定步数，即在多少步内达到效果
+
+```css
+/* 以每次 50px 的速度向前移动 */
+div {
+   width: 0;
+   height: 50px;
+   background-color: lightblue;
+   animation: changeWidth 5s steps(10) forwards;
+}
+@keyframes changeWidth {
+   0% {
+      width: 0;
+   }
+   100% {
+      width: 500px;
+   }
+}
+```
+
 ### 3D 转换
+
+#### 三维坐标系
+
+- x 轴：水平向右
+- y 轴：垂直向下
+- z 轴：垂直屏幕向外，往外是正值，往里面是负值
+
+#### 移动 translate3d
+
+比 2D 多了一个 `transform: translateZ(200px)` 
+
+translateZ 一般用 px 单位，不用百分比
+
+```css
+transform: translate3d(x, y, z);
+```
+
+#### 透视 perspective
+
+- 在 2D 平面产生近大远小的视觉立体，可以理解成 3D 物体投影在 2D 平面内
+- 透视我们也称为视距：人的眼睛到屏幕的距离
+- 距离视觉点越近，在电脑平面成像越大，越远成像越小
+- 单位是 px
+- **透视写在被观察元素的父盒子上面**
+
+```css
+perspective: 500px;
+```
+
+- `d` 视距，人眼到屏幕的距离
+- `z` z 轴，物体距离屏幕的距离，值越大（正数）看到的物体就越大
+
+#### 旋转 rotate3d
+
+在三维平面沿着 x 轴、y 轴、z 轴或者自定义轴进行旋转
+
+```css
+transform: rotateX/Y/Z(deg);
+
+/* 沿着自定义轴旋转指定角度（了解即可），其中 xyz 表示旋转轴的矢量 */
+transform: rotate3d(x, y, z, deg);
+
+/* x 和 y 的矢量和表示沿着右下 45 度方向旋转 */
+transform: rotate3d(1, 1, 0, 45deg);
+```
+
+#### 3D 呈现 transform-style
+
+- 控制子元素是否开启三维立体环境
+- 代码写在父元素上，但是影响的是子元素
+- 很重要的属性
+
+```css
+/* 子元素不开启 3d 立体空间，默认就是 flat */
+transform-style: flat;
+
+/* 子元素开启立体空间 */
+transform-style: preserve-3d;
+```
 
 ### 浏览器私有前缀
 
+浏览器私有前缀是为了兼容老版本的写法，比较新版本的浏览器无须添加
+
+#### 私有前缀
+
+- `-moz-`：firefox 浏览器私有属性
+- `-ms-`：IE
+- `-webkit-`：safari、chrome
+- `-o-`：opera
+
+#### 提倡的写法
+
+```css
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-o-border-radius: 10px;
+border-radius: 10px;
+```

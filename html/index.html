@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>demo</title>
-    <script src="../js/jquery-3.6.1.min.js"></script>
   </head>
 
   <style>
@@ -13,31 +12,25 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      background-color: gray;
     }
-    @keyframes move {
-      from {
-        width: 200px;
-      }
-      to {
-        width: 400px;
-        background-color: lightblue;
-      }
+    body {
+      perspective: 500px;
     }
-    .bar {
-      width: 200px;
-      height: 200px;
-      background-color: lightgreen;
-      animation: move 1s ease infinite alternate forwards ;
+    img {
+      display: block;
+      width: 400px;
+      height: 400px; 
+      margin: 200px auto;
+      transition: all 1s;
+    }
+    img:hover {
+      transform: rotate3d(1, 1, 0, 145deg);
     }
   </style>
 
   <body>
-    <div class="bar">
-      
-    </div>
+    <img src="../imgs/angel.gif" alt="">
   </body>
 
-  <script>
-
-  </script>
 </html>
