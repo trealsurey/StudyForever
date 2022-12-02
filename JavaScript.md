@@ -1462,6 +1462,362 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 </body>
 ```
 
+## 本地存储
+
+随着互联网的快速发展，基于网页的应用越来越普遍，同时也变的越来越复杂，为了满足各种各样的需求，会经 常性在本地存储大量的数据，HTML5 规范提出了相关解决方案
+
+### 本地存储特性
+
+- 数据存储在用户浏览器中
+- 设置、读取方便，甚至页面刷新不丢失数据
+- 容量较大，`sessionStorage` 约 5M，`localStorage` 约 20M
+- 只能存储字符串，可以将对象 `JSON.stringify()` 转为字符串后存储
+
+### sessionStorage
+
+- 生命周期为 **关闭浏览器窗口**
+- 在同一个窗口（页面）下数据可以共享
+- 以键值对的形式存储使用
+
+#### 相关操作
+
+1. 存储数据 `sessionStorage.setItem(key, value)`
+2. 获取数据 `sessionStorage.getItem(key)`
+3. 删除数据 `sessionStorage.removeItem(key)`
+4. 删除所有数据 `sessionStorage.clear()`
+
+### localStorage
+
+- 生命周期 **永久生效**，除非手动删除否则关闭页面也会存在
+- 可以多窗口共享（同一浏览器可以共享）
+- 以键值对的形式存储使用
+
+#### 相关操作
+
+1. 存储数据 `localStorage.setItem(key, value)`
+2. 获取数据 `localStorage.getItem(key)`
+3. 删除数据 `localStorage.removeItem(key)`
+4. 删除所有数据 `localStorage.clear()`
+
+## 立即执行函数
+
+不需要调用，立即能够自己执行的函数
+
+```js
+(function() {})()
+
+// 或者
+
+(function() {} ());
+```
+
+```js
+(function() {
+  console.log(22222)
+})()
+
+// 打开浏览器会直接打印出 22222
+```
+
+```js
+(function sum(a, b) {
+  console.log('a = ' + a + ' b = ' + b + ', sum = ' + (a + b))
+})(3, 45)
+
+// 输出 a = 3 b = 45, sum = 48
+
+// 后面的小括号可以看做是在调用前面的函数
+// 后面的括号里面的参数就是实参，传递到前面的函数里
+```
+
+如果有多个立即执行函数，那么中间一定要用 `;` 隔开，否则会报错
+
+立即执行函数最大的作用就是 **独立创建了一个作用域**，里面所有的变量都是局部变量
+
+## 淘宝 flexible.js 源码分析
+
+### pageshow 事件
+
+下面三种情况都会刷新页面，触发 `load` 事件
+1. `a` 标签的超链接
+2. F5 或者刷新按钮（强制刷新）
+3. 前进后退按钮
+
+但是火狐中有个特点：往返缓存。这个缓存中不仅保存着页面数据，还保存了 DOM 和 JS 的状态。实际上就是将整个页面都保存在了内存里
+
+所以此时后退按钮不能刷新页面，那么就可以使用 `pageshow` 事件来触发。
+
+**这个事件在页面显示时触发，不论页面是否来自缓存**。在重新加载页面中，pageshow 会在 load 事件触发后触发；根据事件对象中的 `persisted` 来判断是否是缓存中的页面触发的 pageshow 事件，**注意这个事件要给 window 添加**
+
+## JS 高级
+
+### 面向对象
+
+
+
+## ES6
+
+![ES6](imgs/es6.jpeg)
+
+[ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
+
+[阮一峰 -- ES6 入门教程](https://es6.ruanyifeng.com/)
+
+ES5 的先天性不足：比如变量提升、内置对象的方法不灵活、模块化实现不完善
+
+ES6 在 2015 年 6 月正式发布。ES6 既是一个历史名词，也是一个泛指，指代 5.1 版本以后的 JS 下一代标准，涵盖了 ES2015、2016、2017 等，而 ES2015 则是正式名称，特指该年发布的正式版本的语言标准
+
+### ES6 新特性
+
+- let 和 const
+- ES6 的模板字符串
+- 增强的函数
+- 扩展的字符串、对象、数组功能
+- 解构赋值
+- Symbol
+- Map 和 Set
+- 迭代器和生成器
+- Promise 对象
+- Proxy 对象
+- async 的用法
+- 类 class
+- 模块化实现
+
+有些浏览器可能不支持 ES6+，可以使用 **Bable** 进行编译，从而让浏览器获得支持
+
+### let 和 const
+
+[蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
+
+ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 `{ }` 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
+
+#### let
+
+1. 声明变量，没有变量提升
+
+```js
+console.log(a)
+let a = 2
+
+// 会报错，因为不存在变量提升
+```
+
+2. 是一个块级作用域
+
+```js
+console.log(b)  // 报错 not defined
+if (1 === 1) {
+  console.log(b)  // 报错 connot access 'b' before initialization
+  let b = 10
+}
+console.log(b)  // 报错 not defined
+```
+
+3. 不能重复声明，但是可以更改
+
+```js
+let a = 1
+let a = 333 
+console.log(a)
+
+// 报错 Identifier 'a' has already been declared，第二行去掉 let 就可以正常运行
+```
+
+#### const
+
+1 2 3 点同 let，此外还有 `const` 一般用来声明常量，一旦被声明无法修改
+
+```js
+const MAX = 10
+MAX = 20000
+console.log(MAX)  // 报错 Assignment to constant variable
+
+// ---------------------- //
+
+const person = {
+  name: 'wbk'
+}
+
+person.name = 'jojo' // 没有问题
+
+person = {
+  name: 'jojo'  // 报错
+}
+```
+
+一个经典例子
+
+如果不明白需要再参考 **事件循环、闭包、回调函数** 的原理
+
+```js
+const arr = []
+
+for (var i = 0; i < 10; i ++) {
+  arr[i] = function() {
+    return i
+  }
+}
+
+console.log(arr[5]())
+
+/**
+ * 结果会输出 10，并不会输出 5
+ * 因为 var 会变量提升，将 var i 提到 for 循环外面，
+ * 而 for 里面的 function 是一个回调函数，且 var 又没有形成块级作用域，
+ * 所以会等到 for 循环完毕，才会去调用栈里面查找 i 的值，也就是 10
+ * 所以等到 arr[5]() 调用的时候就会输出 10
+ * 
+ * 想要输出 5 就需要将 var 改为 let，此时 i 有自己的作用域
+ * /
+```
+
+let 和 const 不会污染全局变量
+
+```js
+let RegExp = 10
+console.log(RegExp) // 输出 10
+console.log(window.RegExp)  // 依然输出 ƒ RegExp() { [native code] }
+```
+
+**在默认情况下用 const，当你在知道变量值需要被修改的情况下建议使用 let**
+
+![var let const 的区别](imgs/var-let-const%E5%8C%BA%E5%88%AB.png)
+
+### 模板字符串
+
+可以将 HTML 结构放到 tab 键上面的反引号中，在插入变量时使用 `${变量名}`，不再需要拼接字符串了
+
+```js
+// 可以在 div 中显示 li
+const oBox = document.querySelector('.box');
+let id = 1, name = 'jojo';
+let htmlStr = `<ul>
+  <li>
+    <p id=${id}>${name}</p>
+  </li>
+</ul>`;
+oBox.innerHTML = htmlStr;
+```
+
+### 强大的函数
+
+#### 参数默认值 
+
+```js
+// ES5 中写法
+function add(a, b) {
+  // 如果 a b 没有赋值，那么设置默认值
+  a = a || 10;  
+  b = b || 20;
+  console.log(a + b);
+}
+add();
+```
+
+如上 ES5 的写法稍显麻烦，所以在 ES6 中可以改为如下的写法
+
+```js
+function add(a = 10, b = 30) {
+  console.log(a + b)
+}
+add();
+
+// 以下写法也可以
+function add(a, b = 100) {
+  console.log(a + b)
+}
+add(10);
+
+// 结果是 NaN，因为 100 会按顺序赋给第一个参数也就是 a，那么 b 就是 undefined
+function add(a = 10, b) {
+  console.log(a + b)
+}
+add(100)
+```
+
+同时，默认值也可以是一个函数
+
+```js
+function add(a, b = getVal(5)) {
+  console.log(a + b)
+}
+function getVal(val) {
+  return val + 10;
+}
+add(100)  // 输出 115
+```
+
+#### 剩余参数
+
+之前我们可以用 `arguments` 来表示函数中的所有参数，在 ES6 中我们可以使用 `...args` 来表示剩余参数，其中 `args` 可以随意起名
+
+arguments 是个伪数组，而 ...args 剩余参数是个真数组，有原型对象
+
+```js
+function pick(obj, ...args) {
+  // console.log(args) 输出 [“name”, "age"]
+  let res = Object.create(null)
+  for (let i = 0; i < args.length; i ++) {
+    res[args[i]] = obj[args[i]]
+  }
+  return res;
+}
+
+let person = {
+  id: '1',
+  name: 'jojo',
+  age: 2
+}
+
+let pData = pick(person, 'name', 'age')
+console.log(pData)
+
+// 输出 {name: "jojo", age: 2}
+```
+
+#### 扩展运算符
+
+- 剩余运算符：将多个独立的合并到一个数组中
+- 扩展运算符：将一个数组分割，并将各个项作为分离的参数传给函数
+
+```js
+const arr = [10, 30, 40, 5, 100. 60, 25]
+console.log(Math.max(...arr)) // 可以得到最大值 100
+```
+
+```js
+// ES5 中的写法
+const arr = [10, 30, 40, 5, 100. 60, 25]
+console.log(Math.max.apply(null, arr))
+```
+
+### 箭头函数
+
+使用 `=>` 来定义，`function() { }` 等于 `() => { }`
+
+```js
+let add = (a, b) => {
+  return a + b
+}
+
+// 如果只有 return 甚至可以省略大括号和 return
+let add = (a, b) => a + b
+let hello = () => 'hello js'
+
+// 如果返回的是对象的话，就必须加小括号
+let getObj = id => ({
+  id: id,
+  name: 'jojo'
+})
+console.log(getObj(1))  
+```
+
+#### 箭头函数的 this 指向问题
+
+箭头函数中没有 this 绑定问题
+
+
+
 ## PC 端网页特效
 
 ### 元素偏移量 offset
@@ -1842,93 +2198,6 @@ if ('addEventListener' in document) {
 3. [iscroll](https://github.com/cubiq/iscroll)
 4. [移动端视频插件 zyMedia](https://github.com/ireaderlab/zyMedia)
 
-## 本地存储
-
-随着互联网的快速发展，基于网页的应用越来越普遍，同时也变的越来越复杂，为了满足各种各样的需求，会经 常性在本地存储大量的数据，HTML5 规范提出了相关解决方案
-
-### 本地存储特性
-
-- 数据存储在用户浏览器中
-- 设置、读取方便，甚至页面刷新不丢失数据
-- 容量较大，`sessionStorage` 约 5M，`localStorage` 约 20M
-- 只能存储字符串，可以将对象 `JSON.stringify()` 转为字符串后存储
-
-### sessionStorage
-
-- 生命周期为 **关闭浏览器窗口**
-- 在同一个窗口（页面）下数据可以共享
-- 以键值对的形式存储使用
-
-#### 相关操作
-
-1. 存储数据 `sessionStorage.setItem(key, value)`
-2. 获取数据 `sessionStorage.getItem(key)`
-3. 删除数据 `sessionStorage.removeItem(key)`
-4. 删除所有数据 `sessionStorage.clear()`
-
-### localStorage
-
-- 生命周期 **永久生效**，除非手动删除否则关闭页面也会存在
-- 可以多窗口共享（同一浏览器可以共享）
-- 以键值对的形式存储使用
-
-#### 相关操作
-
-1. 存储数据 `localStorage.setItem(key, value)`
-2. 获取数据 `localStorage.getItem(key)`
-3. 删除数据 `localStorage.removeItem(key)`
-4. 删除所有数据 `localStorage.clear()`
-
-## 立即执行函数
-
-不需要调用，立即能够自己执行的函数
-
-```js
-(function() {})()
-
-// 或者
-
-(function() {} ());
-```
-
-```js
-(function() {
-  console.log(22222)
-})()
-
-// 打开浏览器会直接打印出 22222
-```
-
-```js
-(function sum(a, b) {
-  console.log('a = ' + a + ' b = ' + b + ', sum = ' + (a + b))
-})(3, 45)
-
-// 输出 a = 3 b = 45, sum = 48
-
-// 后面的小括号可以看做是在调用前面的函数
-// 后面的括号里面的参数就是实参，传递到前面的函数里
-```
-
-如果有多个立即执行函数，那么中间一定要用 `;` 隔开，否则会报错
-
-立即执行函数最大的作用就是 **独立创建了一个作用域**，里面所有的变量都是局部变量
-
-## 淘宝 flexible.js 源码分析
-
-### pageshow 事件
-
-下面三种情况都会刷新页面，触发 `load` 事件
-1. `a` 标签的超链接
-2. F5 或者刷新按钮（强制刷新）
-3. 前进后退按钮
-
-但是火狐中有个特点：往返缓存。这个缓存中不仅保存着页面数据，还保存了 DOM 和 JS 的状态。实际上就是将整个页面都保存在了内存里
-
-所以此时后退按钮不能刷新页面，那么就可以使用 `pageshow` 事件来触发。
-
-**这个事件在页面显示时触发，不论页面是否来自缓存**。在重新加载页面中，pageshow 会在 load 事件触发后触发；根据事件对象中的 `persisted` 来判断是否是缓存中的页面触发的 pageshow 事件，**注意这个事件要给 window 添加**
-
 ## JavaScript 库
 
 JavaScript 库：即 library，是一个封装好的特定的集合(方法和函数)。从封装一大堆函数的角度理解库，就是在这个库中，封装了很多预先定义好的函数在里面，比如动画 animate、hide、show，比如获取元素等
@@ -1987,265 +2256,3 @@ JavaScript Object Notation(JavaScript对象标记)
 
 - 一种标准的轻量级数据交换格式。体积小，易解析。
 - 在实际开发中有两种数据交换格式：JSON 和 XML。XML 体积较大解析麻烦，但其优点是语法严谨。
-
-## ES6
-
-![ES6](imgs/es6.jpeg)
-
-[ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
-
-[阮一峰 -- ES6 入门教程](https://es6.ruanyifeng.com/)
-
-ES5 的先天性不足：比如变量提升、内置对象的方法不灵活、模块化实现不完善
-
-ES6 在 2015 年 6 月正式发布。ES6 既是一个历史名词，也是一个泛指，指代 5.1 版本以后的 JS 下一代标准，涵盖了 ES2015、2016、2017 等，而 ES2015 则是正式名称，特指该年发布的正式版本的语言标准
-
-### ES6 新特性
-
-- let 和 const
-- ES6 的模板字符串
-- 增强的函数
-- 扩展的字符串、对象、数组功能
-- 解构赋值
-- Symbol
-- Map 和 Set
-- 迭代器和生成器
-- Promise 对象
-- Proxy 对象
-- async 的用法
-- 类 class
-- 模块化实现
-
-有些浏览器可能不支持 ES6+，可以使用 **Bable** 进行编译，从而让浏览器获得支持
-
-### let 和 const
-
-[蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
-
-ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 `{ }` 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
-
-#### let
-
-1. 声明变量，没有变量提升
-
-```js
-console.log(a)
-let a = 2
-
-// 会报错，因为不存在变量提升
-```
-
-2. 是一个块级作用域
-
-```js
-console.log(b)  // 报错 not defined
-if (1 === 1) {
-  console.log(b)  // 报错 connot access 'b' before initialization
-  let b = 10
-}
-console.log(b)  // 报错 not defined
-```
-
-3. 不能重复声明，但是可以更改
-
-```js
-let a = 1
-let a = 333 
-console.log(a)
-
-// 报错 Identifier 'a' has already been declared，第二行去掉 let 就可以正常运行
-```
-
-#### const
-
-1 2 3 点同 let，此外还有 `const` 一般用来声明常量，一旦被声明无法修改
-
-```js
-const MAX = 10
-MAX = 20000
-console.log(MAX)  // 报错 Assignment to constant variable
-
-// ---------------------- //
-
-const person = {
-  name: 'wbk'
-}
-
-person.name = 'jojo' // 没有问题
-
-person = {
-  name: 'jojo'  // 报错
-}
-```
-
-一个经典例子
-
-如果不明白需要再参考 **事件循环、闭包、回调函数** 的原理
-
-```js
-const arr = []
-
-for (var i = 0; i < 10; i ++) {
-  arr[i] = function() {
-    return i
-  }
-}
-
-console.log(arr[5]())
-
-/**
- * 结果会输出 10，并不会输出 5
- * 因为 var 会变量提升，将 var i 提到 for 循环外面，
- * 而 for 里面的 function 是一个回调函数，且 var 又没有形成块级作用域，
- * 所以会等到 for 循环完毕，才会去调用栈里面查找 i 的值，也就是 10
- * 所以等到 arr[5]() 调用的时候就会输出 10
- * 
- * 想要输出 5 就需要将 var 改为 let，此时 i 有自己的作用域
- * /
-```
-
-let 和 const 不会污染全局变量
-
-```js
-let RegExp = 10
-console.log(RegExp) // 输出 10
-console.log(window.RegExp)  // 依然输出 ƒ RegExp() { [native code] }
-```
-
-**在默认情况下用 const，当你在知道变量值需要被修改的情况下建议使用 let**
-
-![var let const 的区别](imgs/var-let-const%E5%8C%BA%E5%88%AB.png)
-
-### 模板字符串
-
-可以将 HTML 结构放到 tab 键上面的反引号中，在插入变量时使用 `${变量名}`，不再需要拼接字符串了
-
-```js
-// 可以在 div 中显示 li
-const oBox = document.querySelector('.box');
-let id = 1, name = 'jojo';
-let htmlStr = `<ul>
-  <li>
-    <p id=${id}>${name}</p>
-  </li>
-</ul>`;
-oBox.innerHTML = htmlStr;
-```
-
-### 强大的函数
-
-#### 参数默认值 
-
-```js
-// ES5 中写法
-function add(a, b) {
-  // 如果 a b 没有赋值，那么设置默认值
-  a = a || 10;  
-  b = b || 20;
-  console.log(a + b);
-}
-add();
-```
-
-如上 ES5 的写法稍显麻烦，所以在 ES6 中可以改为如下的写法
-
-```js
-function add(a = 10, b = 30) {
-  console.log(a + b)
-}
-add();
-
-// 以下写法也可以
-function add(a, b = 100) {
-  console.log(a + b)
-}
-add(10);
-
-// 结果是 NaN，因为 100 会按顺序赋给第一个参数也就是 a，那么 b 就是 undefined
-function add(a = 10, b) {
-  console.log(a + b)
-}
-add(100)
-```
-
-同时，默认值也可以是一个函数
-
-```js
-function add(a, b = getVal(5)) {
-  console.log(a + b)
-}
-function getVal(val) {
-  return val + 10;
-}
-add(100)  // 输出 115
-```
-
-#### 剩余参数
-
-之前我们可以用 `arguments` 来表示函数中的所有参数，在 ES6 中我们可以使用 `...args` 来表示剩余参数，其中 `args` 可以随意起名
-
-arguments 是个伪数组，而 ...args 剩余参数是个真数组，有原型对象
-
-```js
-function pick(obj, ...args) {
-  // console.log(args) 输出 [“name”, "age"]
-  let res = Object.create(null)
-  for (let i = 0; i < args.length; i ++) {
-    res[args[i]] = obj[args[i]]
-  }
-  return res;
-}
-
-let person = {
-  id: '1',
-  name: 'jojo',
-  age: 2
-}
-
-let pData = pick(person, 'name', 'age')
-console.log(pData)
-
-// 输出 {name: "jojo", age: 2}
-```
-
-#### 扩展运算符
-
-- 剩余运算符：将多个独立的合并到一个数组中
-- 扩展运算符：将一个数组分割，并将各个项作为分离的参数传给函数
-
-```js
-const arr = [10, 30, 40, 5, 100. 60, 25]
-console.log(Math.max(...arr)) // 可以得到最大值 100
-```
-
-```js
-// ES5 中的写法
-const arr = [10, 30, 40, 5, 100. 60, 25]
-console.log(Math.max.apply(null, arr))
-```
-
-### 箭头函数
-
-使用 `=>` 来定义，`function() { }` 等于 `() => { }`
-
-```js
-let add = (a, b) => {
-  return a + b
-}
-
-// 如果只有 return 甚至可以省略大括号和 return
-let add = (a, b) => a + b
-let hello = () => 'hello js'
-
-// 如果返回的是对象的话，就必须加小括号
-let getObj = id => ({
-  id: id,
-  name: 'jojo'
-})
-console.log(getObj(1))  
-```
-
-#### 箭头函数的 this 指向问题
-
-箭头函数中没有 this 绑定问题
-
