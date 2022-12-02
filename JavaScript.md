@@ -2115,3 +2115,137 @@ console.log(window.RegExp)  // 依然输出 ƒ RegExp() { [native code] }
 **在默认情况下用 const，当你在知道变量值需要被修改的情况下建议使用 let**
 
 ![var let const 的区别](imgs/var-let-const%E5%8C%BA%E5%88%AB.png)
+
+### 模板字符串
+
+可以将 HTML 结构放到 tab 键上面的反引号中，在插入变量时使用 `${变量名}`，不再需要拼接字符串了
+
+```js
+// 可以在 div 中显示 li
+const oBox = document.querySelector('.box');
+let id = 1, name = 'jojo';
+let htmlStr = `<ul>
+  <li>
+    <p id=${id}>${name}</p>
+  </li>
+</ul>`;
+oBox.innerHTML = htmlStr;
+```
+
+### 强大的函数
+
+#### 参数默认值 
+
+```js
+// ES5 中写法
+function add(a, b) {
+  // 如果 a b 没有赋值，那么设置默认值
+  a = a || 10;  
+  b = b || 20;
+  console.log(a + b);
+}
+add();
+```
+
+如上 ES5 的写法稍显麻烦，所以在 ES6 中可以改为如下的写法
+
+```js
+function add(a = 10, b = 30) {
+  console.log(a + b)
+}
+add();
+
+// 以下写法也可以
+function add(a, b = 100) {
+  console.log(a + b)
+}
+add(10);
+
+// 结果是 NaN，因为 100 会按顺序赋给第一个参数也就是 a，那么 b 就是 undefined
+function add(a = 10, b) {
+  console.log(a + b)
+}
+add(100)
+```
+
+同时，默认值也可以是一个函数
+
+```js
+function add(a, b = getVal(5)) {
+  console.log(a + b)
+}
+function getVal(val) {
+  return val + 10;
+}
+add(100)  // 输出 115
+```
+
+#### 剩余参数
+
+之前我们可以用 `arguments` 来表示函数中的所有参数，在 ES6 中我们可以使用 `...args` 来表示剩余参数，其中 `args` 可以随意起名
+
+arguments 是个伪数组，而 ...args 剩余参数是个真数组，有原型对象
+
+```js
+function pick(obj, ...args) {
+  // console.log(args) 输出 [“name”, "age"]
+  let res = Object.create(null)
+  for (let i = 0; i < args.length; i ++) {
+    res[args[i]] = obj[args[i]]
+  }
+  return res;
+}
+
+let person = {
+  id: '1',
+  name: 'jojo',
+  age: 2
+}
+
+let pData = pick(person, 'name', 'age')
+console.log(pData)
+
+// 输出 {name: "jojo", age: 2}
+```
+
+#### 扩展运算符
+
+- 剩余运算符：将多个独立的合并到一个数组中
+- 扩展运算符：将一个数组分割，并将各个项作为分离的参数传给函数
+
+```js
+const arr = [10, 30, 40, 5, 100. 60, 25]
+console.log(Math.max(...arr)) // 可以得到最大值 100
+```
+
+```js
+// ES5 中的写法
+const arr = [10, 30, 40, 5, 100. 60, 25]
+console.log(Math.max.apply(null, arr))
+```
+
+### 箭头函数
+
+使用 `=>` 来定义，`function() { }` 等于 `() => { }`
+
+```js
+let add = (a, b) => {
+  return a + b
+}
+
+// 如果只有 return 甚至可以省略大括号和 return
+let add = (a, b) => a + b
+let hello = () => 'hello js'
+
+// 如果返回的是对象的话，就必须加小括号
+let getObj = id => ({
+  id: id,
+  name: 'jojo'
+})
+console.log(getObj(1))  
+```
+
+#### 箭头函数的 this 指向问题
+
+箭头函数中没有 this 绑定问题
+

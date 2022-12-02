@@ -12,7 +12,6 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-color: gray;
     }
     body {
       perspective: 500px;
@@ -20,7 +19,7 @@
     img {
       display: block;
       width: 400px;
-      height: 400px; 
+      height: 400px;
       margin: 200px auto;
       transition: all 1s;
     }
@@ -30,7 +29,19 @@
   </style>
 
   <body>
-    <img src="../imgs/angel.gif" alt="">
+    <div class="box"></div>
   </body>
 
+  <script>
+    const oBox = document.querySelector(".box");
+    let id = 1,
+      name = "jojo";
+    let htmlStr = 
+    `<ul>
+      <li>
+          <p id=${id}>${name}</p>
+      </li>
+    </ul>`;
+    oBox.innerHTML = htmlStr;
+  </script>
 </html>
