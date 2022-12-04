@@ -1791,7 +1791,7 @@ const arr = [10, 30, 40, 5, 100. 60, 25]
 console.log(Math.max.apply(null, arr))
 ```
 
-### 箭头函数
+### 箭头函数 :star:
 
 使用 `=>` 来定义，`function() { }` 等于 `() => { }`
 
@@ -1812,11 +1812,258 @@ let getObj = id => ({
 console.log(getObj(1))  
 ```
 
+```js
+const fn = (() => {
+  // 在立即执行函数中这里必须加上 return，否则就会报错 TypeError: fn is not a function
+  return () => 'console.log'
+})();
+let log = fn();
+console.log(log)
+```
+
 #### 箭头函数的 this 指向问题
 
 箭头函数中没有 this 绑定问题
 
+ES5 中 this 的指向，取决于调用该函数的上下文对象
 
+```js
+// 一个 ES5 中的经典案例
+let PageHandler = {
+  id: 123,
+  init: function() {
+    document.addEventListener('click', function(event) {
+      // 此时的 this 是 #document
+      // console.log(this)
+      this.doSomeThings(event.type);
+    })
+  },
+  doSomeThings: function(type) {
+    console.log(`事件类型: ${type}, 当前id: ${this.id}`)
+  }
+  PageHandler.init();
+}
+
+// 报错：Uncaught TypeError：this.doSomeThings is not a function
+
+// 此时丢失了原来的 this，在 ES5 中要想解决需要添加 bind
+document.addEventListener('click', function(event) {
+  this.doSomeThings(event.type)
+}.bind(this));
+```
+
+但是在 ES6 中只需要把函数改为箭头函数就可以解决这个问题
+
+```js
+init: function() {
+  document.addEventListener('click', (event) => {
+    this.doSomeThings(event.type);
+  })
+}
+```
+
+因为箭头函数没有 this 指向，**箭头函数内部的 this 值只能通过查找作用域链来确定**，所以此时的 this 会向上查找 init 的作用域，就会找到 PageHandler
+
+```js
+// 同理，如果 init 也是一个箭头函数，那么也会报错，因为此时的 this 是 Window
+init: () => {
+  document.addEventListener('click', (event) => {
+    this.doSomeThings(event.type);
+  })
+}
+```
+
+#### 使用箭头函数的注意事项
+
+- 箭头函数内部没有 arguments
+
+```js
+let getVal = (a, b) => {
+  console.log(arguments);
+  return a + b;
+}
+console.log(getVal(1, 3));
+
+// Uncaught ReferenceError: arguments is not defined
+```
+
+- 箭头函数不能使用 new 实例化对象（涉及 new 的原理
+  - function 也是一个对象，但是箭头函数不是一个对象，其实就是一个表达式语法糖
+
+```js
+let Person = () => {
+
+};
+// console.log(Person) 中是没有 constructor
+let p = new Person();
+
+// Uncaught TypeError: Person is not a constructor
+```
+
+### 解构赋值
+
+对赋值运算符的一种扩展，主要针对数组和对象来进行操作，可以让代码书写更简单易读
+
+#### 对象解构
+
+- 对象中的名字必须一致，但是数组可以不一样
+  - 可以使用 `:` 来进行重命名
+
+```js
+// 完全解构
+let person = {
+  name: 'jojo',
+  age: 2
+}
+
+// 如果不写成 rename old 就会赋值失败，输出 undefined
+let {name, age} = node
+
+console.log(name, age)  // 输出 jojo 2
+```
+
+```js
+// 不完全解构，可以忽略某些属性
+let obj = {
+  a: {
+    sub: 'math'
+  },
+  b: [],
+  c: 'calculus'
+}
+
+// a 重命名为 t
+let {a:t} = obj;
+// 输出 {sub: 'math'}
+console.log(t)
+
+// 可以使用剩余运算符
+let {a, ...res} = obj;
+// 输出 {"b": [], "c": "calculus"}
+console.log(res);
+```
+
+```js
+// 可以使用默认值，了解即可
+let {a, b = 30} = {a: 20}
+console.log(a, b) // 输出 20 30
+```
+
+#### 数组解构
+
+```js
+// 完全解构
+let arr = [1, 2, 3]
+let [a, b, c] = arr
+console.log(a, b, c) // 输出 1 2 3
+
+// 不完全解构
+let [fir, sec] = arr
+console.log(fir, sec) // 输出 1 2
+
+// 可以嵌套
+let [a, [b], c] = [1, [2], 3]
+```
+
+### 扩展的对象功能
+
+#### 直接写入变量和函数作为对象的属性和方法
+
+```js
+const name = 'jojo', age = 2;
+
+// 属性名属性值相同可省略，函数可简写
+const person = {
+  // 等价于 name: name
+  name,
+  // 等价于 age: age
+  age,
+  // 等价于 sayName: function() {}
+  sayName() {
+    console.log(this.name)
+  }
+}
+person.sayName()  // 输出 jojo
+```
+
+```js
+let get = function (x, y) {
+  // 不需要像以前一样写 return {x: x, y: y}
+  return {x, y}
+}
+console.log(get(1, 5))  // 输出 {x: 1, y: 5}
+```
+
+```js
+const name = 'a'
+const obj = {
+  isShow: true,
+  [name + 'bc']: 123,
+  ['f' + name]() {
+    console.log(this)
+  }
+}
+console.log(obj)  // {isShow: true, abc: 123, fa: ƒ}
+```
+
+#### 对象方法
+
+- `is()`：比较两个值是否严格相等，但是还是使用 `===` 比较多
+- `assign()`：主要用于对象的合并（属性是一般值是深拷贝，属性是对象则是浅拷贝 （**存疑  **））
+  - `Object.assign(target, obj1, obj2, ...)`：将 obj1 obj2 等等都合并到 target 上
+  - 冲突的属性名会进行覆盖
+
+```js
+// is 和 === 不同的地方
+NaN === NaN // false
+is(NaN, NaN)  // true，业务上用比较方便
+```
+
+### Symbol 类型
+
+原始数据类型，表示是独一无二的值，用处不多
+
+**最大用途：用来定义对象的私有变量**
+
+```js
+const name1 = Symbol('name')
+const name2 = Symbol('name')
+console.log(name1 === name2)  // false，内存地址不同
+
+let s1 = Symbol('s1')
+console.log(s1) // Symbol(s1)
+
+let obj = {
+  [s1]: 'wbk',
+  s1: 222 // 就是一个属于 obj 自己的普通的属性 s1
+}
+// obj[s1] = 'wbk'
+
+// 如果用 Symbol 定义对象中的变量，取值时一定要用 [变量名]
+console.log(obj[s1])  // wbk
+console.log(obj.s1) // 222
+```
+
+```js
+for(let key in obj) {
+  console.log(key)  // 什么也没有，因为 Symbol 并不能被遍历出来
+}
+Object.getKeys(obj)  // []
+
+/**  --- 获取 Symbol 声明的属性名 ---  */
+
+// 方法一
+let s = Object.getOwnPropertySymbols(obj)
+console.log(obj[0]) // Symbol(s1)
+
+// 方法二：使用反射拿到
+let keys = Reflect.ownKeys(obj)
+console.log(keys) // [Symbol(s1)]
+```
+
+### Set
+
+### Map
 
 ## PC 端网页特效
 

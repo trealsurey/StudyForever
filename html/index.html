@@ -33,15 +33,15 @@
   </body>
 
   <script>
-    const oBox = document.querySelector(".box");
-    let id = 1,
-      name = "jojo";
-    let htmlStr = 
-    `<ul>
-      <li>
-          <p id=${id}>${name}</p>
-      </li>
-    </ul>`;
-    oBox.innerHTML = htmlStr;
+    let s1 = Symbol("s1");
+    console.log(s1);
+
+    let obj = {
+      [s1]: "wbk",
+      s1: 222
+    };
+
+    console.log(obj[s1]);
+    console.log(obj.s1);
   </script>
 </html>
