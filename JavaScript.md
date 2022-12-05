@@ -1551,9 +1551,316 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 
 ## JS 高级
 
-### 面向对象
+### 两大编程思想
 
+#### 面向过程
 
+**面向过程** 编程，即 POP（Process Oriented Programming）面向过程就是分析出解决问题所需要的步骤，然后用函数把这些步骤一步一步实现，使用的时候再一个一个的依次调用就可以了
+
+#### 面向对象
+
+**面向对象** 编程，即 OOP（Object Oriented Programming） 面向对象是把事务分解成为一个个对象，然后由对象之间分工与合作
+
+在面向对象程序开发思想中，每—个对象都是功能中心，具有明确分工。 面向对象编程具有灵活、代码可复用、容易维护和开发的优点，更适合多人合作的大型软件项目
+
+面向对象的特征：封装、继承、多态
+
+#### 面向过程和面向对象的对比
+
+- **面向过程**
+  - 优点：性能比面向对象高，适合跟硬件联系很紧密的东西，例如单片机就采用的面向过程编程
+  - 缺点：没有面向对象易维护、易复用、易扩展
+- **面向对象**
+  - 优点：易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统更加灵活、更加易于维护
+  - 缺点：性能比面向过程低
+
+#### 面向对象的思维特点
+
+- 抽象出对象共用的属性和行为封装成一个 **类（模板）**
+- 对类进行 **实例化**，获取类的对象
+
+### ES6 中的类和对象
+
+对象是一组无序的相关属性和和方法的集合，**在 JS 中万物皆对象**，例如字符串、数值、数组、函数等
+
+ES6 中新增了类的概念，可以使用 `class` 声明一个类
+
+```js
+class Person {
+
+}
+let person = new Person();
+```
+
+#### 构造函数 constructor
+
+`constructor()` 方法是类的构造函数（默认方法）
+- 用于传递参数，返回实例对象
+- 通过 `new` 命令生成对象实例时，自动调用该方法
+- 如果没有显式定义，类内部会自动给我们创建一个 `constructor()`
+- 语法规范
+  - 创建类时，类名后面不要加小括号；创建实例，类名后面要加小括号
+  - **构造函数不需要加 function 关键字**
+
+```js
+// 创建一个学生类
+class Student {
+  constructor(uname, age, major) {
+    this.uname = uname;
+    this.age = age;
+    this.major = major;
+  }
+}
+
+let wbk = new Student('wbk', 28, 'Economy')
+```
+
+#### 类中添加方法
+
+直接在类中写方法名和括号即可
+
+**注意：**
+1. 方法之间不能加逗号分隔，会报错
+2. 方法不需要添加 function 关键字
+
+```js
+class Student {
+  constructor(uname, age, major) {
+    this.uname = uname;
+    this.age = age;
+    this.major = major;
+  }
+  // 类中添加方法
+  sing() {
+    console.log(this.uname + "会唱歌");
+  }
+}
+```
+
+#### static 静态成员
+
+给成员属性或成员方法添加 `static`，该成员就成为静态成员，**静态成员只能由该类调用**
+
+```js
+class Person {
+  static eat() {
+    console.log('eat');
+  }
+}
+let p = new Person();
+Person.eat(); // eat
+p.eat(); // 报错
+```
+
+#### getter 和 setter
+
+实际上，`getter` 和 `setter` 是 ES5（ES2009）提出的特性，这里不做详细说明，只是配合 class 使用举个例子
+
+当属性拥有 `get/set` 特性时，属性就是访问器属性。代表着在访问属性或者写入属性值时，对返回值做附加的操作。而这个操作就是 `getter/setter` 函数
+
+使用场景： `getter` 是一种语法，这种 get 将对象属性绑定到 **查询该属性时将被调用的函数**。适用于某个需要动态计算的成员属性值的获取。`setter` 则是在修改某一属性时所给出的相关提示
+
+```js
+class Test {
+    constructor(log) {
+        this.log = log;
+    }
+    get latest() {
+        console.log('latest 被调用了');
+        return this.log;
+    }
+    set latest(e) {
+        console.log('latest 被修改了');
+        this.log.push(e);
+    }
+}
+
+let test = new Test(['a', 'b', 'c']);
+// 每次 log 被修改都会给出提示
+test.latest = 'd';
+// 每次获取 log 的最后一个元素 latest，都能得到最新数据。
+console.log(test.latest);
+
+/**
+ * latest 被修改了
+ * latest 被调用了
+ * ['a', 'b', 'c', 'd']
+ * /
+```
+
+### 类的继承
+
+子类可以继承父类的属性和方法，使用 `extends` 关键字
+
+```js
+class Car extends Vehicle {
+  // class body
+}
+```
+
+### super 关键字
+
+使用 `super` 关键字访问和调用父类上的函数。**可以调用父类的构造函数**，也可以调用父类的普通函数
+
+**注意：子类在构造函数中使用 super，必须放到 this 前面（必须先调用父类的构造方法，再使用子类的构造方法）**
+
+```js
+// 调用父类/父对象的构造函数
+super([arguments])
+
+// 调用父类/父对象的方法
+super.functionOnParent([arguments])
+```
+
+```js
+class Person {
+  constructor (uname, age) {
+    this.uname =uname;
+    this.age = age;
+  }
+}
+class Student extends Person {
+  constructor (uname, age, major) {
+    // super 将子类的参数传递给父类构造函数，减少代码量
+    super(uname, age);
+    // 子类可以有自己独有的属性
+    this.major = major;
+  }
+}
+let rick = new Student("Lucy", 28, "SE");
+```
+
+#### super 传值问题
+
+```js
+// 以下代码，将产生错误
+class Father {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  sum() {
+    console.log(this.x + this.y);
+  }
+}
+class Son extends Father {
+  constructor(x, y) {
+    this.x = this.x;
+    this.y = this.y;
+  }
+}
+let obj = new Son(10, 20);
+obj.sum();
+
+// Uncaught ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+```
+
+解释说明：若子类没有写构造函数，则实例化时默认调用父类的，这时候程序运行无误。若子类写了构造函数，那么子类在调用 sum 方法的时候，参数的值没有传给父类，父类无法调用参数的值，也就无法执行 sum 方法
+
+```js
+// 正确写法
+class Son extends Father {
+  constructor(x, y) {
+    super(x, y)
+  }
+}
+
+// 输出 30
+```
+
+#### super 调用父类普通函数
+
+```js
+class Parent {
+  sayHi() {
+    return "Father: hello";
+  }
+}
+class Child extends Parent {
+  sayHi() {
+    // super 调用父类普通函数
+    console.log(super.sayHi());
+  }
+}
+let man = new Child();
+man.sayHi(); // Father: hello
+```
+
+#### 继承中属性和方法的查找原则
+
+就近原则
+- 如果实例化子类输出一个方法，先看子类有没有这个方法，如果有就先执行子类的
+- 如果子类里面没有，就去查找父类有没有这个方法，如果有，就执行父类的这个方法（就近原则）
+
+```js
+class Parent {
+    sayHi() {
+        console.log("Father: hello");
+    }
+}
+class Child extends Parent {
+    sayHi() {
+        console.log("Son: hello");
+    }
+}
+let man = new Child();
+man.sayHi(); // Son: hello
+
+// 如果 Child 中没有 sayHi() 方法，那么就会执行 Parent 中的 sayHi() 方法
+```
+
+#### super 必须放到子类 this 之前
+
+子类在构造函数中使用 `super`，必须放到 `this` 前面
+
+```js
+class Father {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+class Son extends Father {
+  constructor(x, y, z) {
+    super(x, y, z);
+    this.z = this.z;
+  }
+}
+let obj = new Son(1, 2, 3);
+```
+
+### 使用类的注意点
+
+1. ES6 中类没有变量提升，所以必须先定义类，才能通过类实例化对象
+2. 类里面的共有属性和方法一定要加 `this` 使用
+3. 类里面的 `this` 指向问题：`constructor` 里面的 `this` 指向实例对象, 方法里面的 this 指向这个方法的调用者
+
+```js
+let that;
+class Star {
+  constructor (uname, age) {
+    that = this;
+    this.uname = uname;
+    this.age = age;
+    // btn按钮调用sing方法
+    this.btn = document.querySelector("button");
+    this.btn.onclick = this.sing;
+    // constructor 里面的this 指向的是 创建的实例对象
+    console.log("constructor: ", this);
+  }
+  sing() {
+    // 这个sing方法里面的 this 指向的是 btn 这个按钮，因为这个按钮调用了这个函数
+    console.log("sing:", this); // button
+    console.log(that.uname); // that里面存储的是constructor里面的this
+  }
+  dance() {
+    // 这个dance里面的this 指向的是实例对象 ldh 因为ldh 调用了这个函数
+    console.log("dance:", this);
+  }
+}
+let rick = new Star("Rick", 20);
+rick.dance();
+```
 
 ## ES6
 

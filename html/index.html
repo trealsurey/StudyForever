@@ -33,15 +33,20 @@
   </body>
 
   <script>
-    let s1 = Symbol("s1");
-    console.log(s1);
+    class Father {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+    }
+    class Son extends Father {
+      constructor(x, y, z) {
+        super(x, y, z);
+        this.z = z;
+      }
+    }
 
-    let obj = {
-      [s1]: "wbk",
-      s1: 222
-    };
-
-    console.log(obj[s1]);
-    console.log(obj.s1);
+    let son = new Son();
+    console.log(son)
   </script>
 </html>
