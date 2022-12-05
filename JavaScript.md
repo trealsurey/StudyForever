@@ -1715,7 +1715,7 @@ super.functionOnParent([arguments])
 ```js
 class Person {
   constructor (uname, age) {
-    this.uname =uname;
+    this.uname = uname;
     this.age = age;
   }
 }
@@ -1745,17 +1745,17 @@ class Father {
 }
 class Son extends Father {
   constructor(x, y) {
-    this.x = this.x;
-    this.y = this.y;
+    this.x = x;
+    this.y = y;
   }
 }
-let obj = new Son(10, 20);
-obj.sum();
+let son = new Son(10, 20);
+son.sum();
 
 // Uncaught ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
 ```
 
-解释说明：若子类没有写构造函数，则实例化时默认调用父类的，这时候程序运行无误。若子类写了构造函数，那么子类在调用 sum 方法的时候，参数的值没有传给父类，父类无法调用参数的值，也就无法执行 sum 方法
+解释说明：若子类没有写构造函数，则实例化时默认调用父类的，这时候程序运行无误。若子类写了构造函数，那么子类在调用 sum 方法的时候，this 指向的是 son 对象；而 Father 类中的 sum 方法需要使用 Father 对象（this）的 x 和 y 来相加得到，此时参数的值没有传给父类，所以也就无法执行 sum 方法
 
 ```js
 // 正确写法
@@ -1786,7 +1786,36 @@ let man = new Child();
 man.sayHi(); // Father: hello
 ```
 
-#### 继承中属性和方法的查找原则
+#### super 必须放到子类 this 之前
+
+子类在构造函数中使用 `super`，必须放到 `this` 前面
+
+```js
+class Father {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  sum() {
+    console.log(this.x + this.y);
+  }
+}
+class Son extends Father {
+  constructor(x, y) {
+    super(x, y);  // 如果放在 this 下面就会报错
+    this.x = x; 
+    this.y = y;
+  }
+  subtract() {
+    console.log(this.x - this.y)
+  }
+}
+let son = new Son(10, 2);
+son.sum();  // 12
+son.subtract(); // 8
+```
+
+### 继承中属性和方法的查找原则
 
 就近原则
 - 如果实例化子类输出一个方法，先看子类有没有这个方法，如果有就先执行子类的
@@ -1809,31 +1838,29 @@ man.sayHi(); // Son: hello
 // 如果 Child 中没有 sayHi() 方法，那么就会执行 Parent 中的 sayHi() 方法
 ```
 
-#### super 必须放到子类 this 之前
-
-子类在构造函数中使用 `super`，必须放到 `this` 前面
-
-```js
-class Father {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-}
-class Son extends Father {
-  constructor(x, y, z) {
-    super(x, y, z);
-    this.z = this.z;
-  }
-}
-let obj = new Son(1, 2, 3);
-```
-
 ### 使用类的注意点
 
 1. ES6 中类没有变量提升，所以必须先定义类，才能通过类实例化对象
 2. 类里面的共有属性和方法一定要加 `this` 使用
-3. 类里面的 `this` 指向问题：`constructor` 里面的 `this` 指向实例对象, 方法里面的 this 指向这个方法的调用者
+
+```js
+class Star {
+  constructor(uname, age) {
+    this.uname = uname;
+    this.age = age;
+    // 如果想在创建时就调用 sing 方法就必须要在这里加 this，否则也会报错 is not defined
+    this.sing();
+  }
+  sing() {
+    // 这里如果不加 this 就会报错 uname is not defined
+    console.log('唱歌的是：' + this.uname);
+  }
+}
+```
+
+3. 类里面的 `this` 指向问题：
+   1. `constructor` 里面的 `this` 指向实例对象
+   2. 方法里面的 `this` 指向这个方法的调用者
 
 ```js
 let that;
@@ -1842,24 +1869,25 @@ class Star {
     that = this;
     this.uname = uname;
     this.age = age;
-    // btn按钮调用sing方法
+    // btn 按钮调用 sing 方法，必须加 this
     this.btn = document.querySelector("button");
     this.btn.onclick = this.sing;
-    // constructor 里面的this 指向的是 创建的实例对象
-    console.log("constructor: ", this);
+    // constructor 里面的 this 指向的是创建的实例对象
+    console.log("constructor: ", this); // 输出 constructor:  Star {uname: 'wbk', age: 28, btn: button}
   }
   sing() {
-    // 这个sing方法里面的 this 指向的是 btn 这个按钮，因为这个按钮调用了这个函数
+    // 当点击按钮时，调用 sing 方法，这里面的 this 指向的是 btn 这个按钮，因为这个按钮调用了这个函数
     console.log("sing:", this); // button
-    console.log(that.uname); // that里面存储的是constructor里面的this
+    console.log(that.uname); // that 里面存储的是 constructor 里面的 this
   }
   dance() {
-    // 这个dance里面的this 指向的是实例对象 ldh 因为ldh 调用了这个函数
+    // 这个 dance 里面的 this 指向的是实例对象 wbk 因为 wbk 调用了这个函数
     console.log("dance:", this);
   }
 }
-let rick = new Star("Rick", 20);
-rick.dance();
+let wbk = new Star("wbk", 28); 
+wbk.dance();
+wbk.sing(); //这里的 sing 里面的 this 指向实例对象 wbk
 ```
 
 ## ES6

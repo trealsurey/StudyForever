@@ -56,8 +56,10 @@
 51. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
 52. websocket和轮询的区别
 53. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
-54. stringify的用法 
-55. 白屏原因 & 优化 
+54. new 一个对象的过程
+55. stringify的用法 
+56. 白屏原因 & 优化 
+57. `<button></button>` 和 `<input type="button">` 的区别
 
 
 **重点！！！**
