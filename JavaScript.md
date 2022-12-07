@@ -1579,6 +1579,388 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 - 抽象出对象共用的属性和行为封装成一个 **类（模板）**
 - 对类进行 **实例化**，获取类的对象
 
+### 构造函数
+
+在典型的 OOP 的语言中（如 Java），都存在类的概念，类就是对象的模板，对象就是类的实例，但**在 ES6 之前，JS 中并没用引入类的概念**
+
+在 ES6 之前，对象不是基于类创建的，而是用 **构建函数** 的特来定义对象和它们的特征
+
+创建对象的三种方式：
+1. 对象字面量 `obj = {}`
+2. `let obj = new Object()`
+3. 通过构造函数 
+
+```js
+// 通过构造函数创建对象 
+function Star(uname, age) {
+  this.uname = uname;
+  this.age = age;
+  this.sing = function() {
+    console.log('我会唱歌');
+  }
+}
+var wbk = new Star('wbk', 27)
+console.log(wbk);
+wbk.sing();
+```
+
+**构造函数** 是一种特殊的函数，主要用来初始化对象，即为对象成员变量赋初始值，我们可以把对象中一些公共的属性和方法抽取出来，然后封装到这个函数里面
+
+在 JS 中，使用构造函数时要注意以下两点：
+- 构造函数用于创建某一类对象，其首字母要大写
+- 构造函数要和 `new` 一起使用才有意义
+
+**`new` 在执行时会做四件事情：**
+- 在内存中创建一个新的空对象
+- 让 `this` 指向这个新的对象
+- 执行构造函数里面的代码，给这个新对象添加属性和方法
+- 返回这个新对象（所以构造函数里面不需要 `return`）
+
+#### 静态成员和实例成员
+
+构造函数中的属性和方法我们称为成员，成员可以添加
+
+- 实例成员：在构造函数内部通过 `this` 添加的成员，**实例成员只能通过实例化的对象来访问**
+- 静态成员：在构造函数本身上添加的成员，**只能由构造函数本身来访问**
+
+```js
+function Human(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+Human.x = 10; // 静态成员
+let rick = new Human("rick", 35);
+// console.log(rick.x); // 实例化的对象不能调用静态成员
+console.log(Human.x); // 静态成员只能由构造函数本身来访问
+```
+
+#### 构造函数的问题
+
+构造函数存在内存浪费的问题
+
+```js
+function Star(uname, age) {
+  this.uname = uname;
+  this.age = age;
+  this.sing = function() {
+    console.log('我会唱歌');
+  }
+}
+var ldh = new Star('刘德华', 18);
+var zxy = new Star('张学友', 19);
+```
+
+内容一样的 `sing()` 方法，在内存中会产生两份，占两份空间。我们希望 **所有的对象使用同一个函数，这样比较节省内存**。于是就有了构造函数原型 `prototype`
+
+### 原型 prototype
+
+**构造函数通过原型分配的函数是所有对象所共享的**
+
+JavaScript 规定，每一个构造函数都有一个 `prototype` 属性，指向另一个对象。注意这个 **`prototype` 就是一个对象**，这个对象的所有属性和方法，都会被构造函数所拥有
+
+我们可以把那些**不变的方法**，直接定义在 prototype 对象上，这样所有对象的实例就可以共享这些方法
+
+重点：
+- `prototype` 是一个对象，原型对象
+- 原型的作用：共享方法
+
+```js
+function Star(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+Star.prototype.sing = function () {
+  console.log('我会唱歌');
+}
+var ldh = new Star('刘德华', 18);
+var zxy = new Star('张学友', 19);
+console.log(ldh.sing === zxy.sing); // true
+```
+
+**一般情况下，公共属性定义到构造函数里面，公共的方法放到原型对象上**
+
+#### 对象原型 `__proto__`
+
+对象都会有一个属性 `__proto__` 指向构造函数的 `prototype` 原型对象，之所以我们对象可以使用构造函数 `prototype` 原型对象的属性和方法，就是因为对象有 `__proto__` 原型的存在
+
+`__proto__` 对象原型和构造函数的原型对象 `prototype` 是等价的
+
+```js
+ldh.__proto__ === Star.prototype; // true
+```
+
+`__proto__` 对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是 **它是一个非标准属性，因此实际开发中，不可以使用这个属性**，它只是内部指向原型对象 `prototype`
+
+> `Object.prototype.__proto__` 已废弃: 该特性已经从 Web 标准中删除，虽然一些浏览器目前仍然支持它，但也许会在未来的某个时间停止支持，请尽量不要使用该特性。为了更好的支持，建议只使用 `Object.getPrototypeOf()`。  —— MDN
+
+```js
+function Human(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+Human.prototype.sayHi = function () {
+  console.log("Hey");
+}
+let rick = new Human('rick', 35);
+let jack = new Human('jack', 33);
+console.log(Object.getPrototypeOf(rick) === Human.prototype); // true
+console.log(Object.getPrototypeOf(rick) === rick.__proto__); // true
+```
+
+![对象原型](imgs/%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%9E%8B.png)
+
+#### prototype 中的 constructor
+
+`prototype` 和 `__proto__` 中都有一个属性 `constructor`，指回构造函数本身
+
+```js
+// prototype 中包含 constructor
+console.log(Star.prototype);
+
+/**
+ * {sing: f, constructor: f}
+ *  sing: f()
+ *  constructor: class Star
+ *  [[Prototype]]: Object
+ * /
+```
+
+主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数
+
+一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以 给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 `constructor` 就不再指向当前构造函数了。此时，我们 可以在修改后的原型对象中，添加一个 `constructor` 指向原来的构造函数
+
+```js
+// 采取类的方式声明就不会存在下面的问题
+// class Star {
+//   constructor(uname, age) {
+//     this.uname = uname;
+//     this.age = age;
+//   }
+// }
+function Star(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+
+/** 普通形式 */
+// Star.prototype.sing = function() {
+//   console.log('I can sing');
+// }
+
+/** 对象形式 */
+Star.prototype = {
+  // 加上这一句
+  constructor: Star,
+  sing: function() {
+    console.log('I can sing');
+  },
+  talk: function() {
+    console.log('I can talk');
+  }
+}
+    
+const star = new Star('jojo', 2)
+console.log(Star.prototype.constructor)
+console.log(star.__proto__.constructor)
+
+/**
+ * 上面的代码，由于将 prototype 中的方法以对象形式表达，所以在最后 console 的时候会输出不一样的结果 Object( {[native code]}) ；
+ * 输出原型是不包含 consturctor 的对象，因为指针指向已经变了，所以导致当前对象的构造函数不再指向当前对象；
+ * 所以此时需要在 prototype 中添加一个 constructor，让 prototype 指回原来的对象
+ * /
+```
+
+#### 构造函数、实例、原型对象之间的关系
+
+![构造函数、实例、原型对象之间的关系](imgs/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-%E5%AE%9E%E4%BE%8B-%E5%8E%9F%E5%9E%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.png)
+
+#### 原型链
+
+1. 没添加 function 的原型链
+
+![没添加 function 的原型链](imgs/%E6%B2%A1%E6%9C%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE.png)
+
+2. 添加 function 后的原型链
+
+![添加 function 后的原型链](imgs/%E6%9C%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE.png)
+
+#### prototype 的 this 指向
+
+构造函数中的 `this` 指向我们实例对象。原型对象里面放的是方法, 这个方法里面的 `this` 指向的是 这个方法的调用者, 也就是这个实例对象
+
+#### 扩展内置对象
+
+通过原型对象，可以对原来的内置对象进行扩展自定义的方法。比如给数组增加自定义求偶数和的功能
+
+**注意** 必须是 `.prototype.xxx = function() {}` 的形式，如果是 `.prototype = { xxx: function() {}}` 这种格式那么会覆盖掉原来已经存在的方法
+
+```js
+// 给数组增加自定义求偶数和的功能
+// !不能写成对象字面量形式，也就是 大括号 {} 形式
+Array.prototype.sumOfEven = function() {
+  let sum = 0;
+  // this 指向 Array
+  for (let i = 0; i < this.length; i++) {
+    // 位运算判断奇偶
+    if (!(this[i] & 1)) {
+        sum += this[i];
+    }
+  }
+  return sum;
+}
+let arr = [1,2,3,4,5,6];
+console.log(arr.sumOfEven());
+```
+
+### JS 的成员查找机制
+
+- 当访问一个对象的属性（包括方法）时，首先查找这个对象自身有没有该属性
+- 如果没有就查找它的原型（也就是 `__proto__` 指向的 `prototype` 原型对象）
+- 如果还没有就查找原型对象的原型（`Object` 的原型对象）
+- 依此类推一直找到 `Object` 为止（null）
+- `__proto__` 的意义就在于 **为对象成员查找机制提供一个方向，或者说一条路线**
+
+### 继承
+
+ES6 之前没有 `extends` 继承，需要通过 **构造函数 + 原型对象** 模拟实现继承，称为 **组合继承**
+
+#### call() 方法
+
+可以修改函数运行时的 `this` 指向
+
+```js
+func.call(thisArg, args1, args2, ...)
+
+// thisArg：想让 func 的 this 指向谁
+```
+
+```js
+function fn(x, y) {
+  console.log(this)
+  console.log(x + y)
+}
+
+var obj = {
+  name: 'jojo'
+}
+
+// 用法一：方法调用
+fn.call();
+
+// 用法二：改变 this 指向
+fn.call(obj, 12, 13)  // 输出 {name: 'jojo'}   25
+
+// 示例 2
+function Foo(uname, age) {
+  this.uname = uname;
+  this.age = age;
+  console.log(this);
+}
+let obj = {x: 1};
+Foo.call(obj, 'rick', 30);
+
+// 输出：{x: 1, uname: 'rick', age: 30}，Foo 的 this 指向了 obj
+```
+
+#### 借用构造函数继承父类型属性
+
+通过 `call()` 把父类的 this 指向子类的 this，这样就可以实现继承
+
+```js
+// 父类
+function Person(name, age, sex) {
+  this.name = name;
+  this.age = age;
+  this.sex = sex;
+}
+// 子类
+function Student(name, age, sex, score) {
+  // 此时父类的 this 指向子类的 this，也就是说子类的 this 可以调用父类的参数了
+  Person.call(this, name, age, sex);  
+  this.score = score;
+}
+
+var s1 = new Student('zs', 18, '男', 100);
+console.log(s1); 
+```
+
+#### 借用原型对象继承父类型方法
+
+上述方法一般不能继承父类的方法，因为一般情况下，对象的方法都在构造函数的原型对象中设置，通过构造函数无法继承父类方法
+
+这个时候 prototype 就起了作用。我们可以令子类构造函数的原型对象等于父类构造函数的原型对象，这样子类也可以使用父类构造函数的原型对象上的成员方法了。即：
+
+```js
+childFoo.prototype = parentFoo.prototype;
+```
+
+但是这样又产生了一个问题：这样指定之后，子类构造函数和父类构造函数的对象原型 prototype 就 指向同一个内存地址了。也就是说，你在子类原型对象上绑定其特有的成员方法，父类上也会有，显然这是不合理的
+
+**解决方法：利用父类的实例对象** 
+
+核心原理：将子类所共享的方法提取出来，然后再执行 `Son.prototype = new Father();`，然后再将子类的 constructor 重新指向子类的构造函数
+
+本质：子类的 prototype 等于是实例化父类，因为父类实例化之后 **另外开辟空间，就不会影响原来父类原型对象**
+
+```js
+// 父构造函数
+function Human(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+// 父构造成员方法
+Human.prototype.eat = function () {
+  console.log("eat something");
+}
+// 子构造函数
+function Student(uname, age, major) {
+  Human.call(this, uname, age);
+  this.major = major;
+}
+// 创建实例对象，将子类原型对象指向实例对象
+Student.prototype = new Human();
+// 将子类的 constructor 重新指向子类的构造函数
+Student.prototype.constructor = Student;
+// 子构造函数特有成员方法
+Student.prototype.exam = function () {
+  console.log("I have exams");
+}
+let jack = new Student('Jack', 20, 'Math');
+jack.eat();
+jack.exam();
+console.log(Human.prototype); // Human 的原型上没有子类的 exam 方法
+```
+
+## ES6
+
+![ES6](imgs/es6.jpeg)
+
+[ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
+
+[阮一峰 -- ES6 入门教程](https://es6.ruanyifeng.com/)
+
+ES5 的先天性不足：比如变量提升、内置对象的方法不灵活、模块化实现不完善
+
+ES6 在 2015 年 6 月正式发布。ES6 既是一个历史名词，也是一个泛指，指代 5.1 版本以后的 JS 下一代标准，涵盖了 ES2015、2016、2017 等，而 ES2015 则是正式名称，特指该年发布的正式版本的语言标准
+
+### ES6 新特性
+
+- let 和 const
+- ES6 的模板字符串
+- 增强的函数
+- 扩展的字符串、对象、数组功能
+- 解构赋值
+- Symbol
+- Map 和 Set
+- 迭代器和生成器
+- Promise 对象
+- Proxy 对象
+- async 的用法
+- 类 class
+- 模块化实现
+
+有些浏览器可能不支持 ES6+，可以使用 **Bable** 进行编译，从而让浏览器获得支持
+
 ### ES6 中的类和对象
 
 对象是一组无序的相关属性和和方法的集合，**在 JS 中万物皆对象**，例如字符串、数值、数组、函数等
@@ -1890,35 +2272,49 @@ wbk.dance();
 wbk.sing(); //这里的 sing 里面的 this 指向实例对象 wbk
 ```
 
-## ES6
+### 类的本质
 
-![ES6](imgs/es6.jpeg)
+回忆下之前学的，在 ES5 之前通过 `构造函数 + 原型` 实现面向对象编程。其中，这种面向对象有这些特点：
+- 构造函数有原型对象 `prototype`
+- 构造函数原型对象 `prototype` 里面有 `constructor` 指向构造函数本身
+- 构造函数可以通过原型对象添加方法
+- 构造函数创建的实例对象有 `__proto__` 原型指向 构造函数的原型对象
 
-[ES6从入门到精通系列(全23讲)](https://www.bilibili.com/video/BV1ay4y1r78B?spm_id_from=333.337.search-card.all.click&vd_source=c727c2934b167656e7856cce64cc7eb5)
+而在 ES6 中，我们可以用 `class` 实现面向对象，那么这两者有什么联系呢？
 
-[阮一峰 -- ES6 入门教程](https://es6.ruanyifeng.com/)
+实质上，ES6 的类的本质还是 `function`。对应的，ES6 的 `class` 声明的类有以下特点：
+- 类有原型对象 `prototype`
+- 类有原型对象 `prototype`，里面也有 `constructor` 指向类的本身
+- 类的所有方法都定义在类的 `prototype` 属性上
+- 类创建的实例，里面也有 `__proto__` 指向类的 `prototype` 原型对象
+  
+所以 ES6 的类它的绝大部分功能，ES5 都可以做到，新的 class写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已
 
-ES5 的先天性不足：比如变量提升、内置对象的方法不灵活、模块化实现不完善
+**ES6 的类其实就是一种语法糖**。 
 
-ES6 在 2015 年 6 月正式发布。ES6 既是一个历史名词，也是一个泛指，指代 5.1 版本以后的 JS 下一代标准，涵盖了 ES2015、2016、2017 等，而 ES2015 则是正式名称，特指该年发布的正式版本的语言标准
+语法糖就是一种便捷写法。简单理解, 有两种方法可以实现同样的功能, 但是一种写法更加清晰、方便，那么这个方法就是语法糖
 
-### ES6 新特性
+可运行以下代码自行体验：
 
-- let 和 const
-- ES6 的模板字符串
-- 增强的函数
-- 扩展的字符串、对象、数组功能
-- 解构赋值
-- Symbol
-- Map 和 Set
-- 迭代器和生成器
-- Promise 对象
-- Proxy 对象
-- async 的用法
-- 类 class
-- 模块化实现
-
-有些浏览器可能不支持 ES6+，可以使用 **Bable** 进行编译，从而让浏览器获得支持
+```js
+class Foo { };
+let foo = new Foo();
+foo.__proto__ = {
+  constructor: Foo,
+  test1: function () {
+    console.log('test1');
+  },
+  test2: function () {
+    console.log('test2');
+  }
+}
+console.log(Foo.prototype);
+console.log(foo.__proto__);
+console.log(Foo.prototype == foo.__proto__);
+foo.test1();
+foo.test2();
+console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
+```
 
 ### let 和 const
 

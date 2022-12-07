@@ -33,44 +33,30 @@
   </body>
 
   <script>
-    let that;
-    class Star {
-      constructor(uname, age) {
-        that = this;
-        this.uname = uname;
-        this.age = age;
-        // btn按钮调用sing方法
-        this.btn = document.querySelector("button");
-        this.btn.onclick = this.sing;
-        // constructor 里面的this 指向的是 创建的实例对象
-        console.log("constructor: ", this);
-      }
-      sing() {
-        // 这个sing方法里面的 this 指向的是 btn 这个按钮，因为这个按钮调用了这个函数
-        console.log("sing:", this); // button
-        console.log(that.uname); // that里面存储的是 constructor 里面的 this
-      }
-      dance() {
-        // 这个dance里面的 this 指向的是实例对象 wbk 因为 wbk 调用了这个函数
-        console.log("dance:", this);
-      }
+    function Human(uname, age) {
+      this.uname = uname;
+      this.age = age;
     }
-    let wbk = new Star("wbk", 28);
-    wbk.dance();
-    wbk.sing()
-
-    // class Star {
-    //   constructor(uname, age) {
-    //     this.uname = uname;
-    //     this.age = age;
-    //   }
-    //   sing() {
-    //     // 这里如果不加 this 就会
-    //     console.log("唱歌的是：" + uname);
-    //   }
-    // }
-
-    // let star = new Star('wbk', 128)
-    // star.sing()
+    // 父构造成员方法
+    Human.prototype.eat = function () {
+      console.log("eat something");
+    };
+    // 子构造函数
+    function Student(uname, age, major) {
+      Human.call(this, uname, age);
+      this.major = major;
+    }
+    // 创建实例对象，将子类原型对象指向实例对象
+    Student.prototype = new Human();
+    // 将子类的 constructor 重新指向子类的构造函数
+    Student.prototype.constructor = Student;
+    // 子构造函数特有成员方法
+    Student.prototype.exam = function () {
+      console.log("I have exams");
+    };
+    let jack = new Student("Jack", 20, "Math");
+    jack.eat();
+    jack.exam();
+    console.log(Human.prototype);
   </script>
 </html>
