@@ -33,30 +33,10 @@
   </body>
 
   <script>
-    function Human(uname, age) {
-      this.uname = uname;
-      this.age = age;
-    }
-    // 父构造成员方法
-    Human.prototype.eat = function () {
-      console.log("eat something");
-    };
-    // 子构造函数
-    function Student(uname, age, major) {
-      Human.call(this, uname, age);
-      this.major = major;
-    }
-    // 创建实例对象，将子类原型对象指向实例对象
-    Student.prototype = new Human();
-    // 将子类的 constructor 重新指向子类的构造函数
-    Student.prototype.constructor = Student;
-    // 子构造函数特有成员方法
-    Student.prototype.exam = function () {
-      console.log("I have exams");
-    };
-    let jack = new Student("Jack", 20, "Math");
-    jack.eat();
-    jack.exam();
-    console.log(Human.prototype);
+    var arr = [1, 2, 3, 4, 5];
+    var flag = arr.every(function(val) {
+      return val > 10
+    })
+    console.log(flag)
   </script>
 </html>

@@ -1919,7 +1919,7 @@ function Student(uname, age, major) {
 }
 // 创建实例对象，将子类原型对象指向实例对象
 Student.prototype = new Human();
-// 将子类的 constructor 重新指向子类的构造函数
+// 别忘了将子类的 constructor 重新指向子类的构造函数
 Student.prototype.constructor = Student;
 // 子构造函数特有成员方法
 Student.prototype.exam = function () {
@@ -1929,6 +1929,116 @@ let jack = new Student('Jack', 20, 'Math');
 jack.eat();
 jack.exam();
 console.log(Human.prototype); // Human 的原型上没有子类的 exam 方法
+```
+
+### ES5 中的新增方法
+
+ES5 中给我们新增了一些方法，可以很方便地操作数组或者字符串，这些方法主要包括：
+- 数组方法
+- 字符串方法
+- 对象方法
+
+#### 数组方法
+
+迭代/遍历方法：
+
+1. `forEach()`：遍历数组，且不对原数组进行修改
+   1. 回调函数中的参数分别为 每个数组元素、索引值和数组本身
+   2. 一般省略回调函数中的后两个参数和 thisArg
+   
+```js
+array.forEach(function(value, index, arr) { }, thisArg);
+```
+
+```js
+var arr = [1,2,3,4,5];
+var sum = 0;
+arr.forEach(function(value) {
+  sum += value;
+})
+console.log(sum); // 15
+```
+
+2. `map()`：遍历数组，对数组中的每个元素调用一次参数，并将得到的新数值存到一个 **新数组** 中，返回这个新数组
+
+```js
+let newArray = arr.map(function(value, index, arr) { })
+```
+
+```js
+var arr = [1,2,3,4,5]
+// var newArray = arr.map(function(val) {
+//   return val + 10;
+// })
+var newArray = arr.map((val => val + 10)
+console.log(newArray) // [11, 12, 13, 14, 15]
+```
+
+```js
+var kvArray = [{key: 1, value: 10},
+               {key: 2, value: 20},
+               {key: 3, value: 30}];
+
+var reformattedArray = kvArray.map(function(obj) {
+  var rObj = {};
+  rObj[obj.key] = obj.value;
+  return rObj;
+});
+
+// reformattedArray 数组为： [{1: 10}, {2: 20}, {3: 30}],
+
+// kvArray 数组未被修改:
+// [{key: 1, value: 10},
+//  {key: 2, value: 20},
+//  {key: 3, value: 30}]
+```
+
+3. `filter()`：创建一个新数组，新数组中的元素是经过条件函数过滤后符合条件的元素，主要用于 **筛选数组**，并 **返回这个新数组**
+
+```js
+array.filter(function(value, index, arr) { })
+```
+
+```js
+var arr = [1, 2, 3, 4, 5];
+var newArr = arr.filter(function(val) {
+  // 得到所有偶数
+  return !(val & 1)
+
+  // return val > 3 // [4, 5]
+})
+console.log(newArr) // [2, 4]
+```
+
+4. `some()`：查找数组中是否有满足条件的元素。**返回布尔值**。只要找到一个就终止查找
+
+```js
+array.some(function(value, index, arr { })
+```
+
+```js
+var arr = [5,10,20,15]
+var flag = arr.some(function(val) {
+  // return val > 30 // false
+  return val < 20 // true
+})
+
+// 也可以用来查找指定元素
+var arr2 = ['wbk', 'jojo']
+var flag2 = arr2.some(function(val) {
+  return val == 'wbk' // true
+})
+```
+
+5. `every()`：和 `some()` 类似，也是返回一个布尔值，判断是否数组中的每一个元素都符合条件
+
+```js
+var arr = [1, 2, 3, 4, 5];
+var flag = arr.every(function(val) {
+  return val > 0  // true（所有元素都大于 0 所以返回 true
+  // return val > 3 // false（只有部分元素大于 3 所以返回 false）
+})
+console.log(flag)
 ```
 
 ## ES6
@@ -2282,7 +2392,7 @@ wbk.sing(); //这里的 sing 里面的 this 指向实例对象 wbk
 
 而在 ES6 中，我们可以用 `class` 实现面向对象，那么这两者有什么联系呢？
 
-实质上，ES6 的类的本质还是 `function`。对应的，ES6 的 `class` 声明的类有以下特点：
+实质上，**ES6 的类的本质还是 `function`**，也可以简单地认为类就是构造函数的另外一种写法。对应的，ES6 的 `class` 声明的类有以下特点：
 - 类有原型对象 `prototype`
 - 类有原型对象 `prototype`，里面也有 `constructor` 指向类的本身
 - 类的所有方法都定义在类的 `prototype` 属性上
