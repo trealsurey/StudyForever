@@ -2041,6 +2041,57 @@ var flag = arr.every(function(val) {
 console.log(flag)
 ```
 
+#### some() 和 forEach() 的区别
+
+在 `forEach()` 里面 return 并不会终止迭代（`filter()` 里面 return 也不会终止迭代）
+
+但是在 `some()` 中如果 return true 就可以终止迭代，效率更高。如果 return false 就会继续遍历
+
+####  字符串方法
+
+`trim()`：将字符串两端的空白字符删掉
+
+**并不影响原字符串，会返回一个新字符串**
+
+```js
+let str = "      aaaaaaaaaaa      bbbbbbb     "
+console.log(str.trim()) // aaaaaaaaaaa      bbbbbbb
+```
+
+#### 对象方法
+
+1. `Object.keys(obj)`：返回一个由属性名组成的数组，效果类似 `for...in`
+
+```js
+var wbk = {
+  name: 'wbk',
+  age: 28
+}
+console.log(Object.keys(wbk))
+
+// ['name', 'age']
+```
+
+2. `Object.defineProperty(obj, prop, descriptor)`：定义对象中新属性或修改原有的属性
+   1. `obj`：必需，目标对象
+   2. `prop`：必需，需定义或修改的属性的名字
+   3. `descriptor`：必需，目标属性所拥有的特性，以对象形式 `{ }` 书写
+      1. `value`：设置属性的值，默认为 `undefined`
+      2. `writable`：值是否可以重写，默认为 `false`
+      3. `enumerable`：目标属性是否可以被枚举，默认为 `false`
+      4. `configurable`：目标属性是否可以被删除 或 是否可以再次修改特性，默认为 `false`
+
+```js
+Object.defeneProperty(obj, prop, {
+  value: undefined,
+  writable: false,
+  enumerable: false,
+  configurable: false
+})
+
+// 默认属性表示：新增一个对象属性，该属性只读、不可迭代、不可再被修改特性
+```
+
 ## ES6
 
 ![ES6](imgs/es6.jpeg)
