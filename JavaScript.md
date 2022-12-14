@@ -2082,7 +2082,7 @@ console.log(Object.keys(wbk))
       4. `configurable`：目标属性是否可以被删除 或 是否可以再次修改特性，默认为 `false`
 
 ```js
-Object.defeneProperty(obj, prop, {
+Object.defineProperty(obj, prop, {
   value: undefined,
   writable: false,
   enumerable: false,
@@ -2091,6 +2091,175 @@ Object.defeneProperty(obj, prop, {
 
 // 默认属性表示：新增一个对象属性，该属性只读、不可迭代、不可再被修改特性
 ```
+
+### 函数进阶
+
+函数也属于对象，所有函数都是 `Function` 的实例化对象，同样有原型对象
+
+![函数对象原型链](imgs/%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%9E%8B%E9%93%BE.png)
+
+#### 函数的调用方式
+
+- 普通函数：直接加括号 `fn()`
+- 对象的方法：`obj.fn()`
+- 构造函数：`new fn()`
+- 绑定事件函数：`addEventListener('click', function() { })`
+- 定时器函数：`setInterval(function() { })`
+- 立即执行函数：`(function() { })()`，自动调用直接执行
+
+#### 函数内的 this 指向
+
+> 谁调用函数，this 就指向谁
+
+| 调用方式 | this 指向 |
+| :---: | :---: |
+| 普通函数 | window |
+| 构造函数 | 实例对象，原型对象里面的方法也指向实例对象 |
+| 对象的方法 | 该方法所属对象 |
+| 绑定事件函数 | 绑定事件对象 |
+| 定时器函数 | window |
+| 立即执行函数 | window |
+
+#### 改变函数内部的 this 指向
+
+1. `call()`
+   1.  调用函数
+   2.  改变函数内的 this 指向
+   3.  返回值就是函数的返回值，因为它就是调用函数
+   4.  当我们想改变 this 指向，同时想调用这个函数的时候，可以使用 call，可以用在继承中
+
+```js
+var obj = {
+  name: 'andy'
+}
+
+function fn(a, b) {
+  console.log(this) // {name : "andy"}
+  console.log(a + b)  // 3
+}
+
+fn.call(obj, 1, 2)
+```
+
+```js
+function Father(uname, age) {
+  this.uname = uname;
+  this.age = age;
+}
+
+function Son(uname, age) {
+  Father.call(this, uname, age);
+}
+
+var son = new Son('wbk', 28)
+```
+
+2. `apply()`
+ 
+3. `bind()`
+
+4. 三者区别
+   1. `call()` 和 `apply()` 
+   2. `call()` 和 `apply()`
+   3. `bind()` 
+
+### 严格模式
+
+[严格模式 from MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode)
+
+IE10+
+
+在严格的条件下运行 JS 代码
+
+严格模式对正常的 JS 语义做了一些修改
+- 消除了 JS 语法的一些不合理、不严谨之处，减少了一些怪异行为
+- 消除代码运行的一些不安全之处，保证代码运行的安全
+- 提高编译器效率，增加运行速度
+- 禁用了在 ECMAScript 的未来版本中可能会定义的一些语法，为未来新版本的 Javascript 做好铺垫。比如一些保留字如：class, enum, export, extends, import, super 不能做变量名
+
+#### 开启严格模式
+
+严格模式可以应用到整个脚本或个别函数中。因此在使用时，我们可以将严格模式分为为脚本开启严格模式和为函数开启严格模式两种情况
+
+1. 为 **脚本** 开启严格模式：需要在所有语句前放一个特定语句 `"use strict;"`
+
+```html
+<script>
+  'use strict';
+  console.log('严格模式已开启');
+<script/>
+```
+
+因为 `"use strict"` 加了引号，所以老版本的浏览器会把它当作一行普通字符串而忽略
+
+有的 script 脚本是严格模式，有的 script 脚本是正常模式，这样不利于文件合并，所以可以将整个脚本文件放在一个立即执行的匿名函数之中。这样独立创建一个作用域而不影响其他 script 脚本文件
+
+```html
+<script>
+  (function (){
+    "use strict";
+    var num = 10;
+  })();
+</script>
+```
+
+2. 为 **函数** 开启严格模式
+
+要给某个函数开启严格模式，需要把 `"use strict";` 声明放在函数体所有语句之前（第一行）
+
+```js
+function fn() {
+　"use strict";
+　return "这是严格模式。";
+}
+function foo() {
+  console.log("这不是严格模式");
+}
+```
+
+#### 严格模式中的变化
+
+严格模式对 JS 的语法和行为，都做了一些改变
+
+1. 变量规定
+   1. 在正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，变量都必须先用 `var/let/const` 命令声明，然后再使用
+   2. 严禁删除已经声明的变量。`delete x;` 语法是错误的
+
+2. 严格模式下 this 指向问题
+   1. 以前在全局作用域函数中的 this 指向 window 对象；**严格模式下全局作用域中函数中的 this 是 undefined**
+   2. 以前构造函数时不加 new 也可以调用，当普通函数，this 指向全局对象；严格模式下，如果构造函数不加 new 调用, this 指向的是 undefined 如果给他赋值则会报错
+   3. new 实例化的构造函数指向创建的对象实例
+   4. 定时器 this 依然指向 window
+   5. 事件、对象还是指向调用者
+
+3. 函数变化
+   1. 函数不能有重名的参数
+   2. 函数必须声明在顶层。ES6 会引入 “块级作用域”。为了与新版本接轨，不允许在非函数的代码块内声明函数
+
+### 高阶函数
+
+高阶函数是对其他函数进行操作的函数，它 **接收函数作为参数（最典型就是回调函数）** 或 **将函数作为返回值输出**
+
+```js
+function fn(callback){
+  callback&&callback();
+}
+fn(function(){alert('hi')}
+```
+
+```js
+function fn(){
+  return function() {}
+}
+fn();
+```
+
+### 闭包 :star:
+
+
+
+
+### 递归
 
 ## ES6
 
