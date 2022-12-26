@@ -115,3 +115,30 @@ const app = new Vue({
     </script>
 </body>
 ```
+
+## Vue 中的 MVVM
+
+MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形用户界面的开发和业务逻辑或后端逻辑（数据模型）的开发分离开来
+
+- Model：代表真实状态内容的领域模型（面向对象），或指代表内容的数据访问层（以数据为中心）
+- View：就像在 MVC 和 MVP 模型中的一样，视图层就是用户在屏幕上看到的结构、布局和外观 UI
+- ViewModel：暴露公共属性和命令的视图的抽象。MVVM 没有 MVC 的控制器，也没有 MVP 的 presenter，有的是一个绑定器，用来在视图和数据之间进行通信
+
+![MVVM模型](imgs/MVVMPattern.png)
+
+![Vue中的MVVM](imgs/Vue%E4%B8%AD%E7%9A%84mvvm.png)
+
+## Vue 的生命周期
+
+![Vue的生命周期](imgs/VueLifeCycle.png)
+
+### Vue 的生命周期函数
+
+- beforeCreate()
+- created()：一般在这里面放一些网络请求
+- beforeMount()
+- mounted()
+- beforeUpdate()
+- updated()
+- beforeDestroy()
+- destroyed()
