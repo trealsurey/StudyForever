@@ -4,7 +4,7 @@
 
 [参考教程 coderwhy](https://www.bilibili.com/video/BV15741177Eh/)
 
-## 1. 什么是 Vue
+## 什么是 Vue
 
 Vue (发音为 /vjuː/，类似 view) 是一款用于构建用户界面的 **渐进式** JavaScript 框架（渐进式意味着你可以将 Vue 作为应用的一部分嵌入其中，带来更丰富的交互体验）。它基于标准 HTML、CSS 和 JavaScript 构建，并提供了一套 **声明式的、组件化的** 编程模型，帮助你高效地开发用户界面
 
@@ -16,11 +16,11 @@ Vue 的两个核心功能：
 - **声明式渲染**：Vue 基于标准 HTML 拓展了一套模板语法，使得我们可以声明式地描述最终输出的 HTML 和 JavaScript 状态之间的关系
 - **响应性**：Vue 会自动跟踪 JavaScript 状态并在其发生变化时响应式地更新 DOM
 
-### 1.1 Vue 与其他框架的对比
+### Vue 与其他框架的对比
 
 [Vue与其他框架的对比](http://caibaojian.com/vue/guide/comparison.html)
 
-### 1.2 Vue 常见的高级功能
+### Vue 常见的高级功能
 
 - 解耦视图和数据
 - 可复用的组件
@@ -28,7 +28,7 @@ Vue 的两个核心功能：
 - 状态管理
 - 虚拟 DOM
 
-## 2. 安装
+## 安装
 
 一般有三种方式：
 
@@ -48,17 +48,27 @@ Vue 的两个核心功能：
 
 3. 通过 npm 安装：后续通过 webpack 和 CLI 的使用，经常会使用这种方式
 
-## 3. Hello Vue
+## Hello Vue
+
+```html
+<div id="app">
+  <h1>{{message}}</h1>
+  <h2>{{message}}, by EvanYou</h2>
+  <h3>{{firstName + lastName}}</h3>
+  <h3>{{firstName + ' ' + lastName}}</h3>
+  <h3>{{firstName}} {{lasrName}}</h3>
+</div>
+```
 
 ```js
-// <div id="app">{{message}}</div>
-
 const app = new Vue({
     // 挂载要管理的元素
     el: "#app",
     // 定义数据
     data: {
-        message: "Hello Vue!"
+        message: "Hello Vue",
+        firstName: 'Jojo',
+        lastName: 'Wan'
     }
 })
 ```
@@ -66,12 +76,15 @@ const app = new Vue({
 创建 Vue 对象时传入了一些 option `{ }`，其中包含
 - `el`：该属性决定了这个 Vue 对象挂载到哪一个元素
 - `data`：该属性中通常会存储一些数据，可以是自己定义的，也可以是从服务器中获取的
+- ……，还有许多其他的 options，具体参考官网
 
 原生 JS 方式属于命令式编程范式，不能做到数据和页面的完全分离；而 Vue 等框架采用的是声明式编程范式，可以做到完全分离，在改变数据时完全不需要改动页面
 
 在浏览器 console 中可以直接 `app.message = "today is a good day"` 修改 message 的值，页面也会同步修改
 
 响应式编程：改变 JS 中的 message，HTML 中的数据也会进行响应发生变化
+
+插值语法中，不仅仅可以直接写变量，也可以写简单的表达式
 
 ```html
 <!-- 还可以有更复杂的操作，比如展示列表 -->
@@ -116,6 +129,48 @@ const app = new Vue({
 </body>
 ```
 
+### v-once
+
+元素和组件只渲染一次，不会随着数据的改变而改变
+
+```html
+<div id="app">
+  <h2>{{message}}</h2>
+  <!-- 更改 message 的值，这里的 显示的内容不会改变 -->
+  <h2 v-once>{{message}}</h2> 
+</div>
+```
+
+### v-html
+
+对 HTML 进行解析，并且显示对应内容
+
+后面跟一个 string，对 string 进行 HTML 解析并渲染
+
+```html
+<div id="app">
+  <h2>{{link}}</h2>
+  <h2 v-html="link"></h2>
+</div>
+
+<!-- link="<a href="http://www.baidu.com">百度一下</a>" -->
+```
+
+### v-pre
+
+用于跳过这个元素和它子元素的编译过程，用于显示原本的内容。比如，就想显示大括号和里面的内容
+
+```html
+<div id="app">
+  <!-- 显示 Hello World -->
+  <h2>{{message}}</h2>
+  <!-- 显示 {{message}} -->
+  <h2 v-pre>{{message}}</h2> 
+</div>
+
+<!-- message: 'Hello World' -->
+```
+
 ## Vue 中的 MVVM
 
 MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形用户界面的开发和业务逻辑或后端逻辑（数据模型）的开发分离开来
@@ -141,4 +196,21 @@ MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形�
 - beforeUpdate()
 - updated()
 - beforeDestroy()
-- destroyed()
+- destroyed() 
+  
+## 基础语法
+
+### v-bind
+
+用于绑定一个或多个属性值，或者向另一个组件传递 props 值
+
+多用在图片的 src、超链接的 href、动态绑定类和样式等等
+
+```html
+<div id="app">
+  <a v-bind:href="link">Vue官网</a>
+  <img v-bind:src="logoUrl" alt="">
+</div>
+
+<!-- link 和 logoUrl 都写在 data 里 -->
+```

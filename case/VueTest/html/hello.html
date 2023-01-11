@@ -4,39 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello Vue</title>
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
   </head>
-
   <body>
     <div id="app">
-      <h1>{{message}}</h1>
-      <h2>当前计数：{{counter}}</h2>
-      <button v-on:click="increment">+</button>
-      <button @click="decrement">-</button>
+      <a v-bind:href="url">百度一下</a>
     </div>
 
-    <script src="../js/vue.js"></script>
-
     <script>
-      const app = new Vue({
+      const vm = new Vue({
         el: "#app",
         data: {
-          message: "Hello Vue",
-          counter: 0,
-        },
-        methods: {
-          increment: function () {
-            console.log("当前计数 + 1");
-            this.counter++;
-          },
-          decrement: function () {
-            console.log("当前计数 - 1");
-            this.counter--;
-          },
+          url: "http://www.baidu.com",
         },
       });
     </script>
   </body>
 </html>
-
-!
