@@ -217,9 +217,9 @@ MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形�
 <!-- link 和 logoUrl 都写在 data 里 -->
 ```
 
-#### 动态绑定属性
+#### 动态绑定 class
 
-- 可以通过 **对象/数组** 来动态绑定
+- 可以通过 **对象/数组** 来动态绑定（其中数组形式用处较少）
 - 动态绑定 class，和普通的 class 声明不冲突
 - 如果 class 值过于复杂，可以写在 methods 或者 computed 中
 
@@ -262,8 +262,9 @@ MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形�
 </html>
 ```
 
+上面可以改写成如下格式：将复杂部分单独放到一个方法中
+
 ```html
-<!-- 上面可以改写成如下格式 -->
 <h1 :class="getClass()">你好啊</h1>
 ```
 
@@ -274,5 +275,49 @@ getClass: function() {
 }
 ```
 
-#### 动态绑定数组
+#### 一个案例：点击 li 中的元素变颜色
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8" /><title>Document</title><script src="../js/vue.js"></script></head>
+  <style>
+    .active {
+      color: coral
+    }
+  </style>
+
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="(movie, idx) in movies" 
+            :class="{'active': curIdx === idx}" 
+            @click="change(idx)">
+            {{movie}}
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          movies: [
+            'Interstellar',
+            'Seven',
+            'Frozen'
+          ],
+          // 重点就在于这个变量，用来监听当前是第几个元素
+          curIdx: 0
+        },
+        methods: {
+          change: function(index) {
+            this.curIdx = index
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+
+```
