@@ -206,6 +206,8 @@ MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形�
 
 多用在图片的 src、超链接的 href、动态绑定类和样式等等
 
+也可以使用语法糖 `<a :href="link">`
+
 ```html
 <div id="app">
   <a v-bind:href="link">Vue官网</a>
@@ -214,3 +216,63 @@ MVVM，Model-View-ViewModel，是一种软件架构模式。有助于将图形�
 
 <!-- link 和 logoUrl 都写在 data 里 -->
 ```
+
+#### 动态绑定属性
+
+- 可以通过 **对象/数组** 来动态绑定
+- 动态绑定 class，和普通的 class 声明不冲突
+- 如果 class 值过于复杂，可以写在 methods 或者 computed 中
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head><script src="../js/vue.js"></script></head>
+
+  <style>
+    .active {
+      color: coral
+    }
+    .line {
+      text-decoration: line-through;
+    }
+  </style>
+
+  <body>
+    <div id="app">
+      <!-- 这里可以绑定一个对象，从而可以动态控制样式 -->
+      <h1 :class="{active: isActive, line: isLine}">你好啊</h1>
+      <button @click="change">改变样式</button>
+    </div>
+
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          isActive: true,
+          isLine: true
+        },
+        methods: {
+          change: function() {
+            this.isActive = !this.isActive
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+```
+
+```html
+<!-- 上面可以改写成如下格式 -->
+<h1 :class="getClass()">你好啊</h1>
+```
+
+```js
+// vm.methods 中添加一个函数
+getClass: function() {
+  return {active: this.isActive, line: this.isLine}
+}
+```
+
+#### 动态绑定数组
+

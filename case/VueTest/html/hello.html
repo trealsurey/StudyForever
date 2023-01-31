@@ -7,9 +7,20 @@
     <title>Document</title>
     <script src="../js/vue.js"></script>
   </head>
+
+  <style>
+    .active {
+      color: coral
+    }
+    .line {
+      text-decoration: line-through;
+    }
+  </style>
+
   <body>
     <div id="app">
-      <a v-bind:href="url">百度一下</a>
+      <h1 :class="getClass()">你好啊</h1>
+      <button @click="change">改变样式</button>
     </div>
 
     <script>
@@ -17,7 +28,17 @@
         el: "#app",
         data: {
           url: "http://www.baidu.com",
+          isActive: true,
+          isLine: true
         },
+        methods: {
+          change: function() {
+            this.isActive = !this.isActive
+          },
+          getClass: function() {
+            return {active: this.isActive, line: this.isLine}
+          }
+        }
       });
     </script>
   </body>
