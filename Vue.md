@@ -319,5 +319,9 @@ getClass: function() {
     </script>
   </body>
 </html>
-
 ```
+
+#### 动态绑定 style
+
+`v-bind:style` or `:style`
+
