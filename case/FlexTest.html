@@ -11,38 +11,23 @@
     * {
       padding: 0;
       margin: 0;
+      box-sizing: border-box;
     }
 
-    .container {
+    body {
       display: flex;
-      font-size: 30px;
-      color: #fff;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
     }
 
-    .left,
-    .right {
-        width: 100px;
-        height: 100px;
-    }
-
-    .left {
-        background-color: lightblue;
-    }
-
-    .center {
-         background-color: lightcoral;
-         flex: 1;
-    }
-
-    .right {
-        background-color: lightgreen;
+    body img {
+      height: 500px;
+      width: 500px;
+      border: 1px solid red;
     }
   </style>
   <body>
-    <div class="container">
-        <div class="left">1</div>
-        <div class="center">2</div>
-        <div class="right">3</div>
-    </div>
+        <img src="../imgs/pikaqiu.jpeg" alt="">
   </body>
 </html>

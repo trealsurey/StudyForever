@@ -339,8 +339,10 @@ getClass: function() {
 
 ### 计算属性
 
+某些情况下我们需要将数据进行转化后再显示，或者需要将多个数据结合起来进行显示，那么就需要用到计算属性
+
 ```js
-// 在 HTML 中只要直接插入 {{fullName}} 就可以了，不需要加括号（语法糖） 
+// 在 HTML 中只要直接插入 {{fullName}} 就可以了，不需要加括号（语法糖）  
 
 const vm = new Vue({
   el: "#app",
@@ -357,3 +359,143 @@ const vm = new Vue({
   methods: {}
 });
 ```
+
+计算属性的完整写法中是有 getter 和 setter 的，但是一般不希望别人更改所以都会省略 setter，然后再简写成上面的形式
+
+```js
+computed: {
+  fullName: {
+    set: function() {},
+    get: function() {
+      return this.firstName + ' ' + this.lastName 
+    }
+  }
+}
+```
+
+#### 计算属性的缓存
+
+`computed` 比 `methods` 好的地方在于：当基本属性值没有发生变化时，多次调用计算值只需要计算一次，Vue 内部已经做好了缓存
+
+而 `methods` 则是调用几次，就计算几次。在调用次数多且计算逻辑复杂的情况下就很消耗性能
+
+```js
+// {{fullName}}
+// {{fullName}}
+// {{fullName}}
+// {{getFullName()}}
+// {{getFullName()}}
+// {{getFullName()}}
+
+const vm = new Vue({
+  el: "#app",
+  data: {
+    firstName: 'Lucy',
+    lastName: 'Lee'
+  },
+  computed: {
+    fullName: function() {
+      console.log('---computed---')
+      return this.firstName + ' ' + this.lastName
+    }
+  },
+  methods: {
+    getFullName() {
+      console.log('---methods---')
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+});
+
+// computed
+// methods
+// methods
+// methods
+```
+
+### v-on
+
+在 Vue 中使用 `v-on` 来绑定事件监听器，可以简写为 `@`
+
+#### v-on 中的参数
+
+当 `@click` 需要调用函数时，需要注意
+- 如果该方法不需要额外参数，那么方法后面的 `()` 可以不添加
+- 如果方法本身有一个参数，且在传参时没有传任何东西，也没有写 `()`，那么会默认将原生事件 `event` 参数传递进去
+- 如果需要同时传入 **其他参数和 event** 时，可以通过 `$event` 传入事件
+
+```html
+<body>
+  <div id="app">
+    <button @click="btn1Click">按钮1</button>
+    <button @click="btn2Click('jojo')">按钮2</button>
+    <button @click="btn2Click()">按钮3</button>
+    <button @click="btn2Click">按钮4</button>
+    <button @click="btn3Click">按钮5</button>
+    <button @click="btn3Click('jojo', $event)">按钮6</button>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      methods: {
+        btn1Click() {
+          console.log('btn1Click')
+        },
+        btn2Click(name) {
+          console.log(name);
+        }
+      },
+    });
+  </script>
+</body>
+
+<!-- 
+  按钮1
+  btn1Click
+
+  按钮2
+  jojo
+
+  按钮3
+  undefined
+
+  按钮4
+  PointerEvent{}
+
+  按钮5
+  PointerEvent{} undefined
+
+  按钮6
+  jojo PointerEvent{}
+ -->
+```
+
+#### v-on 修饰符
+
+在某些情况下，拿到 event 的目的是进行一些事件处理，Vue 提供了一些修饰符来帮组我们方便地处理一些事件
+
+以下是一些常用的修饰符：
+- `.stop`：调用 event.stopPropagation() 停止冒泡 
+- `.prevent`：调用 event.preventDefault()
+- `.{keyCode | keyAlias}`：当事件是由特定键触发时才进行回调
+- `.native`：监听组件根元素的原生事件
+- `.once`：只触发一次回调
+
+```html
+<button @click.stop="btnClick">按钮</button>
+
+<!-- 也可以连着写 -->
+<button @click.stop.prevent="btnClick">按钮</button>
+
+<!-- 只有当按下 enter 键的时候才会执行回调函数 -->
+<input type="text" @keyup.enter="keyupClick" />
+<input type="text" @keyup.13="keyupClick" />
+```
+
+### v-if, v-else-if, v-else
+
+逻辑与正常 if 判断一样，可以根据表达式的值在 DOM 中渲染或销毁元素或组件
+
+当判断条件为 false 时，对应的元素以及其子元素不会渲染，也就是根本不会有对应的标签出现在 DOM 中
