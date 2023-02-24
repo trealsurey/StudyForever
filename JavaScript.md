@@ -2646,6 +2646,17 @@ foo.test2();
 console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
 ```
 
+### Promise
+
+Promise 是一个类
+
+当我们需要告诉调用者，一会会返回回调数据时，就可以创建一个 Promise 对象
+
+通过 `new` 创建 Promise 对象时，需要传入一个回调函数，称之为 `executor`
+- 这个回调函数会被立即执行，并且传入另外两个回调函数 `resolve` `reject`
+  - 当调用 `resolve` 时，会执行 Promise 对象的 `then()` 方法传入的回调函数
+  - 当调用 `reject` 时，会执行 Promise 对象的 `catch()` 方法传入的回调函数
+
 ### let 和 const
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)

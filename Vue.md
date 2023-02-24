@@ -325,3 +325,35 @@ getClass: function() {
 
 `v-bind:style` or `:style`
 
+```html
+<!-- <div :style="{属性名：属性值，属性名：属性值}"></div> -->
+
+<!-- 两种方式都可以，比较习惯驼峰 -->
+<!-- '50px' 必须加上单引号，否则会被当做一个变量，就会报错 -->
+<div :style="{fontSize: '50px'}">hello world</div>
+<div :style="{'font-size': '50px'}">hello world</div>
+
+<!-- 绑定一个变量，然后在 vm.data 中定义 finalSize: '50px' -->
+<div :style="{fontSize: finalSize}">Hello world</div>
+```
+
+### 计算属性
+
+```js
+// 在 HTML 中只要直接插入 {{fullName}} 就可以了，不需要加括号（语法糖） 
+
+const vm = new Vue({
+  el: "#app",
+  data: {
+    firstName: 'Lucy',
+    lastName: 'Lee'
+  },
+  computed: {
+    // 既然是计算“属性”，那么起名时尽量不要带动词
+    fullName: function() {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+  methods: {}
+});
+```
