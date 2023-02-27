@@ -8,120 +8,26 @@
     <script src="../js/vue.js"></script>
   </head>
 
-  <style>
-    table {
-      width: 700px;
-      /* height: 400px; */
-      border: 1px solid #ccc;
-      border-collapse: collapse;
-      text-align: center;
-    }
-    .notShow {
-      display: none;
-    }
-    thead {
-      background-color: #eee;
-      color: #666;
-      height: 40px;
-    }
-    td,
-    th {
-      border: 1px solid #ccc;
-    }
-    tr th {
-      width: 15px;
-    }
-  </style>
+  <style></style>
 
   <body>
-    <div id="app">
-      <div v-if="!notShow">
-        <table :class="{notShow: notShow}">
-          <thead>
-            <tr>
-              <th></th>
-              <th>书籍名称</th>
-              <th>价格</th>
-              <th>购买数量</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(book, idx) in books">
-              <td>{{book.id}}</td>
-              <td>{{book.name}}</td>
-              <td>￥{{book.price.toFixed(2)}}</td>
-              <td>
-                <button @click="decrement(idx)">-</button>
-                {{book.count}}
-                <button @click="increment(idx)">+</button>
-              </td>
-              <td><button @click="remove(idx)">移除</button></td>
-            </tr>
-          </tbody>
-        </table>
-        总价：￥{{getTotalPrice()}}
-      </div>
-      <div v-else>
-        购物车已清空！！
-      </div>
-    </div>
+    <div id="app"></div>
 
     <script>
       const vm = new Vue({
         el: "#app",
-        data: {
-          books: [
-            {
-              id: 1,
-              name: "《算法导论》",
-              price: 85.0,
-              count: 1,
-            },
-            {
-              id: 2,
-              name: "《UNIX编程艺术》",
-              price: 59.0,
-              count: 1,
-            },
-            {
-              id: 3,
-              name: "《编程珠玑》",
-              price: 39.0,
-              count: 1,
-            },
-            {
-              id: 4,
-              name: "《代码大全》",
-              price: 128.0,
-              count: 1,
-            },
-          ],
-          notShow: false,
-        },
+        data: {},
         computed: {},
-        methods: {
-          getTotalPrice() {
-            let totalPrice = 0;
-            for (let book of this.books) {
-              totalPrice += book["price"] * book.count;
-            }
-            return totalPrice.toFixed(2);
-          },
-          increment(idx) {
-            this.books[idx].count++;
-          },
-          decrement(idx) {
-            if (this.books[idx].count == 0) this.books[idx].count = 0;
-            else this.books[idx].count--;
-          },
-          remove(idx) {
-            this.books.splice(idx, 1);
-            this.getTotalPrice();
-            if (this.books.length == 0) this.notShow = true;
-          },
-        },
+        methods: {},
       });
+
+      const nums = [10, 103, 40, 50, 340, 540, 20, 610, 30];
+      let total = nums
+        .filter((num) => num < 100)
+        .map((num) => num * 2)
+        .reduce((preVal, num) => preVal + num);
+
+        console.log(total);
     </script>
   </body>
 </html>

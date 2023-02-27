@@ -2041,6 +2041,32 @@ var flag = arr.every(function(val) {
 console.log(flag)
 ```
 
+6. `reduce()`：对数组中的所有内容进行汇总
+
+```js
+// 数字求和
+const nums = [10, 20, 30, 40, 50]
+// preVal 是上一次迭代结束得到的返回值，也就是上一次迭代 return 的值
+// 初始值为0，不写默认为 0 
+let total = nums.reduce(function(preVal, num) {
+  return preVal + num
+}, 0)
+
+// 使用箭头函数只需一行
+let total = nums.reduce((preVal, num) => preVal + num)
+```
+
+```js
+// 一个小 case：求数组中所有小于100的数的2倍的和
+const nums = [10, 103, 40, 50, 340, 540, 20, 610, 30]
+let total = nums
+  .filter(num => num < 100)
+  .map(num => num * 2)
+  .reduce((preVal, num) => preVal + num)
+
+console.log(total)  // 300
+```
+
 #### some() 和 forEach() 的区别
 
 在 `forEach()` 里面 return 并不会终止迭代（`filter()` 里面 return 也不会终止迭代）
