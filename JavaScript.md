@@ -2047,7 +2047,7 @@ console.log(flag)
 // 数字求和
 const nums = [10, 20, 30, 40, 50]
 // preVal 是上一次迭代结束得到的返回值，也就是上一次迭代 return 的值
-// 初始值为0，不写默认为 0 
+// 初始值为0
 let total = nums.reduce(function(preVal, num) {
   return preVal + num
 }, 0)

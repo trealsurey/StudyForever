@@ -100,16 +100,17 @@
           ],
           notShow: false,
         },
-        computed: {
-            
-        },
+        computed: {},
         methods: {
           getTotalPrice() {
-            let totalPrice = 0;
-            for (let book of this.books) {
-              totalPrice += book.price * book.count;
-            }
-            return totalPrice.toFixed(2);
+            // let totalPrice = 0;
+            // for (let book of this.books) {
+            //   totalPrice += book.price * book.count;
+            // }
+
+            return this.books.reduce(function(preVal, book) {
+              return preVal + book.price * book.count
+            }, 0).toFixed(2)
           },
           increment(idx) {
             this.books[idx].count++;
