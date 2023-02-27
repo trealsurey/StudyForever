@@ -35,6 +35,7 @@
 
   <body>
     <div id="app">
+      <!-- 这里直接写成 <div v-if="books.length"> 也可以 -->
       <div v-if="!notShow">
         <table :class="{notShow: notShow}">
           <thead>
@@ -52,7 +53,9 @@
               <td>{{book.name}}</td>
               <td>￥{{book.price.toFixed(2)}}</td>
               <td>
-                <button @click="decrement(idx)">-</button>
+                <button @click="decrement(idx)" :disabled="book.count == 1">
+                  -
+                </button>
                 {{book.count}}
                 <button @click="increment(idx)">+</button>
               </td>
@@ -62,9 +65,7 @@
         </table>
         总价：￥{{getTotalPrice()}}
       </div>
-      <div v-else>
-        购物车已清空！！
-      </div>
+      <div v-else>购物车已清空！！</div>
     </div>
 
     <script>
@@ -99,12 +100,14 @@
           ],
           notShow: false,
         },
-        computed: {},
+        computed: {
+            
+        },
         methods: {
           getTotalPrice() {
             let totalPrice = 0;
             for (let book of this.books) {
-              totalPrice += book["price"] * book.count;
+              totalPrice += book.price * book.count;
             }
             return totalPrice.toFixed(2);
           },
@@ -112,8 +115,7 @@
             this.books[idx].count++;
           },
           decrement(idx) {
-            if (this.books[idx].count == 0) this.books[idx].count = 0;
-            else this.books[idx].count--;
+            this.books[idx].count--;
           },
           remove(idx) {
             this.books.splice(idx, 1);
