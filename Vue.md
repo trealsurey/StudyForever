@@ -499,3 +499,24 @@ const vm = new Vue({
 逻辑与正常 if 判断一样，可以根据表达式的值在 DOM 中渲染或销毁元素或组件
 
 当判断条件为 false 时，对应的元素以及其子元素不会渲染，也就是根本不会有对应的标签出现在 DOM 中
+
+```html
+<h1 v-if="isShow">isShow 为 true 时，显示这里</h1>
+<h2 v-else>isShow 为 false 时，显示这里</h2>
+```
+
+```html
+<p v-if="score>=90">优秀</p>
+<p v-else-if="score>=75">良好</p>
+<p v-else-if="score>=60">及格</p>
+<p v-else>不及格</p>
+```
+
+### v-show
+
+同样可以控制节点的显示和隐藏
+
+- `v-show` 控制的是节点的 `display` 属性，通过查看浏览器工具可以看到，隐藏时就是给节点添加 `display: none;`
+- `v-if` 则是直接在 DOM 树中删除节点，根本不会渲染
+
+> **如果需要频繁切换 显示/隐藏，那么使用 `v-show` 性能更佳**

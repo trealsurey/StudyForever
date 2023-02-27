@@ -16,35 +16,32 @@
 
   <body>
     <div id="app">
-      <button @click="btn1Click">按钮1</button>
-      <button @click="btn2Click('jojo')">按钮2</button>
-      <button @click="btn2Click()">按钮3</button>
-      <button @click="btn2Click">按钮4</button>
-      <button @click="btn3Click">按钮5</button>
-      <button @click="btn3Click('jojo', $event)">按钮6</button>
-      <button @click="btn3Click">按钮7</button>
-      <br/>
-      <input type="text" @keyup.13="keyupClick" />
+      {{type}}
+      <input type="text" :placeholder="type" @focus="inputFocus" />
+      <button @click="changeType">切换类型</button>
     </div>
 
     <script>
       const vm = new Vue({
         el: "#app",
-        data: {},
-        methods: {
-          btn1Click() {
-            console.log("btn1Click");
-          },
-          btn2Click(name) {
-            console.log(name);
-          },
-          btn3Click(name, event) {
-            console.log(name, event);
-          },
-          keyupClick() {
-            console.log("keyup");
-          }
+        data: {
+          type: '用户账号',
+          isUser: true
         },
+        methods: {
+          changeType() {
+            if (this.isUser) {
+              this.type = '用户账号'
+            } else  {
+              this.type = '用户邮箱'
+            }
+            this.isUser = !this.isUser
+          },
+          inputFocus() {
+            let input = document.querySelector('input')
+            input.setAttribute('placeholder', '')
+          }
+        }
       });
     </script>
   </body>
