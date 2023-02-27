@@ -16,32 +16,25 @@
 
   <body>
     <div id="app">
-      {{type}}
-      <input type="text" :placeholder="type" @focus="inputFocus" />
-      <button @click="changeType">切换类型</button>
+      <ul>
+       <li v-for="(value, key, idx) in infos">{{idx+1}}. {{key}}: {{value}}</li>  
+      </ul>
     </div>
 
     <script>
       const vm = new Vue({
         el: "#app",
         data: {
-          type: '用户账号',
-          isUser: true
+          names: ["lucy", "jojo", "wbk"],
+          infos: {
+            name: "jojo",
+            age: 18,
+            sex: 'female',
+          },
         },
         methods: {
-          changeType() {
-            if (this.isUser) {
-              this.type = '用户账号'
-            } else  {
-              this.type = '用户邮箱'
-            }
-            this.isUser = !this.isUser
-          },
-          inputFocus() {
-            let input = document.querySelector('input')
-            input.setAttribute('placeholder', '')
-          }
-        }
+
+        },
       });
     </script>
   </body>

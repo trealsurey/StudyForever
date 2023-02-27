@@ -427,12 +427,12 @@ const vm = new Vue({
 ```html
 <body>
   <div id="app">
-    <button @click="btn1Click">按钮1</button>
-    <button @click="btn2Click('jojo')">按钮2</button>
-    <button @click="btn2Click()">按钮3</button>
-    <button @click="btn2Click">按钮4</button>
-    <button @click="btn3Click">按钮5</button>
-    <button @click="btn3Click('jojo', $event)">按钮6</button>
+    <button @click="btn1Click">按钮1</button>  <!-- btn1Click -->
+    <button @click="btn2Click('jojo')">按钮2</button> <!-- jojo -->
+    <button @click="btn2Click()">按钮3</button> <!-- undefined -->
+    <button @click="btn2Click">按钮4</button> <!-- PointerEvent{} -->
+    <button @click="btn3Click">按钮5</button> <!-- PointerEvent{} undefined -->
+    <button @click="btn3Click('jojo', $event)">按钮6</button> <!-- jojo PointerEvent{} -->
   </div>
 
   <script>
@@ -450,26 +450,6 @@ const vm = new Vue({
     });
   </script>
 </body>
-
-<!-- 
-  按钮1
-  btn1Click
-
-  按钮2
-  jojo
-
-  按钮3
-  undefined
-
-  按钮4
-  PointerEvent{}
-
-  按钮5
-  PointerEvent{} undefined
-
-  按钮6
-  jojo PointerEvent{}
- -->
 ```
 
 #### v-on 修饰符
@@ -516,7 +496,57 @@ const vm = new Vue({
 
 同样可以控制节点的显示和隐藏
 
-- `v-show` 控制的是节点的 `display` 属性，通过查看浏览器工具可以看到，隐藏时就是给节点添加 `display: none;`
+- `v-show` 控制的是节点的 `display` 属性，隐藏时就是给节点添加 `display: none;`
 - `v-if` 则是直接在 DOM 树中删除节点，根本不会渲染
 
 > **如果需要频繁切换 显示/隐藏，那么使用 `v-show` 性能更佳**
+
+### v-for
+
+#### 遍历数组
+
+```html
+<!-- 不使用索引值 -->
+<ul>
+  <li v-for="name in names">"{{name}}</li>
+</ul>
+```
+
+```html
+<!-- 使用索引值 -->
+<ul>
+  <li v-for="(name, idx) in names">{{idx+1}}. {{name}}</li>
+</ul>
+```
+
+#### 遍历对象
+
+```html
+<!-- 如果只获取一个值，那么拿到的是 value 值 -->
+<ul>
+  <!-- 拿到的是 jojo 18 female -->
+  <li v-for="item in infos">"{{item}}</li>  
+</ul>
+
+<!-- 
+  infos: {
+    name: 'jojo',
+    age: 18,
+    sex: 'female'
+  }
+ -->
+```
+
+```html
+<!-- 获取 key 和 value，(value, key) 注意后面的 key -->
+<ul>
+  <li v-for="(value, key) in infos">{{key}}: {{value}}</li>  
+</ul>
+```
+
+```html
+<!-- 获取 key 和 value 和 index， 不常用 -->
+<ul>
+  <li v-for="(value, key, idx) in infos">{{idx+1}}. {{key}}: {{value}}</li>  
+</ul>
+```
