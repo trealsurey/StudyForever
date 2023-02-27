@@ -538,7 +538,7 @@ const vm = new Vue({
 ```
 
 ```html
-<!-- 获取 key 和 value，(value, key) 注意后面的 key -->
+<!-- 获取 key 和 value，(value, key) 注意后面的是 key -->
 <ul>
   <li v-for="(value, key) in infos">{{key}}: {{value}}</li>  
 </ul>
@@ -550,3 +550,25 @@ const vm = new Vue({
   <li v-for="(value, key, idx) in infos">{{idx+1}}. {{key}}: {{value}}</li>  
 </ul>
 ```
+
+> **官方推荐使用 `v-for` 时，给对应的元素或者组件添加一个 `:key` 属性**
+>
+> **根据 Diff 算法，主要是为了更高效地更新虚拟 DOM**
+
+### Diff 算法 :star:
+
+*TODO*
+
+### 数组中哪些方法是响应式的
+
+- push()
+- pop()
+- shift()
+- unshift()
+- splice()
+- sort()
+- reverse()
+
+通过索引值改变数组中的元素 不是响应式的（注：Vue3 中已经支持了）
+
+可以使用 `Vue.set(修改的对象，修改的元素，修改后的值)` 来进行响应式修改
