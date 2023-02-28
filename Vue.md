@@ -572,3 +572,83 @@ const vm = new Vue({
 通过索引值改变数组中的元素 不是响应式的（注：Vue3 中已经支持了）
 
 可以使用 `Vue.set(修改的对象，修改的元素，修改后的值)` 来进行响应式修改
+
+### v-model
+
+实现 **表单** 元素和数据的双向绑定，也可以用于 `textarea` 元素 
+
+```html
+<input type="text" v-model="message">
+{{message}}
+
+<!-- 改变 app.message 的值页面也会跟着改变；
+同理如果改变输入框中的值，下面显示的 message 也会改变 -->
+```
+
+**原理**：其实就是一个语法糖，本质就是下面两个操作
+- `v-bind` 绑定一个 `value` 属性
+- `v-on` 给当前元素绑定 `input` 事件
+
+```html
+<input type="text" v-model="message">
+
+<!-- 等同于 -->
+
+<input type="text" :value="message" @input="message = $event.target.value">
+```
+
+```html
+<!-- v-model 结合 radio 使用 -->
+<!-- 用了 v-model 就不要用 name 来进行单选框的互斥选择了 -->
+<input type="radio" value="男" v-model="sex">男
+<input type="radio" value="女" v-model="sex">女
+<h4>您选择的是： {{sex}}</h4>
+```
+
+```html
+<!-- v-model 结合 checkbox 多选框 -->
+<input type="checkbox" value="篮球" v-model="hobbies">篮球
+<input type="checkbox" value="足球" v-model="hobbies">足球
+<input type="checkbox" value="网球" v-model="hobbies">网球
+<h3>您选择的是：{{hobbies}}</h3>
+
+<!-- vm.data.hobbies: [] -->
+```
+
+```html
+<!-- v-model 结合 select 单选，不常用 -->
+<select name="fruit" v-model="fruit">
+  <option value="西瓜">西瓜</option>
+  <option value="荔枝">荔枝</option>
+  <option value="草莓">草莓</option>
+</select>
+<h3>您选择的水果是：{{fruit}}</h3>
+
+<!-- v-model 结合 select 多选，不常用 -->
+<select name="fruit" v-model="fruit">
+  <option value="西瓜">西瓜</option>
+  <option value="荔枝">荔枝</option>
+  <option value="草莓">草莓</option>
+</select>
+<h3>您选择的水果是：{{fruit}}</h3>
+```
+
+#### 值绑定
+
+[官网中的描述和示例](https://cn.vuejs.org/guide/essentials/forms.html#value-bindings)
+
+对于单选按钮，复选框和选择器选项，`v-model` 绑定的值通常是静态的字符串 (或者对复选框是布尔值)。但有时我们可能希望 **将该值绑定到当前组件实例上的动态数据** 。这可以通过使用 `v-bind` 来实现。
+
+```html
+<label v-for="hobby in originHobbies" :for="hobby">
+  <input type="checkbox" :value="hobby" v-model="hobbies">{{hobby}}
+</label>
+
+<!-- vm.data.originHobbies = ['篮球'， '足球'， '网球'] -->
+```
+
+#### v-model 修饰符
+
+- `.lazy`：在每次 change 事件（比如敲回车、失去焦点等）后更新数据，不再随时更新
+- `.number`
+- `.trim`

@@ -11,23 +11,25 @@
   <style></style>
 
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <label v-for="hobby in originHobbies" :for="hobby">
+        <input type="checkbox" :id="hobby" :value="hobby" v-model="hobbies" />{{hobby}}
+      </label>
+      <h3>您选择的水果是：{{hobbies}}</h3>
+    </div>
 
     <script>
       const vm = new Vue({
         el: "#app",
-        data: {},
+        data: {
+          sex: "男",
+          // fruit: [],
+          hobbies: [],
+          originHobbies: ['篮球', '足球', '网球']
+        },
         computed: {},
         methods: {},
       });
-
-      const nums = [10, 103, 40, 50, 340, 540, 20, 610, 30];
-      let total = nums
-        .filter((num) => num < 100)
-        .map((num) => num * 2)
-        .reduce((preVal, num) => preVal + num);
-
-        console.log(total);
     </script>
   </body>
 </html>
