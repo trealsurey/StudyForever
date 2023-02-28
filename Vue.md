@@ -654,3 +654,100 @@ const vm = new Vue({
   - 如果该值无法被 `parseFloat()` 处理，那么将返回原始值
   - 会在输入框有 `type="number"` 时自动启用
 - `.trim` 去掉用户输入内容两端的空格
+
+## 组件化
+
+组件允许我们将 UI 划分为独立的、可重用的部分，并且可以对每个部分进行单独的思考。在实际应用中，组件常常被组织成层层嵌套的树状结构。
+
+Vue 实现了自己的组件模型，使我们可以在每个组件内封装自定义内容与逻辑
+
+### 组件的使用
+
+- 创建组件构造器 `Vue.extend()`
+- 注册组件 `Vue.component()`
+- 使用组件（在 Vue 实例的作用范围内）
+
+```html
+<body>
+  <!-- 注意自定义组件一定要挂载在 一个 Vue 实例下面，也就是 app 这个 div下面 -->
+  <div id="app">
+    <!-- 重复使用组件 -->
+    <mycpn></mycpn>
+    <mycpn></mycpn>
+  </div>
+  <script>
+    // 创建组件构造器
+    // 这种方式现在基本上不使用了，有更方便的语法糖；但是这种方式是基础
+    const ve = Vue.extend({
+      // ` `包裹起来的是模板字符串，也就是可以重复使用的部分
+      template: `
+        <div>
+          <h2>我是标题</h2>
+          <p>我是内容1111</p>
+          <p>我是内容2222</p>
+        </div>`
+    })
+    // 注册组件
+    Vue.component('mycpn', ve)
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+    });
+  </script>
+</body>
+```
+
+### 全局组件和局部组件
+
+- 按照上面的方法在 `Vue.component()` 注册的是全局组件
+- 在某个 Vue 实例中使用 `components` 注册的就是局部组件，只能在该实例关联的元素下面使用
+
+```js
+const vm = new Vue({
+  el: '#app',
+  data:{},
+  components: {
+    mycpn: ve // 局部组件
+  }
+});
+```
+
+### 父组件和子组件
+
+```html
+<body>
+  <div id="app">
+    <cpn2></cpn2>
+  </div>
+  <script>
+    // 子组件
+    const cpn1 = Vue.extend({
+      template: `
+        <div>
+          <h2>我是标题1111</h2>
+          <p>我是内容1111</p>
+        </div>`
+    })
+    // 父组件
+    const cpn2 = Vue.extend({
+      template: `
+        <div>
+          <h2>我是标题2222</h2>
+          <p>我是内容222</p>
+          <cpn1></cpn1>
+        </div>`,
+        // 在父组件内部注册子组件，只能在 cpn2 内使用
+        components: {
+          cpn1: cpn1
+        }
+    })
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      components: {
+        cpn2: cpn2
+      }
+    });
+  </script>
+</body>
+```
