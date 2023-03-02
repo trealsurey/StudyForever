@@ -810,3 +810,6 @@ const vm = new Vue({
   </script>
 </body>
 ```
+
+### 组件模板的抽离写法
+
