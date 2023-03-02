@@ -751,3 +751,62 @@ const vm = new Vue({
   </script>
 </body>
 ```
+
+> **注意：** 子组件不能以标签的形式写在 Vue 实例里
+
+```html
+<!-- 这样是不会生效的，因为根本找不到 child-cpn 的注册信息
+    除非在 vm 中注册，或者另外注册一个全局组件 -->
+<parent-cpn></parent-cpn>
+<child-cpn></child-cpn>
+
+<!-- 这种写法也是不会生效的 -->
+<parent-cpn>
+  <child-cpn></child-cpn>
+</parent-cpn>
+```
+
+因为当子组件注册到父组件的 components 中时，Vue 会编译好父组件的模块
+
+该模块的内容已经决定了父组件将要渲染的 HTML（相当于父组件中已经有了子组件中的内容了）
+
+那么子标签就是只能在父组件中被识别的（存在组件编译作用域）
+
+### 注册组件的语法糖写法
+
+省略了 `Vue.extend()` 的步骤，都放在一个对象中的 `template` 中
+
+其实底层源码还是放在了 `Vue.extend()` 里面
+
+```html
+<body>
+  <div id="app">
+    <cpn1></cpn1>
+    <cpn2></cpn2>
+  </div>
+  <script>
+    // 1. 全局组件
+    Vue.component('cpn1', {
+      template: 
+        `<div>
+          <h2>我是全局</h2>
+          <p>我是内容1111</p>
+        </div>`
+    })
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      // 2. 局部组件
+      components: {
+        cpn2: {
+          template: 
+          `<div>
+            <h2>我是局部</h2>
+            <p>我是内容2222</p>
+          </div>`
+        }
+      }
+    });
+  </script>
+</body>
+```

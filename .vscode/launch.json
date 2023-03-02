@@ -19,7 +19,6 @@
                 "<node_internals>/**"
             ],
             "program": "${file}"
-            
         }
     ]
 }

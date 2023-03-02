@@ -11,41 +11,33 @@
   <style></style>
 
   <body>
-    <div id="app">
-      <cpn2>
-        
-      </cpn2>
-      <cpn1></cpn1>
-    </div>
-
-    <script>
-      const cpn1 = Vue.extend({
-        template: `
-          <div>
-            <h2>我是标题1111</h2>
-            <p>我是内容1111</p>
+  <div id="app">
+    <cpn1></cpn1>
+    <cpn2></cpn2>
+  </div>
+  <script>
+    // 1. 全局组件
+    Vue.component('cpn1', {
+      template: 
+        `<div>
+          <h2>我是全局</h2>
+          <p>我是内容1111</p>
+        </div>`
+    })
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      // 局部组件
+      components: {
+        cpn2: {
+          template: 
+          `<div>
+            <h2>我是局部</h2>
+            <p>我是内容2222</p>
           </div>`
-      })
-      const cpn2 = Vue.extend({
-        template: `
-          <div>
-            <h2>我是标题2222</h2>
-            <p>我是内容222</p>
-          </div>`,
-          // 在父组件内部注册子组件，只能在 cpn2 内使用
-          components: {
-            cpn1: cpn1
-          }
-      })
-
-      const vm = new Vue({
-        el: "#app",
-        data: {},
-        components: {
-          cpn1: cpn1,
-          cpn2: cpn2
         }
-      });
-    </script>
-  </body>
+      }
+    });
+  </script>
+</body>
 </html>
