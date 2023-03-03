@@ -813,3 +813,46 @@ const vm = new Vue({
 
 ### 组件模板的抽离写法
 
+```html
+<body>
+  <!-- 模板内容写在这里面 -->
+  <template id="cpn"></template>
+
+  <script>
+    // 全局组件
+    Vue.component('cpn', {
+      template: '#cpn'
+    })
+
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      // 局部组件
+      components: {
+        cpn: {
+          // 这里直接写 template: cpn 也可以
+          template: '#cpn'
+        }
+      }
+    });
+  </script>
+</body>
+```
+
+```html
+<!-- 方法二：将模板内容放在 script 标签里，不常用 -->
+<body>
+  <script type=text/x-template id="cpn">
+    <!-- 模板内容 -->
+  </script>
+</body>
+```
+
+### 组件和 Vue 实例
+
+组件是一个单独功能模块的封装，这个模块有属于自己的模板，也应该有属于自己的 data
+
+**在组件中是不能直接访问 Vue 实例中的 data 的。** 
+
+就算能访问，我们也不能把所有的数据都放在 Vue 实例里，那么当组件数量变大之后，Vue 实例中的内容将会变得非常臃肿
+
