@@ -1,27 +1,25 @@
 /**
- * @param {string} s
- * @return {boolean}
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
  */
-var isValid = function (s) {
-    // let map = new Map()
-    let arr = []
-    for (let val of s.split('')) {
-        if (val == '(' || val == '[' || val == '{') arr.push(val)
-        else if (val = ')') {
-            if (arr[arr.length - 1] != '(') return false
-            else arr.pop()
+var minSubArrayLen = function(target, nums) {
+    let res = Number.MAX_VALUE
+    const len = nums.length
+    let left = 0, right = 0
+    let sum = 0
+    while (right < len) {
+        sum += nums[right] 
+        while (sum >= 7) {
+            res = Math.min(res, right - left + 1)
+            sum -= nums[left]
+            left ++
         }
-        else if (val = ']') {
-            if (arr[arr.length - 1] != '[') return false
-            else arr.pop()
-        }
-        else {
-            if (arr[arr.length - 1] != '{') return false
-            else arr.pop()
-        }
-        console.log(arr)
+        right++
     }
-    return arr.length == 0
+    return res
 };
 
-console.log(isValid('()[]{}'))
+const arr = [1,4,4]
+
+console.log(minSubArrayLen(4, arr))
