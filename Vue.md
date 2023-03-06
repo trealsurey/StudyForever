@@ -903,3 +903,45 @@ const vm = new Vue({
 
 ![父子组件通信](imgs/父子组件通信.png)
 
+```html
+<div id="app">
+  <cpn :csingers="singers"></cpn>
+</div>
+<template id="cpn">
+  <div>
+    <h3>{{title}}</h3>
+    <ul>
+      <li v-for="singer in csingers">{{singer}}</li>
+    </ul>
+  </div>
+</template>
+```
+
+```js
+// 子组件
+const cpn = {
+  // 这里必须是一个函数
+  data() {
+    return {
+      title: '父子组件通信'
+    }
+  },
+  template: '#cpn',
+  // 父 -> 子：子组件拿到父组件的数据
+  props: ['csingers']
+}
+
+// root 组件
+const vm = new Vue({
+  el: "#app",
+  data: { singers: ['陶喆', '周杰伦', '蔡依林'] },
+  // 注册组件
+  components: {cpn}
+});
+```
+
+
+
+#### props 数据验证
+
+props
