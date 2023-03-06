@@ -894,7 +894,7 @@ const vm = new Vue({
 
 具体可参考视频 P58
 
-### 父子组件的通信
+### 父子组件通信 -- 父传子
 
 在开发中，会需要将数据从上层传递到下层。比如一个页面通过向服务器发送请求得到数据之后，就需要向下传递到子组件中的 list 来进行展示，而不是子组件再次发送一次请求
 
@@ -940,8 +940,78 @@ const vm = new Vue({
 });
 ```
 
-
-
 #### props 数据验证
 
-props
+props 选项可以是数组，也可以是对象。当我们需要对 props 进行类型等数据验证时，就需要用对象了
+
+数据验证支持的数据类型包括：String，Number，Boolean，Array，Object，Date，Function，Symbol……同时也支持自定义类型
+
+```js
+props: {
+  // 1. 限制数据类型
+  csingers: Array,
+  cmessage: [String, Number]
+  
+  // 2. 提供默认值
+  csingers: {
+    type: Array,
+    default: ['陶喆']
+  }
+
+  // 3. 设置必须传递某属性
+  csingers: {
+    type: Array,
+    required: true
+    // default: ['陶喆'], 现在的版本这样写会报错
+    // 当是 Array/Object 类型时，默认值必须使用一个函数返回
+    default() {
+      return ['陶喆']
+    }
+  }
+
+  // 4. 自定义验证函数
+  cmessage: {
+    validator(val) {
+      // 必须匹配下面三个中的某一个
+      return ['success', 'warning', 'danger'].indexOf(val) !== -1
+    }
+  }
+}
+
+// 5. 验证自定义类型
+Person(firstName, lastName) {
+  this.firstName = firstName
+  this.lastName = lastName
+}
+props: {
+  author: Person
+}
+```
+
+#### props 中的驼峰标识
+
+props 中定义的变量名 **最好不要使用驼峰标识**，因为 HTML 是不识别驼峰的，会自动将驼峰编译为全小写，那么就会出现找不到的情况
+
+如果使用了驼峰标识命名，那么在 HTML 中绑定时就需要使用 `-` 连接
+
+但是自己的模板中是可以使用驼峰的
+
+```html
+<div>
+  <!-- 这里如果写为 cSingers 的话会报错 -->
+  <cpn :c-singers="singers"></cpn>
+</div>
+
+<template>
+  <div>
+    <!-- 这里是可以识别到驼峰的 -->
+    <h3>{{cSingers}}</h3>
+  </div>
+</template>
+
+<script>
+  props: { cSingers: {} }
+</script>
+```
+
+### 父子组件通信 -- 子传父
