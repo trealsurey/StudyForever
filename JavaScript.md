@@ -1339,7 +1339,7 @@ this 的指向在函数定义时是确定不了的，只有在函数执行的时
 - 方法调用中，谁调用这个方法，this 就指向谁
 - 构造函数中，this 指向构造函数的实例
 
-### 关于 JS 代码的执行顺序
+### 事件循环 EventLoop
 
 [javascript 引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
 
@@ -1347,7 +1347,11 @@ JS 的一大特点就是 **单线程**，因为 JS 这门脚本语言诞生的�
 
 但是单线程就会导致 JS 执行时间过长，页面渲染不连贯，加载阻塞的问题
 
-为了解决这个问题，HTML5 提出 Web Worker 标准，允许 JS 脚本创建多个线程，于是 JS 中出现了同步和异步
+为了解决这个问题，HTML5 提出 Web Worker 标准，允许 JS 脚本创建多个线程，于是 JS 中出现了同步和异步。
+
+由于主线程不断的重复获得任务、执行任务、再获取任务、再执行任务……这种机制被称为 **事件循环**
+
+![事件循环](imgs/EventLoop.png)
 
 #### 同步任务
 
@@ -1374,21 +1378,21 @@ console.log(2)
 // 因为 setTimeout 中的 fn 会放到任务队列中去，等到同步任务中的代码执行完成之后才会到任务队列中执行 fn
 ```
 
-### 事件循环 event loop
-
-由于主线程不断的重复获得任务、执行任务、再获取任务、再执行任务……这种机制被称为 **事件循环**
-
-![事件循环](imgs/EventLoop.png)
-
 #### 宏任务和微任务
 
-**宏任务**：AJAX，setTimeout/setInterval，DOM 监听，UI Rendering等
+[可参考文章](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
-**微任务**：Promise 的 then()/catch()/finally()，Mutation Oberserver API（监听 DOM 变化），queueMicrotask() 等
+- **宏任务**：I/O，AJAX，setTimeout/setInterval，requestAnimationFrame，UI Rendering等（DOM事件、HTTP响应会在本次立即插入宏任务）
+
+- **微任务**：Promise 的 then()/catch()/finally()，Mutation Oberserver API（监听 DOM 变化），queueMicrotask() 等
 
 事件循环中分别由不同的队列管理不同的任务
 
 > 注意：浏览器和 Node 对宏任务和微任务的区分略有不同
+
+![浏览器和Node中的宏任务](imgs/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8CNode%E4%B8%AD%E7%9A%84%E5%AE%8F%E4%BB%BB%E5%8A%A1.png)
+
+![浏览器和Node中的微任务](imgs/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8CNode%E4%B8%AD%E7%9A%84%E5%BE%AE%E4%BB%BB%E5%8A%A1.png)
 
 在执行时：
 1. 先执行主线程（调用栈执行上下文）中的内容
@@ -1399,8 +1403,23 @@ console.log(2)
       2. 如果插入的是新的宏任务，那么就要等到下一次事件循环时再执行
    3. **（微任务队列为空时）执行下一个宏任务**
    4. 执行微任务
-   5. ……依次循环（事件循环）\
-  
+   5. ……依次循环（事件循环）
+
+```js
+// 一个简单案例
+function logA() { console.log('A') }
+function logB() { console.log('B') }
+function logC() { console.log('C') }
+function logD() { console.log('D') }
+
+logA();
+setTimeout(logB, 0);
+Promise.resolve().then(logC);
+logD();
+
+// ADCB
+```
+
 [事件循环案例](case/EventLoopTest.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=6&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P6）
 
 [事件循环案例二](casd/../case/EventLoopTest2.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
@@ -1409,7 +1428,9 @@ console.log(2)
 
 [事件循环案例四（包含 await）](casd/../case/EventLoopTest4.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=8&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P8）
 
-
+**对于 `await` 来说，**
+- 如果后面跟着的函数返回的是一个 Promise，那么在 Promise 没有执行 `resolve()` 之前，await 后面的内容是不会被放到任务队列中的，只有当执行完 `resolve()` 之后，才会加入微任务队列
+- 如果后面跟着的函数没有返回值，也就是 `return undefined`，那么就相当于 `return Promise.resolve(undefined)`。那么此时会将 `await` 后面的代码放到微任务队列中进行等待
 
 ### location 对象
 
