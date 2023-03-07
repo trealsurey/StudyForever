@@ -1016,3 +1016,51 @@ props 中定义的变量名 **最好不要使用驼峰标识**，因为 HTML 是
 
 ### 父子组件通信 -- 子传父
 
+```html
+<!-- 父组件模板 -->
+<div id="app">
+  <!-- 在这里接收子组件传递过来的事件，并用 v-on 绑定给父组件 -->
+  <!-- 现在这里不要写驼峰，以后使用脚手架时就可以用驼峰了 -->
+  <cpn @item-click="btnClick"></cpn>
+</div>
+
+<!-- 子组件模板 -->
+<template id="cpn">
+  <div>
+    <button v-for="item in catagories" @click="itemClick(item)">
+      {{item.name}}
+    </button>
+  </div>
+</template>
+```
+
+```js
+// 子组件
+const cpn = {
+  template: "#cpn",
+  data() {
+    return {
+      catagories: [
+        { id: 1, name: "手机数码" },
+        { id: 2, name: "潮流家电" },
+        { id: 3, name: "电脑办公" },
+      ],
+    };
+  },
+  methods: {
+    itemClick(item) {
+      // 子 -> 父，子组件向父组件传递一个名为 item-click 的事件
+      this.$emit("item-click", item);
+    },
+  },
+};
+
+// root 组件
+const vm = new Vue({
+  el: "#app",
+  components: { cpn },
+  methods: {
+    btnClick(item) { console.log("收到子组件信息", item); },
+  },
+});
+```
