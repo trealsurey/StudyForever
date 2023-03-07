@@ -1397,11 +1397,19 @@ console.log(2)
    2. 执行微任务队列中的内容
       1. 如果在这期间插入了新的微任务，那么就接着执行微任务直到微任务全部完成
       2. 如果插入的是新的宏任务，那么就要等到下一次事件循环时再执行
-   3. **（微任务队列为空）执行下一个宏任务**
+   3. **（微任务队列为空时）执行下一个宏任务**
    4. 执行微任务
    5. ……依次循环（事件循环）\
   
-[事件循环案例](case/EventLoopTest.js)
+[事件循环案例](case/EventLoopTest.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=6&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P6）
+
+[事件循环案例二](casd/../case/EventLoopTest2.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
+
+[事件循环案例三（包含 await）](casd/../case/EventLoopTest3.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
+
+[事件循环案例四（包含 await）](casd/../case/EventLoopTest4.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=8&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P8）
+
+
 
 ### location 对象
 
