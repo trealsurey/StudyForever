@@ -1,27 +1,25 @@
 /**
- * @param {number[]} nums
- * @param {number} k
+ * @param {number[][]} grid
  * @return {number}
  */
-var subarraySum = function(nums, k) {
-    const len = nums.length
-    let cnt = 0
-    for (let i = 0; i < len; i++) {
-        let sum = 0
-        for(let j = i; j < len; j ++) {
-            sum += nums[j]
-            if (sum == k) {
-                if (j != len - 1 && nums[j + 1] == 0) cnt++
-                else {
-                    cnt++ 
-                    break
-                }
-            }
+var maxValue = function(grid) {
+    const row = grid.length, col = grid[0].length
+    for (let i = 0; i < row; i ++) {
+        for (let j = 0; j < col; j ++) {
+            if (i == 0 && j == 0)   continue
+            else if (i == 0)    grid[i][j] += grid[i][j - 1]
+            else if (j == 0)    grid[i][j] += grid[i - 1][j]
+            else  grid[i][j] += Math.max(grid[i - 1][j], grid[i],[j - 1])
         }
+        console.log(grid);
     }
-    return cnt
+    return grid[row - 1][col - 1]
 };
 
-const arr = [1,-1,0]
+const grid = [
+    [1, 3, 1],
+    [1, 5, 1],
+    [4,2,1]
+]
 
-console.log(subarraySum(arr, 0))
+console.log(maxValue(grid));

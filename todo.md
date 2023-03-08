@@ -16,8 +16,8 @@
 11. canvas的常用api
 12. 重绘回流，对事件响应机制的影响
 13. localStorage和sessionStorage
-14. flex布局
-15. rem和em的区别
+14. - [x] ~~flex布局~~
+15. rem和em的区别=
 16. 原型链
 17. 闭包
 18. js不同类型的存储方式
@@ -29,7 +29,7 @@
 24. computed和watch的区别
 25. vue生命周期
 26. 0.1+0.2为什么不等于0.3
-27. let const var的区别
+27. [x] let const var的区别
 28. 箭头函数和普通函数的区别
 29. 箭头函数中this的指向问题
 30. **手写event bus**

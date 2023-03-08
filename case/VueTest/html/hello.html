@@ -13,51 +13,45 @@
   <body>
     <!-- 父组件模板 -->
     <div id="app">
-      <!-- 在这里接收子组件传递过来的事件，并用 v-on 绑定给父组件 -->
-      <!-- 现在这里不要写驼峰，以后使用脚手架时就可以用驼峰了 -->
-      <cpn @item-click="btnClick"></cpn>
+      <cpn @btnclick="returnName"></cpn>
     </div>
     <!-- 子组件模板 -->
     <template id="cpn">
       <div>
-        <button v-for="item in catagories" @click="itemClick(item)">
-          {{item.name}}
-        </button>
+        <button v-for="item in catagories" @click="btnClick(item)">{{item.name}}</button>
       </div>
     </template>
 
     <script>
       // 子组件
       const cpn = {
-        template: "#cpn",
+        template: '#cpn',
         data() {
           return {
             catagories: [
-              { id: 1, name: "手机数码" },
-              { id: 2, name: "潮流家电" },
-              { id: 3, name: "电脑办公" },
-            ],
-          };
+              {id: 1, name: '手机数码'},
+              {id: 2, name: '潮流服饰'},
+              {id: 3, name: '生活用品'}
+            ]
+          }
         },
         methods: {
-          itemClick(item) {
-            // 子 -> 父，子组件向父组件传递一个名为 item-click 的事件
-            this.$emit("item-click", item);
-          },
-        },
-      };
+          btnClick(item) {
+            this.$emit("btnclick",item)
+          }
+        }
+      }
 
       // root 组件
       const vm = new Vue({
-        el: "#app",
+        el: '#app',
         data: {},
-        // 局部组件
-        components: { cpn },
         methods: {
-          btnClick(item) {
-            console.log("收到子组件信息", item);
-          },
+          returnName(item) {
+            console.log('点击的数据是:', item.name);
+          }
         },
+        components: {cpn},
       });
     </script>
   </body>

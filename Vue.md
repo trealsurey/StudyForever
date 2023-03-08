@@ -1050,6 +1050,7 @@ const cpn = {
   methods: {
     itemClick(item) {
       // 子 -> 父，子组件向父组件传递一个名为 item-click 的事件
+      // 一定要记得这里要先传入一个字符串
       this.$emit("item-click", item);
     },
   },
