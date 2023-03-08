@@ -1078,3 +1078,45 @@ const vm = new Vue({
 ~~`this.$children` 是一个数组类型，它包含所有子组件对象~~ （一般不用），当有多个组件时需要通过 index 来获取相应的组件，一旦组件顺序发生变化维护就会很麻烦
 
 `this.$refs` 是一个对象属性。**使用时需要在相应的组件标签内加上 `ref="属性值"` 才可以拿到该组件**，通过 `this.$refs.属性值` 就可以获得相应的组件了
+
+```html
+<div id="app">
+  <cpn ref="btn"></cpn>
+  <button @click="btnClick">按钮</button>
+</div>
+<template id="cpn">
+  <div><p>我是子组件</p></div>
+</template>
+```
+
+```js
+const cpn = {
+  template: '#cpn',
+  data() {
+    return {
+      name: '子组件名字'
+    }
+  },
+}
+
+const vm = new Vue({
+  el: '#app',
+  methods: {
+    btnClick() {
+      console.log(this.$refs.btn.name);
+    }
+  },
+  components: {cpn},
+});
+```
+
+#### 子访问父（用得非常少）
+
+会增加子组件和父组件之间的耦合性，不利于子组件的独立使用，所以一般 **不推荐** 用 子访问父
+
+#### 访问根组件
+
+`this.$root` 也就是 Vue 实例
+
+### 编译作用域
+

@@ -7,48 +7,30 @@
     <title>Document</title>
     <script src="../js/vue.js"></script>
   </head>
-
-  <style></style>
-
   <body>
-    <!-- 父组件模板 -->
     <div id="app">
-      <cpn @btnclick="returnName"></cpn>
+      <cpn ref="btn"></cpn>
+      <button @click="btnClick">按钮</button>
     </div>
-    <!-- 子组件模板 -->
     <template id="cpn">
-      <div>
-        <button v-for="item in catagories" @click="btnClick(item)">{{item.name}}</button>
-      </div>
+      <div><p>我是子组件</p></div>
     </template>
 
     <script>
-      // 子组件
       const cpn = {
         template: '#cpn',
         data() {
           return {
-            catagories: [
-              {id: 1, name: '手机数码'},
-              {id: 2, name: '潮流服饰'},
-              {id: 3, name: '生活用品'}
-            ]
+            name: '子组件名字'
           }
         },
-        methods: {
-          btnClick(item) {
-            this.$emit("btnclick",item)
-          }
-        }
       }
 
-      // root 组件
       const vm = new Vue({
         el: '#app',
-        data: {},
         methods: {
-          returnName(item) {
-            console.log('点击的数据是:', item.name);
+          btnClick() {
+            console.log(this.$refs.btn.name);
           }
         },
         components: {cpn},
