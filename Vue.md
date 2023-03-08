@@ -1120,3 +1120,104 @@ const vm = new Vue({
 
 ### 编译作用域
 
+```html
+<div id="app">
+  <cpn v-show="isShow"></cpn>
+</div>
+<template id="cpn">
+  <!-- 如果这里是 <div v-show="isShow"> 就是子组件中的 isShow 起效了 -->
+  <div>
+    <h3>我是子组件</h3>
+  </div>
+</template>
+```
+
+```js
+const cpn = {
+  template: "#cpn",
+  data() {
+    return {
+      isShow: true  // 这里的 isShow 不起效
+    }
+  }
+};
+const vm = new Vue({
+  el: "#app",
+  data: {
+    isShow: false // 这里的 isShow 起效，所以页面上并不显示子组件
+  },
+  components: { cpn },
+});
+```
+
+简而言之，就是写在哪儿就去哪个定义范围里找
+
+### 插槽 slot
+
+生活中很多地方都有插槽，比如 USB插槽，插线板中的电源插槽，插槽的目的就是让设备具有 **更多拓展性**
+
+组件的插槽也是为了让组件更加具有扩展性，让使用者可以决定组件内部的一些内容到底展示什么 `<slot></slot>`
+
+- 抽取共性：放到组件中
+- 预留不同：放到插槽中
+
+```html
+<div>
+  <cpn><button>你点我啊</button></cpn>
+  <cpn><a href="#">送你离开千里之外</a></cpn>
+  <cpn><span>啥也没有</span></cpn>
+</div>
+
+<template id="cpn">
+  <div>
+    <h4>我是子组件</h4>
+    <slot></slot>
+  </div>
+</template>
+```
+
+![slot示例图](imgs/slot%E7%A4%BA%E4%BE%8B%E5%9B%BE.png)
+
+当有某个插槽会重复多次使用时，可以设置 **插槽中的默认值**。那么当组件中不另外添加时，就显示默认插槽中的内容
+
+```html
+<div>
+  <cpn></cpn>
+  <cpn><a href="#">送你离开千里之外</a></cpn>
+  <cpn><span>啥也没有</span></cpn>
+  <cpn></cpn>
+  <cpn></cpn>
+  <cpn></cpn>
+</div>
+
+<template id="cpn">
+  <div>
+    <h4>我是子组件</h4>
+    <slot><button>你点我啊</button></slot>
+  </div>
+</template>
+```
+
+#### 具名插槽
+
+利用 `name` 给插槽取名，就可以在多个插槽中只修改某一个
+
+```html
+<div id="app">
+  <cpn>
+    <!-- 只修改 name 为 center 的 slot -->
+    <button slot="center">你点我啊</button>
+  </cpn>
+</div>
+<template id="cpn">
+  <div>
+    <h3>我是子组件</h3>
+    <slot name="left">左边</slot>
+    <slot name="center">中间</slot>
+    <slot name="right">右边</slot>
+  </div>
+</template>
+```
+
+#### 作用域插槽
+
