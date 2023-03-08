@@ -29,7 +29,7 @@
 24. computed和watch的区别
 25. vue生命周期
 26. 0.1+0.2为什么不等于0.3
-27. [x] let const var的区别
+27. - [x] let const var的区别
 28. 箭头函数和普通函数的区别
 29. 箭头函数中this的指向问题
 30. **手写event bus**
