@@ -1,25 +1,22 @@
 /**
- * @param {number[][]} grid
- * @return {number}
+ * @param {number[]} arr
+ * @param {number[][]} queries
+ * @return {number[]}
  */
-var maxValue = function(grid) {
-    const row = grid.length, col = grid[0].length
-    for (let i = 0; i < row; i ++) {
-        for (let j = 0; j < col; j ++) {
-            if (i == 0 && j == 0)   continue
-            else if (i == 0)    grid[i][j] += grid[i][j - 1]
-            else if (j == 0)    grid[i][j] += grid[i - 1][j]
-            else  grid[i][j] += Math.max(grid[i - 1][j], grid[i],[j - 1])
+var xorQueries = function(arr, queries) {
+    const aLen = arr.length, qLen = queries.length
+    let res = new Array(qLen).fill(0)
+    for (let i = 0; i < qLen; i ++) {
+        let range = queries[i]
+        let tmp = arr[range[0]]
+        for (let j = range[0] + 1; j <= range[1]; j ++) {
+            tmp ^= arr[j]
         }
-        console.log(grid);
+        res[i] = tmp
     }
-    return grid[row - 1][col - 1]
+    return res
 };
 
-const grid = [
-    [1, 3, 1],
-    [1, 5, 1],
-    [4,2,1]
-]
+const arr = [1, 3, 4, 8], queries = [[0, 1], [1, 2], [0, 3], [3, 3]]
 
-console.log(maxValue(grid));
+console.log(xorQueries(arr, queries));
