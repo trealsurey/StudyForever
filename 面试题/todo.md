@@ -23,7 +23,7 @@
 18. js不同类型的存储方式
 19. call apply 和bind的区别
 20. js判断类型的方式（typeof  instanceof    Object.prototype.toString.call()可以判断所有的数据类型
-21. 深拷贝浅拷贝**手写深拷贝**
+21. 深拷贝浅拷贝**手写深拷贝**，object.assign和扩展运算法是深拷贝还是浅拷贝，两者区别
 22. 如何判断环引用
 23. ES6(Promise  async await)
 24. computed和watch的区别
@@ -41,25 +41,25 @@
 36. 网页性能优化
 37. 浏览器循环机制
 38. SPA
-39. 前端路由
-40. 脱离文档流
-41. cookie session token 原理
-42. 事件冒泡和捕获
-43. e.target e.currentTarget区别
-44. 如何实现跨域，为什么要有跨域
-45. 类选择器和伪类的区别和优先级，各种选择器的优先级
-46. 如何开启动画加速
-47. - [x] 变量提升
-48. - [x] 宏任务微任务
-49. JS中数组长度为什么能任意变化（如何扩容
-50. html中js和css的加载顺序会阻塞页面渲染吗
-51. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
-52. websocket和轮询的区别
-53. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
-54. new 一个对象的过程
-55. stringify的用法 
-56. 白屏原因 & 优化 
-57. `<button></button>` 和 `<input type="button">` 的区别
+40. 前端路由
+41. 脱离文档流
+42. cookie session token 原理
+43. 事件冒泡和捕获
+44. e.target e.currentTarget区别
+45. 如何实现跨域，为什么要有跨域
+46. 类选择器和伪类的区别和优先级，各种选择器的优先级
+47. 如何开启动画加速
+48. - [x] 变量提升
+49. - [x] 宏任务微任务
+50. JS中数组长度为什么能任意变化（如何扩容
+51. html中js和css的加载顺序会阻塞页面渲染吗
+52. websocket的好处，如何建立连接，心跳机制怎么做，错误如何处理
+53. websocket和轮询的区别
+54. [运行npm run xxx时发生了什么](https://mp.weixin.qq.com/s?__biz=Mzk0NTI2NDgxNQ==&mid=2247485707&idx=1&sn=6534a8bf944b6600167fa24d6e109d29&chksm=c31948cbf46ec1dd9eb96ee9dbb62fac23ed6a5416d162e2be77c55d0e7fd46c4efdaf8baf40&scene=132#wechat_redirect) 
+55. new 一个对象的过程
+56. stringify的用法 
+57. 白屏原因 & 优化 
+58. `<button></button>` 和 `<input type="button">` 的区别
 
 
 **重点！！！**

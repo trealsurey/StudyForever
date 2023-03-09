@@ -1,9 +1,9 @@
-### 1. 基本数据类型
+### 基本数据类型
 
 - Number, String, Object, Boolean, Null, Undefined
 - Symbol, BigInt（ES6 新增）
 
-### 2. 数据类型检测方式有哪些
+### 数据类型检测方式有哪些
 
 #### typeof
 
@@ -60,3 +60,40 @@ console.log(a.call(null));  //Null
 > 同样是检测对象 obj 调用 toString() 方法，`obj.toString()` 的结果和`Object.prototype.toString.call(obj)` 的结果不一样，这是为什么？
 
 这是因为 `toString()` 是 Object 的原型方法，而 Array、function 等类型作为 Object 的实例，都 **重写** 了 toString() 方法。根据原型链的知识，不同的对象类型调用 toString() 方法时，调用的是对应的重写之后的 toString() 方法，而不会去调用 Object 上原型 toString() 方法（返回对象的具体类型）。所以**采用 `obj.toString()` 不能得到其对象类型，只能将 obj 转换为字符串类型**；因此，在想要得到对象的具体类型时，应该调用 Object 原型上的 toString() 方法
+
+### 判断数组的方式有那些
+
+- **instanceof**
+
+```js
+arr instanceof Array
+```
+
+- **ES6 中的 Array.isArray(arr)**
+- **原型链**
+
+```js
+Array.prototype === arr.__proto__
+```
+
+- **Array.prototype.isPropotypeOf(arr)**
+- **Object.getPrototypeOf(arr) === Array.prototype**
+- **Object.prototype.toString.call(arr) === 'Array'**（存疑）
+
+### object.assign和扩展运算法是深拷贝还是浅拷贝，两者区别
+*todo*
+
+### 箭头函数
+
+#### 箭头函数和普通函数的区别
+
+#### 可以 new 一个箭头函数吗
+
+#### 箭头函数的 this 指向哪里
+
+### 扩展运算符
+
+### Map 和 Object 的区别
+
+### Map 和 WeakMap 的区别
+

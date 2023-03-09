@@ -20,3 +20,17 @@ var xorQueries = function(arr, queries) {
 const arr = [1, 3, 4, 8], queries = [[0, 1], [1, 2], [0, 3], [3, 3]]
 
 console.log(xorQueries(arr, queries));
+
+console.log(Array.prototype)
+
+function myInstance(inst, type) {
+    let proto = Object.getPrototypeOf(inst)
+    let prototype = type.prototype
+    while (true) {
+        if (!proto) return false
+        if (proto === prototype) return true
+        else proto = Object.getPrototypeOf(proto)
+    }
+}
+
+console.log(myInstance(0, String));
