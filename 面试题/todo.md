@@ -60,7 +60,10 @@
 56. stringify的用法 
 57. 白屏原因 & 优化 
 58. `<button></button>` 和 `<input type="button">` 的区别
-
+59. Function instanceof Object 和 Object instanceof  Function 的结果分别是什么，为什么
+60. 严格意义上说let也存在变量提升，怎么说（从底层看，词法环境/变量环境+执行上下文，暂时性死区）
+61. 性能优化（webpack分包 + 页面渲染）
+62. reduce() 去重
 
 **重点！！！**
 ```html

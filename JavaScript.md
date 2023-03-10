@@ -2728,14 +2728,25 @@ console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
 
 ### Promise
 
-Promise 是一个类
+对于曾经的异步函数调用来说，执行函数的设计和写法锁各种各样的，对于执行成功和执行失败的回调函数内容也是各种各样。那么在真正调用函数的过程中就需要花费大量时间去确认函数内容和调用方式，十分低效。为了统一规范，才有了 Promise
+
+**Promise 是一个类**
 
 当我们需要告诉调用者，一会会返回回调数据时，就可以创建一个 Promise 对象
 
 通过 `new` 创建 Promise 对象时，需要传入一个回调函数，称之为 `executor`
-- 这个回调函数会被立即执行，并且传入另外两个回调函数 `resolve` `reject`
+- 这个回调函数会被 **立即执行**，并且传入另外两个回调函数 `resolve` `reject`
   - 当调用 `resolve` 时，会执行 Promise 对象的 `then()` 方法传入的回调函数
-  - 当调用 `reject` 时，会执行 Promise 对象的 `catch()` 方法传入的回调函数
+  - 当调用 `reject` 时，会执行 Promise 对象的 `catc h()` 方法传入的回调函数
+
+```js
+const promise = new Promise((resolve, reject) => { })
+promise.then(val => { 
+  // 成功代码
+}).catch(err => {
+  // 失败代码
+})
+```
 
 ### let 和 const
 
