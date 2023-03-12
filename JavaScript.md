@@ -2734,17 +2734,44 @@ console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
 
 当我们需要告诉调用者，一会会返回回调数据时，就可以创建一个 Promise 对象
 
-通过 `new` 创建 Promise 对象时，需要传入一个回调函数，称之为 `executor`
+创建 Promise 对象时，需要传入一个回调函数，称之为 `executor`
 - 这个回调函数会被 **立即执行**，并且传入另外两个回调函数 `resolve` `reject`
   - 当调用 `resolve` 时，会执行 Promise 对象的 `then()` 方法传入的回调函数
-  - 当调用 `reject` 时，会执行 Promise 对象的 `catc h()` 方法传入的回调函数
+  - 当调用 `reject` 时，会执行 Promise 对象的 `catch()` 方法传入的回调函数
+
+- 待定（pending）状态：初始状态，既没有被兑现，也没有被拒绝
+  - 当执行了 executor 中的代码时，处于该状态
+- 已兑现（resolved/fulfilled）状态：操作成功完成
+  - 执行了 resolve 时，处于该状态，Promise 被成功兑现
+- 已拒绝（rejected）状态：操作失败
+  - 执行了 reject 时，处于该状态，Promise 已经被拒绝
+
+**Promise 的状态一旦被确定下来，就会被锁死，就不能再更改，也不能再执行某一个回调函数来改变状态**
+
+> 1. 即使同时调用多次 resolve()/reject() 也只会调用一次 then()/catch()
+> 2. 调用 resolve() 的时候，如果传入的参数不是一个 Promise，那么会将该 Promise 的状态变成 fulfilled；如果在之后再调用 reject()，就不会有任何响应了（不是不执行代码，而是无法改变 Promise 状态）
+> 3. 调用 resolve() 的时候，如果传入的参数是一个 Promise，那么当前 Promise 的状态由传入的 promise 来决定
 
 ```js
-const promise = new Promise((resolve, reject) => { })
-promise.then(val => { 
+const promise = new Promise((resolve, reject) => {
+  // pending
+  console.log('pending...')
+  // fulfilled
+  resolve('成功啦')
+  // rejected
+  reject('失败啦')
+})
+promise.then(res => { 
   // 成功代码
 }).catch(err => {
   // 失败代码
+})
+
+// 也有下面这种写法，但是上面的比较常用
+promise.then(res => {
+  console.log('成功回调：', res)
+}, err => {
+  console.log('失败回调：', err)
 })
 ```
 
@@ -2752,7 +2779,7 @@ promise.then(val => {
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
 
-ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 `{ }` 包括起来的一段代码，例如 if 、while 等等。 函数作用域就是指变量只在函数内部起作用。
+ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了块级作用域。 块级作用域是指用 `{ }` 包括起来的一段代码，例如 if、while 等等。 函数作用域就是指变量只在函数内部起作用。
 
 #### let
 
