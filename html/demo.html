@@ -11,18 +11,23 @@
 
     <script>
       const promise = new Promise((resolve, reject) => {
+        // reject('oops 出错啦') // 会直接调用下面的catch()
         resolve("pikachu");
       });
       promise
         .then((res) => {
-          console.log(res); // pikachu
+          console.log("第一个then的res", res); // pikachu
+          return "第一个成功啦";
         })
         .then((res) => {
-          console.log(res); // undefined
-          return "被决议了。";
+          console.log("第二个then的res", res); // 第一个成功啦
+          throw new Error("出错啦");
         })
         .then((res) => {
-          console.log(res); // 被决议了
+          console.log("第三个then的res", res); // undefined
+        })
+        .catch((err) => {
+          console.log("错误信息是：", err); // 错误信息是: Error：出错啦 at 错误位置
         });
     </script>
   </body>

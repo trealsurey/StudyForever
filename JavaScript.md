@@ -2801,6 +2801,24 @@ promise.then(res => {
 
 和 then() 一样，catch() 也会返回一个 Promise 对象，在 catch() 中也可以有返回值进行链式调用
 
+```js
+const promise = new Promise((resolve, reject) => {
+  // reject('oops 出错啦') // 会直接调用下面的catch()
+  resolve('pikachu')
+})
+promise.then(res => {
+  console.log('第一个then的res', res) // pikachu
+  return '第一个成功啦'
+}).then(res => {
+  console.log('第二个then的res', res) // 第一个成功啦
+  throw new Error('出错啦')
+}).then(res => {
+  console.log('第三个then的res', res) // undefined
+}).catch(err => {
+  console.log('错误信息是：', err)  // 错误信息是：出错啦
+})
+```
+
 ### let 和 const
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
