@@ -11,13 +11,19 @@
 
     <script>
       const promise = new Promise((resolve, reject) => {
-        reject('失败啦')
-        resolve('成功啦')
-      }).then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      })
-    </script> 
+        resolve("pikachu");
+      });
+      promise
+        .then((res) => {
+          console.log(res); // pikachu
+        })
+        .then((res) => {
+          console.log(res); // undefined
+          return "被决议了。";
+        })
+        .then((res) => {
+          console.log(res); // 被决议了
+        });
+    </script>
   </body>
 </html>

@@ -2750,7 +2750,7 @@ console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
 
 > 1. 即使同时调用多次 resolve()/reject() 也只会调用一次 then()/catch()
 > 2. 调用 resolve() 的时候，如果传入的参数不是一个 Promise，那么会将该 Promise 的状态变成 fulfilled；如果在之后再调用 reject()，就不会有任何响应了（不是不执行代码，而是无法改变 Promise 状态）
-> 3. 调用 resolve() 的时候，如果传入的参数是一个 Promise，那么当前 Promise 的状态由传入的 promise 来决定
+> 3. 调用 resolve() 的时候，如果传入的参数是一个 Pr omise，那么当前 Promise 的状态由传入的 promise 来决定
 
 ```js
 const promise = new Promise((resolve, reject) => {
@@ -2774,6 +2774,32 @@ promise.then(res => {
   console.log('失败回调：', err)
 })
 ```
+
+#### then() 的返回值
+
+`then()` 方法返回一个新的 Promise，这个新的 Promise 是等到 then() 传入的回调函数有返回值时，才会进行决议
+
+本质上就是回调函数的返回值作为新的 Promise 的 res 参数进行决议
+
+```js
+const promise = new Promise((resolve, reject) => {
+  resolve('pikachu')
+})
+promise.then(res => {
+  console.log(res)  // pikachu
+}).then(res => {
+  console.log(res)  // undefined
+  return '被决议了。'
+}).then(res => {
+  console.log(res)  // 被决议了
+})
+```
+
+#### catch() 方法
+
+`catch()` 方法也是 Promise 对象的一个实例方法，是放在 Promise 的原型上的，`Promise.prototype.catch()`
+
+和 then() 一样，catch() 也会返回一个 Promise 对象，在 catch() 中也可以有返回值进行链式调用
 
 ### let 和 const
 
