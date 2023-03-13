@@ -2819,6 +2819,41 @@ promise.then(res => {
 })
 ```
 
+#### finally() 方法
+
+ES9(ES2018) 新增的一个特性，表示无论 Promise 成功或失败都会执行的代码，且不接收参数
+
+#### 类方法
+
+上面的方法都是实例方法，也就是都是 Promise 实例对象调用的方法，都是存放在 Promise 的 prototype 上的
+
+而有时候已经有一个现成的内容了，只是希望将其转成 Promise 来使用，那么这个时候就可以使用类方法来完成了 `Promise.resolve()/reject()`
+
+```js
+Promise.resolve('helloworld').then(res => {
+  console.log(res)  // helloworld
+})
+// 等价于
+const promise = new Promise(resolve => {
+  resolve('helloworld')
+})
+promise.then(res => {
+  console.log(res)
+})
+
+
+Promise.reject('error').catch(err => {
+  console.log(err)
+})
+// 等价于
+const promise = new Promise((_, reject) => {
+  reject('err')
+})
+promise.catch(err => {
+  console.log(err)
+})
+```
+
 ### let 和 const
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
