@@ -2823,7 +2823,7 @@ promise.then(res => {
 
 ES9(ES2018) 新增的一个特性，表示无论 Promise 成功或失败都会执行的代码，且不接收参数
 
-#### 类方法
+#### resolve()/reject() 方法
 
 上面的方法都是实例方法，也就是都是 Promise 实例对象调用的方法，都是存放在 Promise 的 prototype 上的
 
@@ -2852,6 +2852,32 @@ const promise = new Promise((_, reject) => {
 promise.catch(err => {
   console.log(err)
 })
+```
+
+#### all() 方法
+
+也是一个类方法，将多个 Promise 包裹在一起形成一个新的 Promise，新的 Promise 状态由包裹的所有 Promise 共同决定
+
+- 所有的状态都是 fulfilled 状态时，Promise 状态就是 fulfilled，并且会将所有 Promise 的返回值组成一个数组
+- 当有一个 Promise 为 reject 时，Promise 状态就会是 reject，并且会将 **第一个**  reject 的返回值作为参数
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('first')
+  }, 1000)
+})
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('second')
+  }, 3000)
+})
+
+Promise.all([p1, p2]).then(res => {
+  console.log('all: ', res)
+})
+
+// all: ['first', 'second']
 ```
 
 ### let 和 const
