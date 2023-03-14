@@ -1,4 +1,7 @@
 {
   "workbench.editor.wrapTabs": true,
-  "cSpell.words": ["nums"]
+  "cSpell.words": [
+    "nums"
+  ],
+  "editor.wordWrap": "on"
 }
