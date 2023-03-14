@@ -1,30 +1,30 @@
-/**
- * @param {number} initialEnergy
- * @param {number} initialExperience
- * @param {number[]} energy
- * @param {number[]} experience
- * @return {number}
- */
-var minNumberOfHours = function(ien, iex, energy, experience) {
-    let cnt = 0
-    const len = energy.length
-    for (let i = 0; i < len; i ++) {
-        if (ien <= energy[i]) {
-            cnt += energy[i] - ien + 1
-            ien += cnt
-        }
-        if (iex <= experience[i]) {
-            cnt += experience[i] - iex + 1
-            iex += cnt
-        }
-        console.log('cnt: ', cnt)
-        ien -= energy[i]
-        iex += experience[i]
-        console.log(ien, iex)
-    }
-    return cnt
-};
+// const promise = new Promise((resolve, reject) => {
+//     new Promise((resolves, reject) => {
+//         resolves()
+//     }).then(() => {
+//         console.log('22222')
+//     }).then(() => {
+//         console.log('AAAAA');
+//         resolve()
+//     }).then(() => {
+//         console.log('BBBBB');
+//     }).finally(() => {
+//         console.log('44444');
+//     })
+// }).then(() => {
+//     console.log(('33333'));
+// }).finally(() => {
+//     console.log('11111');
+// })
 
-arr1 = [1, 4, 3, 2]
-arr2 = [2, 6, 3, 1]
-console.log(minNumberOfHours(5,3,arr1, arr2));
+// // 2A3B14
+
+const promise = new Promise((res, rej) => {
+    rej('出错啦')
+}).then(() => {
+    console.log('第一个');
+}).catch(err => {
+    console.log('err', err);
+}).then(() => {
+    console.log('catch之后');
+})
