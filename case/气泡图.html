@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>demo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>气泡图样式Demo</title>
   </head>
   <style>
     .container {
@@ -31,6 +33,30 @@
       position: absolute;
     }
 
+    .box.bottom-arrow::after {
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 12px solid red;
+      left: 22px;
+      top: -10px;
+    }
+
+    .box.right-arrow::after {
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 12px solid red;
+      top: 22px;
+      left: -10px;
+    }
+
+    .box.left-arrow::after {
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid red;
+      top: 22px;
+      right: -10px;
+    }
+
     .box.top-arrow::after {
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
@@ -39,7 +65,6 @@
       bottom: -10px;
     }
   </style>
-
   <body>
     <div class="container">
       <div class="box top-arrow">Top</div>
@@ -47,27 +72,5 @@
       <div class="box bottom-arrow">Bottom</div>
       <div class="box left-arrow">Left</div>
     </div>
-
-    <script>
-      const promise = new Promise((resolve, reject) => {
-        // reject('oops 出错啦') // 会直接调用下面的catch()
-        resolve("pikachu");
-      });
-      promise
-        .then((res) => {
-          console.log("第一个then的res", res); // pikachu
-          return "第一个成功啦";
-        })
-        .then((res) => {
-          console.log("第二个then的res", res); // 第一个成功啦
-          throw new Error("出错啦");
-        })
-        .then((res) => {
-          console.log("第三个then的res", res); // undefined
-        })
-        .catch((err) => {
-          console.log("错误信息是：", err); // 错误信息是: Error：出错啦 at 错误位置
-        });
-    </script>
   </body>
 </html>
