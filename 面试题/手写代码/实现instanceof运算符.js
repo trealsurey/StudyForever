@@ -1,6 +1,3 @@
-### 实现 instanceof 运算符
-
-```js
 function myInstance(inst, type) {
     let proto = Object.getPrototypeOf(inst)
     let prototype = type.prototype
@@ -12,4 +9,3 @@ function myInstance(inst, type) {
         else proto = Object.getPrototypeOf(proto)
     }
 }
-```
