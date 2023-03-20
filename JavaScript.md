@@ -2956,6 +2956,8 @@ ES12 中新增
 
 #### 可迭代对象
 
+当一个对象实现了 iterable protocol 协议时，它就是一个可迭代对象
+
 将一个普通对象变成一个可迭代对象
 1. 必须实现一个特定的 **函数** `[Symbol.iterator]`
 2. 这个函数需要返回一个迭代器（这个迭代器用于迭代当前对象）
@@ -2978,7 +2980,6 @@ const infos = {
     return infoIterator
   }
 }
-
 // 现在 infos 就是一个可迭代对象了，就可以使用 for...of 遍历了
 for (let info of infos) {
   console.log(info) // jojo, lucy, wbk
@@ -2986,6 +2987,19 @@ for (let info of infos) {
 ```
 
 [对象key-value迭代案例](case/keyValueIteratorDemo.js)
+
+可迭代对象的应用
+1. JS 语法：
+   1. for...of
+   2. 展开语法 ...args
+   3. yeild
+   4. 解构赋值
+2. 创建对象时：
+   1. new Map/WeakMap([iterable])
+   2. new Set/WeakSet([iterable])
+3. 一些方法调用
+   1. Promise.all/race([iterable])
+   2. Array.from([iterable])
 
 生成器是一种特殊的迭代器
 
