@@ -2954,6 +2954,39 @@ ES12 中新增
     - 如果已经遍历完毕，则为 true。这种情况下可以不写 value
   - `value` 此轮迭代返回的值
 
+#### 可迭代对象
+
+将一个普通对象变成一个可迭代对象
+1. 必须实现一个特定的 **函数** `[Symbol.iterator]`
+2. 这个函数需要返回一个迭代器（这个迭代器用于迭代当前对象）
+
+```js
+const infos = {
+  friends: ['jojo', 'lucy', 'wbk'],
+  // 没有写下面的迭代器之前，infos 是不可以迭代的
+  [Symbol.iterator]: function() {
+    let index = 0
+    const infoIterator = {
+      next() {  // 如果这里写成箭头函数，那么下面就可以写成 this.friends 
+        if (index < infos.friends.length) {
+          return { done: false, value: infos.friends[index++] }
+        } else {
+          return { done: true}
+        }
+      }
+    }
+    return infoIterator
+  }
+}
+
+// 现在 infos 就是一个可迭代对象了，就可以使用 for...of 遍历了
+for (let info of infos) {
+  console.log(info) // jojo, lucy, wbk
+}
+```
+
+[对象key-value迭代案例](case/keyValueIteratorDemo.js)
+
 生成器是一种特殊的迭代器
 
 
