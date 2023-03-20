@@ -2880,6 +2880,10 @@ Promise.all([p1, p2]).then(res => {
 // all: ['first', 'second']
 ```
 
+#### allSettled() 方法
+
+`all()` 方法有一个缺陷：当其中一个 Promise 变成 reject 状态时，新 Promise 就会立刻变成 reject 状态，那么对于处在 resolved 或者 pending 状态的 promise，就不能拿到对应的结果了
+
 ### let 和 const
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)

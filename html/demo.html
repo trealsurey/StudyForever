@@ -5,47 +5,22 @@
     <title>demo</title>
   </head>
   <style>
-    .container {
-      display: grid;
-      grid-template-columns: 200px 200px;
-      grid-template-rows: 200px 200px;
+    .first,
+    .second {
+      width: 200px;
+      height: 200px;
+      background-color: lightgreen;
     }
-
-    .box {
-      width: 150px;
-      height: 100px;
-      background-color: red;
-      color: white;
+    .second {
       position: relative;
-      border-radius: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-    }
-
-    .box::after {
-      content: "";
-      width: 0;
-      height: 0;
-      position: absolute;
-    }
-
-    .box.top-arrow::after {
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 12px solid red;
-      left: 22px;
-      bottom: -10px;
+      background-color: lightcoral;
     }
   </style>
 
   <body>
     <div class="container">
-      <div class="box top-arrow">Top</div>
-      <div class="box right-arrow">Right</div>
-      <div class="box bottom-arrow">Bottom</div>
-      <div class="box left-arrow">Left</div>
+      <div class="first"></div>
+      <div class="second"></div>
     </div>
 
     <script>
