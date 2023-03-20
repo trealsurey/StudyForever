@@ -2274,7 +2274,7 @@ IE10+
 有的 script 脚本是严格模式，有的 script 脚本是正常模式，这样不利于文件合并，所以可以将整个脚本文件放在一个立即执行的匿名函数之中。这样独立创建一个作用域而不影响其他 script 脚本文件
 
 ```html
-<script>
+<scrip>
   (function (){
     "use strict";
     var num = 10;
@@ -2728,7 +2728,7 @@ console.log(foo.__proto__.constructor.prototype.__proto__.__proto__);
 
 ### Promise
 
-对于曾经的异步函数调用来说，执行函数的设计和写法锁各种各样的，对于执行成功和执行失败的回调函数内容也是各种各样。那么在真正调用函数的过程中就需要花费大量时间去确认函数内容和调用方式，十分低效。为了统一规范，才有了 Promise
+对于曾经的异步函数调用来说，执行函数的设计和写法shi 各种各样的，对于执行成功和执行失败的回调函数内容也是各种各样。那么在真正调用函数的过程中就需要花费大量时间去确认函数内容和调用方式，十分低效。为了统一规范，才有了 Promise
 
 **Promise 是一个类**
 
@@ -2777,7 +2777,7 @@ promise.then(res => {
 
 #### then() 的返回值
 
-`then()` 方法返回一个新的 Promise，这个新的 Promise 是等到 then() 传入的回调函数有返回值时，才会进行决议
+`then()` 方法返回一个新的 Promise，这个新的 Promise 是等到 then() 传入的回调函数有返回值时，才会进行决议。回调函数中的内容在执行时， promise 处于 pending 状态
 
 本质上就是回调函数的返回值作为新的 Promise 的 res 参数进行决议
 
@@ -2884,6 +2884,80 @@ Promise.all([p1, p2]).then(res => {
 
 `all()` 方法有一个缺陷：当其中一个 Promise 变成 reject 状态时，新 Promise 就会立刻变成 reject 状态，那么对于处在 resolved 或者 pending 状态的 promise，就不能拿到对应的结果了
 
+同样也是一个类方法，`Promise.allSettled()`
+
+该方法会在所有 promise 都有结果之后才会结束，并且这个新的 promise 的状态一定是 fulfilled
+
+最后返回一个数组，数组中包括 n 个对象，每个对象中保存每个 promise 的状态和返回信息
+
+```js
+Promise.allSettled([p1, p2, p3]).then(res => {
+  console.log("all settled: ", res)
+}).catch(err => console.log(err))
+
+// 假设 p1 失败，其他都成功，返回结果如下
+/** 
+ *  [
+ *    {status: 'rejected', reason: 'p1 reject err'}
+ *    {status: 'fulfilled', reason: 'p2 resolve'}
+ *    {status: 'fulfilled', reason: 'p3 resolve'}
+ *  ]
+*/
+```
+
+#### race() 方法
+
+如果一个 promise 有了结果，并希望决定最终新 promise 的状态，就可以使用 `race()`
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('first')
+  }, 5000)
+})
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('second')
+  }, 3000)
+})
+
+Promise.race([p1, p2]).then(res => {
+  console.log('race: ', res)
+})
+
+// 返回 p2 的结果，因为 p2 先完成
+```
+
+#### any() 方法
+
+ES12 中新增
+
+需要等到一个 fulfilled 状态，才会决定新的 promise 的状态
+
+如果所有 promise 都是 reject，那么也需要等到所有的 promise 都变成 rejected 状态
+
+> - race()：无论是什么结果，只要有结果就停止
+> - any()：需要一个 fulfilled 结果才停止
+
+### 迭代器和生成器
+
+`Iterator` 迭代器，**是一个对象**，可以使用户在容器对象 container 上（比如数组、哈希表）进行遍历，使用该接口无需关心对象的内部实现细节
+
+这个迭代器对象需要符合 **迭代器协议（Iterator Protocol）**
+- 迭代器协议定义了产生一系列值（有限/无限个）的标准方式
+- JS 中这个标准就是一个特定的 `next()` 方法
+
+`next()` 方法要求如下：
+- 一个无参数/一个参数的函数，返回一个拥有以下两个属性的对象
+  - `done` 一个 boolean 值
+    - 如果迭代器还未遍历完，则为 false（注意，遍历到最后一个元素不算遍历完）
+    - 如果已经遍历完毕，则为 true。这种情况下可以不写 value
+  - `value` 此轮迭代返回的值
+
+生成器是一种特殊的迭代器
+
+
+
 ### let 和 const
 
 [蛋老师讲解 var let const 三者区别](https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=333.337.search-card.all.click)
@@ -2894,6 +2968,8 @@ ES6 以前，JS 没有块级作用域。ES6 新增 let 和 const 之后才有了
 
 1. 声明变量，没有变量提升
 
+> 严格意义上说，let 也是有变量提升的，只是和 var 相比不在同一个阶段，需要结合词法环境和上下文来分析，需要分析源码
+
 ```js
 console.log(a)
 let a = 2
@@ -2901,7 +2977,7 @@ let a = 2
 // 会报错，因为不存在变量提升
 ```
 
-2. 是一个块级作用域
+1. 是一个块级作用域
 
 ```js
 console.log(b)  // 报错 not defined
