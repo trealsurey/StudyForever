@@ -3075,6 +3075,10 @@ console.log(generator.next());
 
 同时，也可以向生成器函数中传递相关参数
 
+每次执行 next() 方法会执行 yield 上面的代码和同一行后面的代码
+
+yield 同一行前面的代码会在下一次调用的时候执行
+
 [生成器函数传递参数 Demo](case/generatorFnArgsDemo.js)
 
 ### let 和 const
