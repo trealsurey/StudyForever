@@ -24,25 +24,15 @@
     </div>
 
     <script>
-      const promise = new Promise((resolve, reject) => {
-        // reject('oops 出错啦') // 会直接调用下面的catch()
-        resolve("pikachu");
-      });
-      promise
-        .then((res) => {
-          console.log("第一个then的res", res); // pikachu
-          return "第一个成功啦";
-        })
-        .then((res) => {
-          console.log("第二个then的res", res); // 第一个成功啦
-          throw new Error("出错啦");
-        })
-        .then((res) => {
-          console.log("第三个then的res", res); // undefined
-        })
-        .catch((err) => {
-          console.log("错误信息是：", err); // 错误信息是: Error：出错啦 at 错误位置
-        });
+      function* foo() {
+        console.log("start");
+        yield "yeild";
+        console.log("end");
+      }
+
+      const generator = foo();
+      console.log(generator.next());
+      console.log(generator.next());
     </script>
   </body>
 </html>

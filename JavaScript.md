@@ -2939,7 +2939,7 @@ ES12 中新增
 > - race()：无论是什么结果，只要有结果就停止
 > - any()：需要一个 fulfilled 结果才停止
 
-### 迭代器和生成器
+### 迭代器
 
 `Iterator` 迭代器，**是一个对象**，可以使用户在容器对象 container 上（比如数组、哈希表）进行遍历，使用该接口无需关心对象的内部实现细节
 
@@ -3001,9 +3001,81 @@ for (let info of infos) {
    1. Promise.all/race([iterable])
    2. Array.from([iterable])
 
-生成器是一种特殊的迭代器
+#### 自定义类的对象迭代
 
+```js
+class Person {
+  constructor() { }
+  // 实例方法
+  [Symbol.iterator]() { // 当然也可以在 prototype 上定义，但是不推荐
+    // ...
+  }
+}
+```
 
+#### 迭代器中的中断检测
+
+用处不多，了解即可
+
+```js
+const iterator = {
+  // ...
+  return: () => { // 迭代过程中 break/return/throw/没有解构所有的值 就会监听到
+    console.log('监听到迭代器中断了')
+    return { done: true} // 加上这一行，不然会报错
+  }
+}
+```
+
+### 生成器
+
+ES6 中新增的一种 **函数控制、使用** 的方案，它可以让我们更加灵活地控制函数什么时候继续执行、暂停执行等
+
+#### 生成器函数
+
+> Instead, they (genarator function) return a special type of iterator, called a Generator.  -- Ref: MDN
+
+- 需要在 function 后面加一个符号 `*`
+- 可以通过 `yeild` 关键字来控制函数的执行流程
+  - 遇到 `yeild` 时会中断执行
+- 返回值是一个 Generator
+  - 生成器是一种特殊的迭代器
+  - 想要执行函数内部的代码，需要生成器对象，然后调用它的 `next()`
+  - 当我们不希望 next() 返回 undefined 时，可以通过 yield 来返回结果
+  
+```js 
+// 直接调用并不会执行打印
+function* foo() {
+  console.log('111')
+  yield
+  console.log('222')
+}
+
+const generator = foo()
+generator.next()  // 111
+generator.next()  // 111 222
+```
+
+```js
+// 通过 yeild 来控制 next() 返回值
+function* foo() {
+  console.log('start')
+  yield 'yeild'
+  console.log('end')
+}
+const generator = foo();
+console.log(generator.next());
+console.log(generator.next());
+
+// start
+// { value: 'yield', done: false}
+// end
+// { value: undefined, done, true}
+```
+
+同时，也可以向生成器函数中传递相关参数
+
+[生成器函数传递参数 Demo](case/generatorFnArgsDemo.js)
 
 ### let 和 const
 
