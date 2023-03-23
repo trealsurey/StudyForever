@@ -3057,7 +3057,7 @@ generator.next()  // 111 222
 ```
 
 ```js
-// 通过 yeild 来控制 next() 返回值
+// 通过 yield 来控制 next() 返回值
 function* foo() {
   console.log('start')
   yield 'yeild'
@@ -3073,13 +3073,79 @@ console.log(generator.next());
 // { value: undefined, done, true}
 ```
 
-同时，也可以向生成器函数中传递相关参数
+- 可以通过 `next(args)` 向生成器函数中传递相关参数
 
 每次执行 next() 方法会执行 yield 上面的代码和同一行后面的代码
 
 yield 同一行前面的代码会在下一次调用的时候执行
 
 [生成器函数传递参数 Demo](case/generatorFnArgsDemo.js)
+
+- 可以通过调用 `generator.return([args])` 来对生成器函数进行终止
+  - return() 详见 iterator 中
+  - 传入的参数会以 `{value: args, done: true}` 的方式返回
+  - 调用 return() 之后只是生成器函数中的内容不再执行了，下面还可以继续调用 next()
+- 也可以通过调用 `generator.throw(new Error('err'))` 抛出异常来中断执行
+
+#### 生成器代替迭代器
+
+```js
+// 利用生成器对上面迭代器的代码进行重构
+function* arrayIterator(arr) {
+  // 这里有语法糖，见下标题
+  for (let i = 0; i < arr.length; i++) {
+    yield arr[i]
+  }
+}
+const arr = ['jojo', 'lucy']
+const iterator = arrayIterator(arr)
+console.log(iterator.next())
+console.log(iterator.next())
+console.log(iterator.next())
+
+// {value: 'jojo', done: false}
+// {value: 'lucy', done: false}
+// {value: undefined, done: true}
+```
+
+#### yield 语法糖
+
+上面的代码可以直接使用 `yield*` 来代替 for 循环中的内容
+
+注意 `yield*` 后面要接一个 **可迭代对象**，那么就会依次迭代这个可迭代对象中的每一个值
+
+那么上面 ”迭代器“ 章节中的 `[Symbol.iterator]` 就可以写成下面的形式
+
+```js
+class Person {
+  constructor(name, age, hobbies) {
+    this.name = name
+    this.age = age
+    this.hobbies = hobbies
+  }
+
+  // 注意这里前面要加 *，否则就不是一个生成器函数 
+  *[Symbol.iterator]() { 
+    yield* this.hobbies
+  }
+}
+
+let person = new Person('lucy', 28, ['coffee', 'puzzles', 'music'])
+for (let p of person) {
+  console.log(p);
+}
+```
+
+### async 异步函数
+
+`async (abbr. for asynchronous)` 关键字用来声明一个异步函数
+
+异步函数内部代码的执行过程和普通函数是一致的，默认情况下也是会被同步执行的
+
+有返回值时，和普通函数会有区别：
+1. 异步函数的返回值相当于被包裹到 `Promise.resolve()` 中
+2. 如果返回值是 promise，那么状态会由 `promise` 来决定
+3. 如果返回值是一个对象并实现了 thenable，那么会由对象的 `then()` 方法决定
 
 ### let 和 const
 

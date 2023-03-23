@@ -24,15 +24,23 @@
     </div>
 
     <script>
-      function* foo() {
-        console.log("start");
-        yield "yeild";
-        console.log("end");
+      class Person {
+        constructor(name, age, hobbies) {
+          this.name = name
+          this.age = age
+          this.hobbies = hobbies
+        }
+
+        // 注意这里前面要加 *，否则就不是一个生成器函数
+        *[Symbol.iterator]() {
+          yield* this.hobbies;
+        }
       }
 
-      const generator = foo();
-      console.log(generator.next());
-      console.log(generator.next());
+      let person = new Person('lucy', 28, ['coffee', 'puzzles', 'music'])
+      for (let p of person) {
+        console.log(p);
+      }
     </script>
   </body>
 </html>
