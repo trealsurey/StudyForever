@@ -1341,7 +1341,6 @@ this 的指向在函数定义时是确定不了的，只有在函数执行的时
 
 ### 事件循环 EventLoop
 
-
 [javascript 引擎执行的过程的理解--执行阶段，有关宏任务和微任务](https://segmentfault.com/a/1190000018134157)
 
 JS 的一大特点就是 **单线程**，因为 JS 这门脚本语言诞生的使命就是为处理页面中用户的交互，以及操作 DOM。那么当我们操作 DOM 时，不能同时进行，应该先添加再删除等等
@@ -3142,10 +3141,72 @@ for (let p of person) {
 
 异步函数内部代码的执行过程和普通函数是一致的，默认情况下也是会被同步执行的
 
-有返回值时，和普通函数会有区别：
+有 **返回值** 时，和普通函数会有区别：
 1. 异步函数的返回值相当于被包裹到 `Promise.resolve()` 中
-2. 如果返回值是 promise，那么状态会由 `promise` 来决定
+   1. 默认情况下会单独返回一个 promise
+   2. 如果指定返回其他值比如 return 321 那么就相当于 `return Promise.resolve(321)`，那么在调用时就可以通过 then() 获取返回值 321
+2. 如果返回值是 promise，那么状态会由返回的新 `promise` 来决定
 3. 如果返回值是一个对象并实现了 thenable，那么会由对象的 `then()` 方法决定
+
+```js
+async function foo() {
+  return {
+    then: function(resolve, reject) {
+      setTimeout(() => {
+        resolve('bbb')
+      }, 3000)
+    }
+  }
+}
+foo().then(res => {
+  console.log(res)
+})
+
+// 等待 3 秒，然后 bbb
+``` 
+
+async 函数执行有 **异常** 时，并不会像普通函数一样报错，而是会作为 Promise 的 reject 传递给 catch()，那么在调用方法时 `.catch()` 就可以捕获到，并且可以继续执行下面的代码
+
+### await 关键字
+
+必须在异步函数中使用
+
+- `await` 后面会跟上一个表达式，这个表达式会返回一个 promise
+- `await` 会等到 promise 的状态变为 fulfilled 之后才会继续执行异步函数
+
+```js
+function requestData(URL) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(URL)
+    }, 2000);
+  })
+}
+async function getData() {
+  const res1 = await requestData('www.baidu.com')
+  console.log('url1: ' + res1)
+  const res2 = await requestData('www.bilibili.com')
+  console.log('url2: ' + res2);
+}
+getData()
+```
+
+```js
+// 有异常的情况
+function requestData(URL) {
+  // ...
+  reject(URL)
+}
+async function getData() {
+  // 方法一：try...catch... 解决
+}
+// 方法二：调用时 catch()
+getData().catch(err => { })
+```
+
+#### async 和 await 结合使用
+
+有了 async 和 await 之后，就不需要再向上面的代码一样使用普通函数再 return promise 了
 
 ### let 和 const
 

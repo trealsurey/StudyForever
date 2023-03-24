@@ -24,23 +24,33 @@
     </div>
 
     <script>
-      class Person {
-        constructor(name, age, hobbies) {
-          this.name = name
-          this.age = age
-          this.hobbies = hobbies
-        }
+      // function requestData(URL) {
+      //   return new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(URL)
+      //     }, 2000);
+      //   })
+      // }
+      async function requestData(URL) {
+        setTimeout(function (URL) {
+          return requestData.URL
+        }, 2000);
+      }
+      // setTimeout(() => {
+      //   async function requestData(URL) {
+      //     return URL
+      //   }
+      // }, 2000);
 
-        // 注意这里前面要加 *，否则就不是一个生成器函数
-        *[Symbol.iterator]() {
-          yield* this.hobbies;
-        }
+      async function getData() {
+        // console.log(requestData('www.baidu.com'));
+        const res1 = await requestData('www.baidu.com')
+        console.log('url1: ' + res1)
+        const res2 = await requestData('www.bilibili.com')
+        console.log('url2: ' + res2);
       }
 
-      let person = new Person('lucy', 28, ['coffee', 'puzzles', 'music'])
-      for (let p of person) {
-        console.log(p);
-      }
+      getData()
     </script>
   </body>
 </html>
