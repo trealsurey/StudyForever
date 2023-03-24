@@ -1,4 +1,5 @@
 # JavaScript
+
 JS 包括
 - ECMAScript：JS 的核心语法（ES 规范，ECMA-262 标准）
 - DOM：Document Object Model，文档对象模型，对网页当中的节点进行增删改的过程都是对 DOM 操作的过程。HTML 文档被当做一棵 DOM 树来看待。
@@ -1429,14 +1430,18 @@ void 运算符通常只用于获取 undefined 的原始值，一般使用 `void(
 ### 本地存储特性
 
 - 数据存储在用户浏览器中
+- 
 - 设置、读取方便，甚至页面刷新不丢失数据
 - 容量较大，`sessionStorage` 约 5M，`localStorage` 约 20M
-- 只能存储字符串，可以将对象 `JSON.stringify()` 转为字符串后存储
+- 只能存储字符串
+  - 将对象 `JSON.stringify()` 转为字符串后存储
+  - 获取时使用 `JSON.parse()` 再转化为对象
+  - 实际开发中可以将这些设计本地存储的操作都封装到一个类中，不必每次都要转换
 
 ### sessionStorage
 
 - 生命周期为 **关闭浏览器窗口**
-- 在同一个窗口（页面）下数据可以共享
+- 在同一个窗口（页面）下数据可以共享，也就是在页面内进行跳转的话，还会保留
 - 以键值对的形式存储使用
 
 #### 相关操作
@@ -3174,7 +3179,7 @@ async 函数执行有 **异常** 时，并不会像普通函数一样报错，�
 必须在异步函数中使用
 
 - `await` 后面会跟上一个表达式，这个表达式会返回一个 promise
-- `await` 会等到 promise 的状态变为 fulfilled 之后才会继续执行异步函数
+- `await` 会等到 promise 的状态变为 fulfilled 之后才会继续执行异步函数剩下的代码
 
 ```js
 function requestData(URL) {
