@@ -1237,13 +1237,12 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 -->
 <!-- Uncaught TypeError: Cannot set properties of null (setting 'onclick') -->
 <body>
-    <script type="text/javascript">
-        document.getElementById("myBtn").onclick = function() {
-            alert("this is my button.")
-        }
-    </script>
-
-    <input type="button" value="btn1" id="myBtn" />
+  <script type="text/javascript">
+    document.getElementById("myBtn").onclick = function() {
+      alert("this is my button.")
+    }
+  </script>
+  <input type="button" value="btn1" id="myBtn" />
 </body>
 ```
 
@@ -1251,27 +1250,25 @@ onload 就是窗口/页面加载事件，当文档内容完全加载完成后才
 
 ```html
 <body onload="ready()">
-    <script type='text/javascript'>
-        function ready() {
-            document.getElementById("myBtn").onclick = function () {
-                alert("this is my button.")
-            }
-        }
-    </script>
-    <input type="button" value="btn1" id="myBtn" />
+  <script type='text/javascript'>
+    function ready() {
+      document.getElementById("myBtn").onclick = function () {
+        alert("this is my button.")
+      }
+    }
+  </script>
+  <input type="button" value="btn1" id="myBtn" />
 </body>
-
 <!-- 或者 -->
-
 <body>
-    <script type='text/javascript'>
-        window.onload = function() {
-            document.getElementById("myBtn").onclick = function() {
-                alert("this is my button...")
-            }
-        }
-    </script>
-    <input type="button" value="333333" id="myBtn" />
+  <script type='text/javascript'>
+    window.onload = function() {
+      document.getElementById("myBtn").onclick = function() {
+        alert("this is my button...")
+      }
+    }
+  </script>
+  <input type="button" value="333333" id="myBtn" />
 </body>
 ```
 
@@ -2245,7 +2242,7 @@ function fn(){
 fn();
 ```
 
-### 闭包 :star:
+### 闭包
 
 
 
@@ -3423,7 +3420,7 @@ const arr = [10, 30, 40, 5, 100. 60, 25]
 console.log(Math.max.apply(null, arr))
 ```
 
-### 箭头函数 :star:
+### 箭头函数
 
 使用 `=>` 来定义，`function() { }` 等于 `() => { }`
 
@@ -3696,6 +3693,36 @@ console.log(keys) // [Symbol(s1)]
 ### Set
 
 ### Map
+
+## 防抖和节流
+
+防抖和节流的概念最早并不是出现在软件工程中，防抖出现在电子元件中，而节流出现在流体流动中。
+
+由于 JS 是事件驱动的，存在大量的操作会触发事件，从而加入到事件队列中处理。对于某些频繁的事件处理会造成大量的性能损耗，为减少相应损耗，就可以通过防抖和节流来限制事件的频繁发生。
+
+在 JS 中，防抖和节流通过两个函数 `debounce()` 和 `throttle()` 来实现
+
+### 防抖
+
+简单理解防抖的含义：
+- 事件触发时，相应的函数并不会立即出发，而是会等待一定的时间
+- 当事件密集触发时，函数的触发会被频繁的推迟
+- 只有等待了一段时间也没有事件触发，才会真正地执行响应函数
+
+应用场景：
+- 输入框中频繁输入内容，搜索或提交信息
+- 频繁点击按钮触发某个事件
+- 监听浏览器滚动事件，完成某些特定操作
+- 用户缩放浏览器的 resize 事件
+- ……
+
+通常我们可以使用一些第三方库来实现防抖操作
+- [underscore](https://underscorejs.org)
+  - 下载后本地引入
+  - CDN 直接引入
+  - npm 安装
+- lodash，underscore 的升级版，功能更多，但很久没更新了
+
 
 ## PC 端网页特效
 
