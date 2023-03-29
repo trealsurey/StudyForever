@@ -3723,6 +3723,7 @@ console.log(keys) // [Symbol(s1)]
   - npm 安装
 - lodash，underscore 的升级版，功能更多，但很久没更新了
 
+[详细代码](面试题/%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81/%E9%98%B2%E6%8A%96%E5%87%BD%E6%95%B0.html)
 
 ## PC 端网页特效
 
