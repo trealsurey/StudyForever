@@ -3745,6 +3745,32 @@ console.log(keys) // [Symbol(s1)]
 
 [详细代码](面试题/%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81/%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/)
 
+## 深拷贝和浅拷贝
+
+```js
+const info = {
+  name: 'lucy',
+  age: 18,
+  friend: {
+    name: 'wbk'
+  }
+}
+// 1. 引用赋值：本质上就是两个对象指向了同一块内存对象
+const obj1 = info
+
+// 2. 浅拷贝：将原来的东西拷贝一份新的，并将 obj2 指向新的对象
+// 改变新的对象的内容，并不会影响原来的
+// 但是两个对象的 friend 指向同一个对象
+const obj2 = { ...info }
+const obj3 = Object.assign({}, info)
+
+// 3. 深拷贝
+// 完全拷贝一个新的对象，不管进行什么操作都不会对之前的对象产生影响
+// JS 默认没有深拷贝
+// 3.1 JSON 方法，缺点是不会拷贝函数
+const obj4 = JSON.parse(JSON.stringify(info))
+```
+
 ## PC 端网页特效
 
 ### 元素偏移量 offset
