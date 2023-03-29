@@ -11,12 +11,23 @@
       <input type="text" />
     </div>
 
+    <!-- 
+      默认情况下，throttle 函数在第一次触发时就会立即执行
+      但是某些情况下，我们并不希望它立即执行
+    -->
     <script>
-      // interval 时间间隔
-      const myThrottle = function (fn, interval) {
+      // leading 控制是否立即执行，默认需要立即执行
+      const myThrottle = function (fn, interval, leading = true) {
         let startTime = 0;
         const _throttle = function () {
           const nowTime = new Date().getTime();
+
+          // 对立即执行进行控制
+          // 别忘了 startTime === 0，否则 now 和 start 永远相等，永远不会执行下面的代码
+          if (!leading && startTime === 0) {
+            startTime = nowTime;
+          }
+
           const waitTime = interval - (nowTime - startTime);
           if (waitTime <= 0) {
             fn.apply(this);
@@ -29,9 +40,13 @@
 
     <script>
       const inputEl = document.querySelector("input");
-      inputEl.oninput = myThrottle(function () {
-        console.log("发送请求：" + this.value);
-      }, 1000);
+      inputEl.oninput = myThrottle(
+        function () {
+          console.log("发送请求：" + this.value);
+        },
+        1000,
+        false
+      );
     </script>
   </body>
 </html>

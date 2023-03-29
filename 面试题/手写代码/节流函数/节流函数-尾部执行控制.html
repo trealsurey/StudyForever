@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Throttle</title>
+  </head>
+  <body>
+    <div>
+      <input type="text" />
+    </div>
+
+    <!-- 
+      用处不大，一般尾部都是不执行的
+      所谓尾部是指，假设时间间隔为 1s，最后一次触发在 0.7s 时已经完成了
+      那么此时就不需要再在这个 1s 结束的时候再执行一次回调函数了
+    -->
+    <script>
+      // trailing 控制
+      const myThrottle = function (fn, interval, trailing = false) {
+        let startTime = 0;
+        let timer = null;
+
+        const _throttle = function () {
+          const nowTime = new Date().getTime();
+          const waitTime = interval - (nowTime - startTime);
+          if (waitTime <= 0) {
+            if (timer) clearTimeout(timer);
+            fn.apply(this);
+            startTime = nowTime;
+            timer = null;
+            return;
+          }
+
+          if (trailing && !timer) {
+            timer = setTimeout(() => {
+              fn.apply(this);
+              // 注意这里要赋最新的时间，而不是原来的 nowTime
+              startTime = new Date().getTime();
+              timer = null;
+            }, waitTime);
+          }
+        };
+        return _throttle;
+      };
+    </script>
+
+    <script>
+      const inputEl = document.querySelector("input");
+      inputEl.oninput = myThrottle(
+        function () {
+          console.log("发送请求：" + this.value);
+        },
+        2000,
+        true
+      );
+    </script>
+  </body>
+</html>
