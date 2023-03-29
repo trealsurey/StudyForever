@@ -2330,13 +2330,13 @@ logD();
 // ADCB
 ```
 
-[事件循环案例](case/EventLoopTest.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=6&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P6）
+[事件循环案例](case/EventLoop/EventLoopTest.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=6&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P6）
 
-[事件循环案例二](casd/../case/EventLoopTest2.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
+[事件循环案例二](case/EventLoop/EventLoopTest2.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
 
-[事件循环案例三（包含 await）](casd/../case/EventLoopTest3.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
+[事件循环案例三（包含 await）](case/EventLoop/EventLoopTest3.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=7&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P7）
 
-[事件循环案例四（包含 await）](casd/../case/EventLoopTest4.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=8&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P8）
+[事件循环案例四（包含 await）](case/EventLoop/EventLoopTest4.js) （[解析参考](https://www.bilibili.com/video/BV1dM4y1D73D?p=8&spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5) P8）
 
 **对于 `await` 来说，**
 - 如果后面跟着的函数返回的是一个 Promise，那么在 Promise 没有执行 `resolve()` 之前，await 后面的内容是不会被放到任务队列中的，只有当执行完 `resolve()` 之后，才会加入微任务队列
