@@ -11,6 +11,9 @@
       <input type="text" />
     </div>
 
+    <!-- 
+      参考视频：coderwhy-js高级-728-手写防抖函数的this和参数绑定
+    -->
     <script>
       function myDebounce(fn, delay) {
         // 1. 记录上一次事件触发的 timer
@@ -19,15 +22,17 @@
         // 2. 触发事件时执行的函数
         // 这里不要写成箭头函数，否则下面的 this 会指向 window
         // 那么在调用的时候就不能拿到输入框中的内容了
-        const _debounce = function () {
-          // 2.1 如果在时间间隔内再次触发，那么就取消上一次的事件 
+        // 如果调用的时候不传入 event 或者其他参数，那么这里就可以不写参数
+        const _debounce = function (...args) {
+          // 2.1 如果在时间间隔内再次触发，那么就取消上一次的事件
           if (timer) clearTimeout(timer);
 
           // 2.2 延迟执行对应的回调函数 fn()
           timer = setTimeout(() => {
             // 注意这里要加上 apply()
             // 而且因为这里是箭头函数，this 会指向上一层的 this
-            fn.apply(this);
+            // 如果调用的时候不传参数，那么这里就只需要传入一个 this
+            fn.apply(this, args);
             // 2.3 函数执行完成之后，将 timer 置空
             timer = null;
           }, delay);
@@ -40,8 +45,8 @@
 
     <script>
       const inputEl = document.querySelector("input");
-      inputEl.oninput = myDebounce(function() {
-        console.log('发送请求：' + this.value);
+      inputEl.oninput = myDebounce(function (event) {
+        console.log("发送请求：" + this.value, event);
       }, 1500);
     </script>
   </body>

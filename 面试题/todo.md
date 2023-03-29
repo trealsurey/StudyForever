@@ -138,4 +138,5 @@
 
 
 - 从后端拿到数据后，但是不能正确显示，表单中数据不存在（浏览器设置了自动翻译）
-https://www.zhihu.com/question/49864093/answer/2618721557
+[你碰到过那些有趣的 bug ?](https://www.zhihu.com/question/49864093/answer/2618721557)
+
