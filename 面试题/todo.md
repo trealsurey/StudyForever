@@ -120,9 +120,7 @@
 
 ### 27. var let const 的区别
 
-> https://www.bilibili.com/video/BV1qk4y1k75W/?spm_id_from=pageDriver&vd_source=c727c2934b167656e7856cce64cc7eb5
-
-|     | 重复定义 | 修改值 | 声明提升 | 块级作用域 | 循环
+|     | 重复定义 | 修改值 | 声明提升 | 块级作用域 | 循环 |
 | :-: | :-:  |  :-: | :-: | :-: | :-: |
 | var  | 可以 | 可以 | 会 | 严格来说不支持<br/>（function可以） | 可以<br/>（注意闭包问题） |
 | let  | 不可以 | 可以 | 不会 | 支持 | 可以 | 
@@ -131,13 +129,9 @@
 ### 53. JSON.stringify() 的用法
 
 > https://www.bilibili.com/video/BV16N4y1G7gv?spm_id_from=333.1007.tianma.1-1-1.click&vd_source=c727c2934b167656e7856cce64cc7eb5
-
-## 算法题
-[剑指 Offer II 029. 排序的循环链表](https://leetcode.cn/problems/4ueAj6/)
-
-[反转链表](https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/)
-
+> 
 ## 遇到过最有挑战性的问题是什么，你是怎么解决的？
+
 - localstorage里面利用true/false判断会永远判断为true，需要转换为用1/0来判断。
 在localstorage中存储的boolean数据都变成了字符串了，才导致的。
 所以"true"=true及"false"==false,“true”==false显示都为false。
