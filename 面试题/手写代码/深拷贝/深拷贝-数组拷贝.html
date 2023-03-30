@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>深拷贝 - 数组拷贝</title>
+    <script src="../isObject.js"></script>
+  </head>
+  <body>
+    <script>
+      /** 
+       * 基本实现中无论拷贝的内容是什么都会新建一个对象
+       * 当我们想要拷贝一个数组时，我们需要得到的是一个新的数组而不是一个对象
+       * 所以，我们需要做进一步判断
+      */
+      function deepcopy(originValue) {
+        if (!isObj(originValue)) return originValue;
+
+        // 这里进行判断
+        const newObj = Array.isArray(originValue) ? [] : {}
+        for (let key in originValue) {
+          newObj[key] = deepcopy(originValue[key]);
+        }
+
+        return newObj;
+      }
+
+      const books = [
+        {name: '活着', price: 29},
+        {name: '一句顶一万句', price: 49}
+      ]
+
+      const obj = deepcopy(books);
+      console.log(obj);
+    </script>
+  </body>
+</html>

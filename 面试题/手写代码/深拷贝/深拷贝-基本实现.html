@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>深拷贝 - 基本实现</title>
+    <script src="../isObject.js"></script>
+  </head>
+  <body>
+    <script>
+      function deepcopy(originValue) {
+        if (!isObj(originValue)) return originValue;
+
+        const newObj = {};
+        for (let key in originValue) {
+          newObj[key] = deepcopy(originValue[key]);
+        }
+
+        return newObj;
+      }
+
+      const info = {
+        name: "lucy",
+        age: 18,
+        friends: {
+          name: "wbk",
+          address: {
+            name: "杭州",
+            detail: "衡美",
+          },
+        },
+      };
+
+      const obj = deepcopy(info);
+      console.log(obj);
+
+      info.friends.address.name = "唐山";
+      console.log(obj.friends.address.name);
+    </script>
+  </body>
+</html>
