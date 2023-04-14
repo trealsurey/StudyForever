@@ -95,6 +95,17 @@ Array.prototype === arr.__proto__
 
 ### Map 和 Object 的区别
 
+|  | Map | Object |
+| :--: | :--: | :--: |
+| key 值 | 任意类型（包括 null，NaN，Infinity） | 只能是 String/Symbol，其他类型会被强制转化为 String |
+| 迭代方式 | 可直接使用 for...of 进行迭代 | 1. for...in 遍历，但是要处理原型上的数据带来的干扰（使用 `Object.hasOwnProperty()`） 2. 使用 `Object.keys()` or `Object.entries()` 遍历  |
+| 序列化 | 不支持，但是可以使用特殊的存储方式 | 支持使用 `JSON.parse()` `JSON.stringfy()` 进行序列化和反序列化|
+| 性能（以插入 string 类型 key 为例） | 数据量 < 1000 时性能明显高于 Object | 数据量 > 1000 时差异不大（具体区别取决于不同的 JS 引擎） |
+
+> **注意**：因为原型的存在，一个空的对象本身就会存在一些 key，比如 `toString` `constructor` 等；除非使用 `Object.create(null)` 来解决。Map 不存在这种问题
+
+**如果是动态存取数据，用 Map 更好，如果只是单纯存储数据用 Object 即可**
+
 ### Map 和 WeakMap 的区别
 
 ### Set 和 WeakSet 的区别

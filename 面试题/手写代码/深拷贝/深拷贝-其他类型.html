@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>深拷贝 - 其他类型</title>
+    <script src="../isObject.js"></script>
+  </head>
+  <body>
+    <script>
+      /**
+       * 如果对象中包含一个 Set()/Map()，那么拷贝之后 set 中是不会有任何内容的
+       * 因为 Set 不可以通过 for...in 进行遍历，只能通过 for...of 进行遍历
+       */
+      function deepcopy(originValue) {
+        if (!isObj(originValue)) return originValue;
+
+        // Map 同理
+        if (originValue instanceof Set) {
+          const newSet = new Set();
+          for (let item of originValue) {
+            newSet.add(deepcopy(item));
+          }
+          return newSet;
+        }
+
+        // 函数一般不进行深拷贝
+        if (typeof originValue === "function") return originValue;
+
+        const newObj = Array.isArray(originValue) ? [] : {};
+
+        for (let key in originValue) {
+          newObj[key] = deepcopy(originValue[key]);
+        }
+
+        return newObj;
+      }
+
+      const set = new Set(["123", "456", "789"]);
+      const info = {
+        name: "lucy",
+        age: 18,
+        friends: {
+          name: "wbk",
+          address: {
+            name: "杭州",
+            detail: "衡美",
+          },
+        },
+        set: set,
+        running() {
+          console.log('running~~~');
+        }
+      };
+
+      const obj = deepcopy(info);
+      console.log(obj);
+    </script>
+  </body>
+</html>
