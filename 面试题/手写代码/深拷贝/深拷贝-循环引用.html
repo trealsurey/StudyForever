@@ -13,7 +13,7 @@
        * 如果对象中包含一个 Set()/Map()，那么拷贝之后 set 中是不会有任何内容的
        * 因为 Set 不可以通过 for...in 进行遍历，只能通过 for...of 进行遍历
        */
-      function deepcopy(originValue) {
+      function deepcopy(originValue, map = new WeakMap()) {
         if (!isObj(originValue)) return originValue;
 
         // Map 同理
@@ -28,10 +28,16 @@
         // 函数一般不进行深拷贝
         if (typeof originValue === "function") return originValue;
 
+        if (map.get(originValue)) {
+          return map.get(originValue)
+        }
+
         const newObj = Array.isArray(originValue) ? [] : {};
 
+        map.set(originValue, newObj)
+
         for (let key in originValue) {
-          newObj[key] = deepcopy(originValue[key]);
+          newObj[key] = deepcopy(originValue[key], map);
         }
 
         return newObj;
@@ -49,7 +55,7 @@
           },
         },
       };
-      // 循环引用，这里会导致无限递归，最后栈内存溢出
+      // 循环引用，如果直接进行深拷贝，那么这里会导致无限递归，最后栈内存溢出
       info.self = info
 
       const obj = deepcopy(info);

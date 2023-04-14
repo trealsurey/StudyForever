@@ -98,7 +98,7 @@ Array.prototype === arr.__proto__
 |  | Map | Object |
 | :--: | :--: | :--: |
 | key 值 | 任意类型（包括 null，NaN，Infinity） | 只能是 String/Symbol，其他类型会被强制转化为 String |
-| 迭代方式 | 可直接使用 for...of 进行迭代 | 1. for...in 遍历，但是要处理原型上的数据带来的干扰（使用 `Object.hasOwnProperty()`） 2. 使用 `Object.keys()` or `Object.entries()` 遍历  |
+| 迭代方式 | 可直接使用 for...of 进行迭代，遵循元素的插入顺序 | 1. for...in 遍历，但是要处理原型上的数据带来的干扰（使用 `Object.hasOwnProperty()`） 2. 使用 `Object.keys()` or `Object.entries()` 遍历  |
 | 序列化 | 不支持，但是可以使用特殊的存储方式 | 支持使用 `JSON.parse()` `JSON.stringfy()` 进行序列化和反序列化|
 | 性能（以插入 string 类型 key 为例） | 数据量 < 1000 时性能明显高于 Object | 数据量 > 1000 时差异不大（具体区别取决于不同的 JS 引擎） |
 
@@ -108,5 +108,52 @@ Array.prototype === arr.__proto__
 
 ### Map 和 WeakMap 的区别
 
+WeakMap
+1. key **必须是对象**，而值可以任意
+2. 弱引用：当键所指对象没有其他地方引用的时候，它会被 GC 回收掉
+3. 不能被枚举
+4. 一个用例：存储一个对象的私有数据或隐藏实施细节
+
+[Why WeakMap](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakMap#why_weakmap_%EF%BC%9F)
+
+Map 会导致内存泄漏，因为数组会一直引用每个 kv，这样就会使得 GC 不能回收处理他们
+
+而由于 WeakMap 是弱引用，那么在没有引用存在时就可以被 GC 回收
+
+也正是因为弱引用的存在，WeakMap 是不能被枚举的
+
 ### Set 和 WeakSet 的区别
 
+基本和 WeakMap 相同，只是 key 不能重复
+
+**一个用例：检测循环引用**，当对循环引用的对象进行深拷贝时，就需要用到 WeakSet
+
+对象的数量或它们的遍历顺序无关紧要，因此，WeakSet 比 Set 更适合（和执行）跟踪对象引用，尤其是在涉及大量对象时。
+
+```js
+// 对 传入的 subject 对象 内部存储的所有内容执行回调
+function execRecursively(fn, subject, _refs = new WeakSet()) {
+  // 避免无限递归
+  if (_refs.has(subject)) {
+    return;
+  }
+
+  fn(subject);
+  if (typeof subject === "object") {
+    _refs.add(subject);
+    for (const key in subject) {
+      execRecursively(fn, subject[key], _refs);
+    }
+  }
+}
+
+const foo = {
+  foo: "Foo",
+  bar: {
+    bar: "Bar",
+  },
+};
+
+foo.bar.baz = foo; // 循环引用！
+execRecursively((obj) => console.log(obj), foo);
+```
