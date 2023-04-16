@@ -2342,6 +2342,13 @@ logD();
 - 如果后面跟着的函数返回的是一个 Promise，那么在 Promise 没有执行 `resolve()` 之前，await 后面的内容是不会被放到任务队列中的，只有当执行完 `resolve()` 之后，才会加入微任务队列
 - 如果后面跟着的函数没有返回值，也就是 `return undefined`，那么就相当于 `return Promise.resolve(undefined)`。那么此时会将 `await` 后面的代码放到微任务队列中进行等待
 
+### 事件总线
+
+Event Bus 事件总线，通常是用来帮助进行 **不同文件或不同组件** 之间的相互通信
+
+常见的库有 [Mitt](https://github.com/developit/mitt)
+
+[核心代码简单示例](html/EventBusTest.html)
 
 ## ES6
 

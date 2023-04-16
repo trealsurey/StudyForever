@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件总线核心代码简单示例</title>
+  </head>
+  <body>
+    <button class="nav-btn">nav button</button>
+
+    <script>
+      // 核心逻辑
+      class MyEventBus {
+        constructor() {
+          this.eventMap = {};
+        }
+
+        // 监听
+        on(eventName, eventFn) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns) {
+            eventFns = [];
+            this.eventMap[eventName] = eventFns;
+          }
+          eventFns.push(eventFn);
+        }
+
+        // 取消监听（简单考虑只删除一个的情况）
+        off(eventName, eventFn) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns) return;
+          for (let i = 0; i < eventFns.length; i++) {
+            const fn = eventFns[i];
+            if (fn === eventFn) {
+              eventFns.splice(i, 1);
+              break;
+            }
+          }
+
+          if (eventFns.length === 0) {
+            delete this.eventMap[eventName];
+          }
+        }
+
+        emit(eventName, ...args) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns) return;
+          eventFns.forEach((fn) => {
+            fn(...args);
+          });
+        }
+      }
+
+      // 使用过程
+      const eb = new MyEventBus();
+
+      // aside.vue 组件中监听事件
+      eb.on("navclick", (name, age, height) => {
+        console.log("navclick listener 01", name, age, height);
+      });
+
+      const click = () => {
+        console.log("navclick listener 02");
+      };
+      eb.on("navclick", click);
+
+      // 3秒钟之后就不再监听02了
+      setTimeout(() => {
+        eb.off("navclick", click);
+      }, 3000);
+      eb.on("asideclick", () => {
+        console.log("asideclick listener");
+      });
+
+      // nav.vue 组件
+      const navBtn = document.querySelector(".nav-btn");
+      navBtn.onclick = function () {
+        console.log("自己监听到");
+        eb.emit("navclick", "lucy", 28, 1.6);
+      };
+    </script>
+  </body>
+</html>
