@@ -2377,6 +2377,38 @@ Event Bus 事件总线，通常是用来帮助进行 **不同文件或不同组�
 
 #### XHR 基本用法
 
+1. `new XMLHttpRequest()` 创建请求的 AJAX 对象
+2. `onreadystatechange()` 监听 XHR 对象状态的变化，或者监听 onload 事件（请求完成时触发），浏览器在拿到数据请求结果时自动回调 **（注：这是一个宏任务）**
+3. 通过 `open()` 方法配置网络请求
+   1. 请求方式 get/post/delete/patch...
+   2. 请求地址 url
+4. `send()` 通过浏览器发送网络请求
+
+```js
+// 1. 创建 XHR 对象
+const xhr = new XMLHttpRequest()
+
+// 2. 监听状态的改变
+xhr.onreadystatechange = function() {
+  // 这句不加会报错
+  // if (xhr.readystate !== XMLHttpRequest.DONE) return
+
+  // 这里返回的是一个字符串
+  // console.log(xhr.response)
+
+  // 使用 JSON 解析得到 json 格式数据
+  const resJSON = JSON.parse(xhr.response)
+
+  // ... 进一步操作数据
+}
+
+// 3. 配置请求
+xhr.open("get", "http://xxx.xxx.xx.xx:xxxx/getInfo")
+
+// 4. 发送请求
+xhr.send()
+```
+
 #### XHR 进阶和封装
 
 #### Fetch 使用详解
