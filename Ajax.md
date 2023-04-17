@@ -80,7 +80,8 @@ btn.addEventListener('click', function() {
     var xhr = new XMLHttpRequest()
     // 2. 注册函数
     xhr.onreadystatechange = function() {
-        if (this.readyState === 4) {
+        // 最好不要直接写 4，而是写成 XHR.DONE
+        if (this.readyState === XMLHttpRequest.DONE) {
             // 代表已经响应结束，响应结束一般会有 HTTP 状态码
             if (this.status == 404) {
                 alert('对不起，您访问的资源不存在，请检查访问路径')

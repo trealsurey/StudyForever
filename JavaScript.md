@@ -2390,7 +2390,7 @@ const xhr = new XMLHttpRequest()
 
 // 2. 监听状态的改变
 xhr.onreadystatechange = function() {
-  // 这句不加会报错
+  // 这句不加会报错，如果不是 DONE 状态直接返回
   // if (xhr.readystate !== XMLHttpRequest.DONE) return
 
   // 这里返回的是一个字符串
@@ -2409,7 +2409,27 @@ xhr.open("get", "http://xxx.xxx.xx.xx:xxxx/getInfo")
 xhr.send()
 ```
 
-#### XHR 进阶和封装
+#### XHR 状态
+
+每次网络请求中的状态都会发生很多次变化
+
+0 状态一般不被监听
+
+注意这个状态只是表示 xhr 对象的状态，而不是 HTTP 的响应状态
+
+HTTP 的响应状态码根据 `status` 来获取
+
+![XHR的状态](imgs/XHR%E7%9A%84readystate.png)
+
+#### XHR 请求方式
+
+**默认是异步请求方式**，因为如果后面还有代码要执行，不需要必须等到请求返回结果，这样会造成阻塞
+
+如果想要发送同步请求，配置时设置 false 就可以了
+
+```js
+xhr.open("get", "url", false)
+```
 
 #### Fetch 使用详解
 
