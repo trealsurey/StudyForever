@@ -2531,9 +2531,54 @@ Fetch 可以看做是早期 XMLHttpRequest 的替代方案，它提供了一种�
 
 #### XHR 文件上传
 
+XHR 可以监听上传进度，Fetch 不可以
 
+```js
+const uploadBtn = document.querySelector(".upload")
+uploadBtn.onclick = function() {
+  const xhr = new XMLHttpRequest()
+  xhr.onload = function() {
+    console.log(xhr.response)
+  }
+  xhr.responseType = "json"
+  xhr.open("http://123.207.32.32:1888/02_param/upload")
+
+  // 监控上传进度
+  xhr.onprogess = function(event) {
+    console.log("event", event)
+  }
+
+  // 前端上传文件一般都是用表单
+  const fileEl = document.querySelector(".file")
+  const file = fileEl.files[0]
+
+  const formData = new FormData()
+  // 这里的 key 一般都是由服务器规定的，某些服务器会对 key 进行校验，符合要求才会进行文件上传
+  formData.append("avatar", file)
+  
+  xhr.send(formData)
+}
+```
 
 #### Fetch 文件上传
+
+```js
+const uploadBtn = document.querySelector(".upload")
+uploadBtn.onclick = async function() {
+  const fileEl = document.querySelector(".file")
+  const file = fileEl.files[0]
+
+  const formData = new FormData()
+  formData.append("avatar", file)
+
+  const response = await fetch("http://123.207.32.32:1888/02_param/upload", {
+    method: "post",
+    body: formData
+  })
+  const res = await response.json()
+  console.log("res", res)
+}
+```
 
 ## ES6
 
