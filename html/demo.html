@@ -18,40 +18,18 @@
   </style>
 
   <body>
-    <div class="container">
-      <div class="first"></div>
-      <div class="second"></div>
-    </div>
-
     <script>
-      // function requestData(URL) {
-      //   return new Promise((resolve, reject) => {
-      //     setTimeout(() => {
-      //       resolve(URL)
-      //     }, 2000);
-      //   })
-      // }
-      async function requestData(URL) {
-        setTimeout(() => {
-          console.log('----------');
-          return URL
-        }, 2000);
-      }
-      // setTimeout(() => {
-      //   async function requestData(URL) {
-      //     return URL
-      //   }
-      // }, 2000);
+      const xhr = new XMLHttpRequest();
 
-      async function getData() {
-        // console.log(requestData('www.baidu.com'));
-        const res1 = await requestData('www.baidu.com')
-        console.log('url1: ' + res1)
-        const res2 = await requestData('www.bilibili.com')
-        console.log('url2: ' + res2);
-      }
+      xhr.onload = function () {
+        console.log(xhr.response);
+      };
 
-      getData()
+      xhr.responseType = "json";
+
+      xhr.open("post", "http://123.207.32.32:1888/02_param/postjson");
+      xhr.setRequestHeader("Content-type", "application/json");
+      xhr.send(JSON.stringify({ name: "lucy", age: 18 }));
     </script>
   </body>
 </html>

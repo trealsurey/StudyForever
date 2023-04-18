@@ -2393,17 +2393,22 @@ xhr.onreadystatechange = function() {
   // 这句不加会报错，如果不是 DONE 状态直接返回
   // if (xhr.readystate !== XMLHttpRequest.DONE) return
 
-  // 这里返回的是一个字符串
-  // console.log(xhr.response)
-
-  // 使用 JSON 解析得到 json 格式数据
-  const resJSON = JSON.parse(xhr.response)
-
+  /**
+    // 这里返回的是一个字符串
+    console.log(xhr.response)
+    // 使用 JSON 解析得到 json 格式数据
+    const resJSON = JSON.parse(xhr.response)
+  */
+ 
   // ... 进一步操作数据
 }
 
+// 或者直接设置类型为 json，那么上面回调函数中就不需要解析了
+// 不设置默认返回文本数据，即 responseType = ""
+xhr.responseType = "json"
+
 // 3. 配置请求
-xhr.open("get", "http://xxx.xxx.xx.xx:xxxx/getInfo")
+xhr.open("get", "http://123.207.32.32:8000/home/multidata")
 
 // 4. 发送请求
 xhr.send()
@@ -2411,15 +2416,26 @@ xhr.send()
 
 #### XHR 状态
 
-每次网络请求中的状态都会发生很多次变化
+每次网络请求中的状态都会发生很多次变化，通过 `readystate` 来标识
 
 0 状态一般不被监听
 
 注意这个状态只是表示 xhr 对象的状态，而不是 HTTP 的响应状态
 
-HTTP 的响应状态码根据 `status` 来获取
+HTTP 的响应状态码根据 `status` 来获取，通过 `statusText` 可以获得状态描述
 
 ![XHR的状态](imgs/XHR%E7%9A%84readystate.png)
+
+```js
+xhr.onload = function() {
+  // 根据 HTTP 状态码来判断是否请求成功
+  if (xhr.status >= 200 && xhr.status < 300) {
+    console.log(xhr.response)
+  } else {
+    console.log(xhr.status, xhr.statusText)
+  }
+}
+```
 
 #### XHR 请求方式
 
@@ -2431,7 +2447,75 @@ HTTP 的响应状态码根据 `status` 来获取
 xhr.open("get", "url", false)
 ```
 
+#### XHR 事件监听
+
+除了 `onreadystatechange` 之外还有其他可以监听的事件
+
+- `loadstart` 请求开始
+- `progess` 一个响应数据包到达，此时整个 response body 都在 response 中
+- `abort` 调用 `xhr.abort()` 取消了请求
+- `error` 发生连接错误，比如域错误等。不会发生诸如 404 之类的 HTTP 错误
+- `load` 请求成功完成
+- `timeout` 由于请求超时而取消了该请求（仅发生在设置了 timeout 的情况下）
+- `loadend` 在 load、error、timeout 或者 abort 之后触发
+
+#### 参数传递
+
+以最常用的 GET/POST 为例
+
+- GET 请求的 query 参数，**常用**，缺点：明文参数，不安全
+- POST 请求 x-www-form-urlencoded 格式
+- POST 请求 FormData 格式
+- POST 请求 JSON 格式，**常用**
+
+```js
+// 方式一：GET 请求的 query
+xhr.open("get", "http://123.207.32.32:1888/02_param/get?name=lucy&age=28")
+
+/** 
+ * xhr.response 结果
+ * {
+ *    data: {name: "lucy", age: 18}
+ *    method: "get",
+ *    source: "query"
+ * }
+ * /
+```
+
+```js
+// 方式二：POST 请求 x-www-form-urlencoded
+xhr.open("post", "http://123.207.32.32:1888/02_param/posturl")
+
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+xhr.send("name=lucy&age=28")
+```
+
+[方式三](html/post请求传递表单参数.html)
+
+```js
+// 方式四：POST 请求 JSON 格式
+xhr.open("post", "http://123.207.32.32:1888/02_param/postjson")
+xhr.setRequestHeader("Content-type", "application/json")
+xhr.send(JSON.stringify({name: "lucy", age: 18}))
+```
+
+#### 超时时间 timeout
+
+浏览器达到超时时间还没有获取到对应的响应结果时，就会取消本次请求
+
+```js
+xhr.ontimeout = function() {
+  console.log("请求过期")
+}
+
+xhr.timeout = 2000
+```
+
 #### Fetch 使用详解
+
+Fetch 可以看做是早期 XMLHttpRequest 的替代方案，它提供了一种更加现代的处理方案
+
+
 
 #### 前端文件上传流程
 
