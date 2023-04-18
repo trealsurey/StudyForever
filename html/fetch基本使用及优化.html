@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fetch 基本使用及优化 Demo</title>
+  </head>
+  <body>
+    <script>
+      // 1. 基本使用
+      // fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+      //     // 这里的 res 得到一个 Response 对象，并不能拿到响应数据
+      //     // console.log("res", res);
+      //     res.json().then(res => {
+      //         console.log("res", res);
+      //     })
+      // }).catch(err => {
+      //     console.log("err", err);
+      // })
+
+      // 2. 优化方式一
+      // fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+      //     return res.json()
+      // }).then(res => {
+      //     console.log("res", res);
+      // }).catch(err => {
+      //     console.log("err", err);
+      // })
+
+      // 3. 优化方式二：最终优化
+      async function getData() {
+        const response = await fetch(
+          "http://123.207.32.32:8000/home/multidata"
+        );
+        const res = await response.json();
+        console.log("res", res);
+      }
+      getData();
+    </script>
+  </body>
+</html>

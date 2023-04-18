@@ -2490,7 +2490,7 @@ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 xhr.send("name=lucy&age=28")
 ```
 
-[方式三](html/post请求传递表单参数.html)
+[方式三: FormData](html/post请求传递表单参数.html)
 
 ```js
 // 方式四：POST 请求 JSON 格式
@@ -2525,7 +2525,15 @@ Fetch 可以看做是早期 XMLHttpRequest 的替代方案，它提供了一种�
   - headers：请求头
   - body：请求体
 
-#### 前端文件上传流程
+[fetch基本使用及优化](html/fetch基本使用及优化.html)
+
+### 前端文件上传
+
+#### XHR 文件上传
+
+
+
+#### Fetch 文件上传
 
 ## ES6
 
