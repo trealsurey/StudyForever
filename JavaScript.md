@@ -2515,7 +2515,8 @@ xhr.timeout = 2000
 
 Fetch 可以看做是早期 XMLHttpRequest 的替代方案，它提供了一种更加现代的处理方案
 
-
+- 如果返回值是一个 Promise，可以直接调用 resolve 和 reject
+- 不需要像 XHR 一样，所有的操作都在同一个 xhr 对象上
 
 #### 前端文件上传流程
 
