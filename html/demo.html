@@ -19,17 +19,7 @@
 
   <body>
     <script>
-      const xhr = new XMLHttpRequest();
-
-      xhr.onload = function () {
-        console.log(xhr.response);
-      };
-
-      xhr.responseType = "json";
-
-      xhr.open("post", "http://123.207.32.32:1888/02_param/postjson");
-      xhr.setRequestHeader("Content-type", "application/json");
-      xhr.send(JSON.stringify({ name: "lucy", age: 18 }));
+      
     </script>
   </body>
 </html>
