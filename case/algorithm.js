@@ -1,24 +1,25 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {string} s
+ * @return {boolean}
  */
-var firstMissingPositive = function(nums) {
-    const len = nums.length
-    for (let num of nums) {
-        while (num >= 0 && num <= len && nums[num - 1] != num) swap(num, nums[num - 1])
+var isValid = function (s) {
+  const len = s.length;
+  if (len % 3 !== 0) return false;
+  const str = "abc";
+  if (s.indexOf(str) === -1) return false;
+  else {
+    let help = s;
+    while (help.length !== 0) {
+      let idx = help.indexOf(str);
+      if (idx === -1) return false;
+      console.log(help.split("").splice(idx, 3));
+        help = help.split("").splice(idx, 3).join("");
+      console.log(help);
     }
-    console.log(nums)
-    nums.forEach((val, idx) => {
-        if (val != idx + 1) return idx + 1
-    })
-    return len + 1
-
-    function swap(a, b) {
-        let tmp = a
-        a = b
-        b = tmp
-    }
+  }
+  return true;
 };
 
-const arr = [7,8,9,10,11]
-console.log(firstMissingPositive(arr));
+const s = "aabcbc"
+
+console.log(isValid(s))
