@@ -1,4 +1,4 @@
-# Vue
+# Vue2
 
 [Vue官网](https://vuejs.org/)
 
