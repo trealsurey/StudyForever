@@ -13,13 +13,13 @@ var isValid = function (s) {
       let idx = help.indexOf(str);
       if (idx === -1) return false;
       console.log(help.split("").splice(idx, 3));
-        help = help.split("").splice(idx, 3).join("");
+      help = help.split("").splice(idx, 3).join("");
       console.log(help);
     }
   }
   return true;
 };
 
-const s = "aabcbc"
+const s = "aabcbc";
 
-console.log(isValid(s))
+console.log(isValid(s));

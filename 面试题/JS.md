@@ -1,6 +1,6 @@
 ### 基本数据类型
 
-- Number, String, Object, Boolean, Null, Undefined
+- Number, String, Boolean, Object, Null, Undefined
 - Symbol, BigInt（ES6 新增）
 
 ### 数据类型检测方式有哪些
