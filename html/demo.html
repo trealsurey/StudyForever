@@ -19,7 +19,14 @@
 
   <body>
     <script>
-      
+      for (var i = 0; i < 5; i ++) {
+        // setTimeout(() => {
+        //   console.log(i);
+        // }, 1000);
+        (function () {
+          console.log(i);
+        })();
+      }
     </script>
   </body>
 </html>
