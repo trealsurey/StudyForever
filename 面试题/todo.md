@@ -110,6 +110,8 @@ Vue3 中采用 Composition API，可以提供给我们更多的可能性自己�
       window.onload = function() {
          // var存在作用域提升。如果这里用let定义i，那么就会出现 not defined 的错误了。但是仍然会输出0 1 2 3 4
          for(var i = 0; i < 5; i ++){
+
+            
              setTimeout(function(){
                   console.log(i++);
               }, 4000)
