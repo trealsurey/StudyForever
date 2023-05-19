@@ -4023,6 +4023,12 @@ const obj4 = JSON.parse(JSON.stringify(info))
 
 [详细代码](面试题/%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81/%E6%B7%B1%E6%8B%B7%E8%B4%9D/)
 
+## 页面渲染详细过程
+
+![页面渲染过程](./imgs/页面渲染过程.png)
+
+[参考文章](https://web.dev/howbrowserswork/)
+
 ## PC 端网页特效
 
 ### 元素偏移量 offset
