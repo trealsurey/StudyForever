@@ -1,0 +1,1 @@
+(()=>{"use strict";function o(o,c){console.log(o+c)}o(10,20),o(300,400),console.log(11);const c=()=>{console.log("bar function executed")};c(),c()})();
