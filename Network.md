@@ -151,3 +151,17 @@ HTTP 是一个客户端（用户）和服务端（网站）之间请求和响应
 
 [TCP经典15连问](https://mp.weixin.qq.com/s/uMVTMkXVxOczjdXZR_7JbQ)
 
+## CSRF 攻击
+
+[参考文章](https://juejin.cn/post/7031060650801496101)
+
+怎么解决
+
+1. 验证 HTTP Referer 字段（该字段记录了 HTTP 请求的来源地址）
+2. 使用验证码（关键操作页面加上验证码，后台收到请求后通过判断验证码来进行防御，但对用户使用不太友好）
+3. 在请求地址中添加 token 并验证 
+   1. CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于cookie中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有token或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于session之中，然后在每次请求时把token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。
+对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 http://url?csrftoken=tokenvalue。
+而对于 POST 请求来说，要在 form 的最后加上 ，这样就把token以参数的形式加入请求了。)
+1. 在 HTTP 头中自定义属性并验证
+   1. 这种方法也是使用 token 并进行验证，和上一种方法不同的是，这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中。这样解决了上种方法在请求中加入 token 的不便，同时，通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，也不用担心 token 会透过 Referer 泄露到其他网站中去。
