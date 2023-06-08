@@ -1,42 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>demo</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo</title>
+</head>
+<body>
+  <script src="../js/vue3.js"></script>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      perspective: 500px;
-    }
-    img {
-      display: block;
-      width: 400px;
-      height: 400px;
-      margin: 200px auto;
-      transition: all 1s;
-    }
-    img:hover {
-      transform: rotate3d(1, 1, 0, 145deg);
+    .blue {
+      color: blueviolet
     }
   </style>
 
-  <body>
-    <button>button</button>
-  </body>
+  <div id="app">
+    <h2 :class="{ blue: isActive }">当前计数为：{{ count }}</h2>
+    <button @click="increasement">+1</button>
+    <button @click="decreasement">-1</button>
+    <button @click="changeColor">切换颜色</button>
+
+    <h3 :style=getCtxColor()>当前文本是：{{ showCtx }}</h3>
+    <button @click="changeCtx">切换语言</button>
+
+    <ul>
+      <li v-for="course in courses">{{ course }}</li>
+    </ul>
+  </div>
 
   <script>
-    var wbk = {
-      name: 'wbk',
-      age: 29
-    }
-    console.log(Object.keys(wbk))
+    const app = Vue.createApp({
+      data(){
+        return  {
+          count: 10,
+          context: '中文',
+          showCtx: 'English',
+          courses: ['JavaScript', 'OperatingSystem', 'Node'],
+          isActive: true
+        }
+      },
+      methods: {
+        increasement() {
+          this.count++;
+        },
+        decreasement() {
+          this.count--;
+        },
+        changeCtx() {
+          this.context = this.context === '中文' ? 'English' : '中文'
+          this.showCtx = this.context
+        },
+        changeColor() {
+          this.isActive = !this.isActive;
+        },
+        getCtxColor() {
+          return {
+            'color': 'coral'
+          }
+        }
+      },
+    })
+
+    app.mount('#app')
   </script>
+</body>
 </html>
