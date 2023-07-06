@@ -1223,3 +1223,167 @@ const vm = new Vue({
 
 父组件替换插槽的标签，但是内容由子组件来提供
 
+
+
+# Vue3
+
+## 虚拟 DOM
+
+### TODO: 虚拟 DOM 的好处
+
+1. 便于跨平台操作
+2. 提高性能
+
+## 计算属性
+
+### 计算属性的缓存
+
+通常在需要计算的属性时，尽可能使用计算属性，不使用函数。**因为计算属性会基于它的依赖关系进行缓存**
+
+- 在数据不发生变化时，计算属性是不需要重新计算的
+- 如果依赖的数据发生变化，则会重新计算
+
+## 监听器 watch
+
+`watch` 默认有两个参数 `newValue` 和 `oldValue` 
+
+```js
+watch: {
+  // message 是要监听的属性，必须要写成方法的形式
+  message(newVal, oldVal) {
+    console.log("message数据发生了变化：", newVal, oldVal)
+  }，
+  info(newVal, oldVal) {
+    // 如果是对象类型，那么拿到的是一个代理对象 Proxy
+    // 如果不想获取代理对象、获取原生对象，则如下
+    console.log({ ...newVal })
+    console.log(Vue.toRaw(newVal))
+  }
+}
+```
+
+### 配置选项
+
+- 使用 `deep` 进行对象内部的深度监听，当对象内部的某个属性发生变化时也可以监听到
+- 私用 `immediate` 当一开始就会执行一次监听，无论后面数据是否变化都会执行一次
+
+### watch 语法糖
+
+`info(){ }` 其实是一个语法糖，完整写法如下
+
+```js
+watch: {
+  info: {
+    handler(newVal, oldVal) {
+      console.log(newVal, oldVal)
+    },
+    deep: true,
+    immediate: true
+  },
+  // 也可以只监听某个属性
+  'info.name': function(newVal, oldVal){
+    console.log(newVal, oldVal)
+  }
+}
+```
+
+## v-model 原理
+
+`v-model` 其实是一个语法糖，实际上是以下两个操作
+- `v-bind` 绑定 `value`
+- `v-on` 监听 `input`，函数会获取最新的值赋值到绑定的属性中
+
+### v-model 绑定单选框
+
+绑定到属性中的值是 true/false
+
+### v-model 绑定复选框
+
+绑定到属性中的值是一个 Array
+
+> **注意：** 多选框中，必须明确绑定一个 value 值，否则拿不到绑定的值
+
+## 组件化开发
+
+### 全局组件和局部组件
+
+```js
+// 根组件
+const App = {}
+const app = Vue.createApp(App)
+
+// 定义组件内容
+const productItem = {
+  template: "#product"
+}
+
+// 注册全局组件
+app.component("product-item", productItem)
+
+// 挂载 app
+app.mount("#app")
+```
+
+```html
+<!-- 定义组件内容 -->
+<template id="product">
+  <h2>Hello Vue</h2>
+  <p>这是一个全局组件</p>
+</template>
+
+<!-- 使用组件 -->
+<product-item></product-item>
+<product-item></product-item>
+<product-item></product-item>
+```
+
+每个组件都有自己的逻辑，都有自己的 `data` `methods` 等等 optionAPI
+
+想要在哪个范围内使用 **局部组件** 就在那个组件下添加 `components` API 进行局部组件注册
+
+```js
+// 局部组件
+const productItem = {
+    template: "#product",
+    data() {return { }}
+}
+
+// 注册局部组件，该组件只能在 App 中使用
+const App = {
+  components: {
+    // "product-item": productItem 两种写法都可以
+    ProductItem: productItem
+  }
+}
+
+const app = Vue.createApp(App)
+```
+
+## 使用单文件进行 Vue 组件开发
+
+将每个组件抽离为单独的 `.vue` 文件
+
+- 代码高亮
+- ES6/CJS 的模块化能力
+- 组件作用域的 CSS
+- 使用预处理器构建更丰富的组件：TS，Babel，Less，Sass 等
+
+### 如何支持 SFC
+
+SFC（Single File Component）
+
+- 使用 Vue CLI 创建项目，默认配置好所有的配置选项，可以直接在其中使用 .vue 文件（**常用**）
+- 使用 webpack/vite/rollup 等打包工具进行打包处理搭建环境
+
+## Vue CLI
+
+脚手架
+- Command Line Interface 命令行界面
+- 通过 CLI 进行项目配置从而创建项目
+- 内置了 webpack 相关配置，不需要从零开始
+
+# 创建 Vue 项目的两种方式
+
+`vue create ProjectName` 需要提前安装 vue-cli，内部基于 webpack
+
+`npm init vue@latest` + `npm install` 添加依赖。创建之后的项目内部是基于 vite 的 

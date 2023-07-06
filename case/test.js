@@ -1,28 +1,21 @@
-const obj = {
-  name: "wbk",
-  age: 18,
-};
+const first = () => (new Promise((resolve, reject) => {
+  console.log(3);
+  let p = new Promise((resolve, reject) => {
+    console.log(7);
+    setTimeout(() => {
+      console.log(5);
+      resolve(6)
+    }, 0);
+    resolve(1)
+  });
+  resolve(2);
+  p.then(arg => {
+    console.log(arg);
+  })
+}))
 
-const map = new Map([
-  ['name', '张三'],
-  ['title', 'Author']
-]);
+first().then(arg => {
+  console.log(arg);
+})
 
-map.size // 2
-map.has('name') // true
-map.get('name') // "张三"
-map.has('title') // true
-map.get('title') // "Author"
-
-// map.forEach(val => {
-//     console.log(val);
-// })
-
-// const keys = Object.keys(obj)
-// keys.forEach(val => {
-//     console.log(val);
-// })
-
-for (let val of map) {
-  console.log(val);
-}
+console.log(4);
