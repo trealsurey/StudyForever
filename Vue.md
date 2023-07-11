@@ -1359,6 +1359,89 @@ const App = {
 const app = Vue.createApp(App)
 ```
 
+## 组件通信
+
+- 父传子 `props`
+- 子传父 `$emit`
+
+### 父传子
+
+父组件中绑定属性，传递到子组件中
+
+```js
+props: ['lucy', '28']
+```
+
+props 数组的缺点：
+- 不能对类型进行验证
+- 不能设置默认值
+
+
+props 常见 类型验证：String, Number, Boolean, Object（有注意事项）, Array, Date, Function, Symbol
+
+```js
+// 必须掌握 
+props: {
+  name: {
+    type: String, // 类型验证
+    default: 'lucy' // 默认值
+  }
+  age: Number,
+  // 注意：如果类型是对象（数组也是一个对象），那么默认值必须要是一个函数，函数中返回对象
+  friends: {
+    type: Object,
+    default() {
+      return { name: 'wbk' }
+    }
+  }
+}
+```
+
+除了一些绑定在 props 中的属性之外，还可以添加非 props 属性，这些非 props 属性会被默认绑定在组件的根元素上
+
+如果不希望组件的根元素继承这些属性，可以在组件中设置 `inheritAttrs: false`
+
+然后可以通过 `$attrs` 来访问所有的非 props 属性
+
+```html
+<div>
+  我是 NotPropAttribute 属性
+  <h2 :class="$attrs.class"></h2>
+</div>
+```
+
+如果有多个根元素，那么必须显式绑定，否则会报警告
+
+```html
+<div class="otherRoot" v-bind="$attrs"></div>
+```
+
+### 子传父
+
+`this.$emit('事件名称', 需要传递的参数)`
+
+```html
+<!-- 子组件 -->
+<button @click="btnClick(5)"></button>
+
+<!-- 最好在这里先提前注册一下 emits，方便后续开发，
+     而且 VSCode 也会根据 emits 中的内容来进行相应的代码提示 -->
+emits: ["add"],
+methods: {
+    btnClick() {
+      this.$emit("add", count)
+    }
+}
+
+<!-- 父组件 -->
+<!-- 这里绑定的事件就是子组件中定义的事件名称 -->
+<subCpn @add="addFn"></subCpn>
+
+addFn(count) {
+  this.count += count
+}
+```
+
 ## 使用单文件进行 Vue 组件开发
 
 将每个组件抽离为单独的 `.vue` 文件
