@@ -1424,9 +1424,19 @@ props: {
 <!-- 子组件 -->
 <button @click="btnClick(5)"></button>
 
-<!-- 最好在这里先提前注册一下 emits，方便后续开发，
+<!-- 最好在这里先提前注册一下 emits，注册好所有的自定义事件，方便后续开发，
      而且 VSCode 也会根据 emits 中的内容来进行相应的代码提示 -->
 emits: ["add"],
+<!-- emits 也可以写成对象格式组件时可能会用到，对象格式可以方便进行数据验证（Vue3 新增，不常用，封装组件时可以用到，了解即可） -->
+emits: {
+  <!-- 表示不需要验证 -->
+  add: null,
+  validator: function(count) {
+    if (count <= 10)  return ture;
+    <!-- false 时也可以发送事件，但是会报 warning -->
+    else return false 
+  }
+}
 methods: {
     btnClick() {
       this.$emit("add", count)
