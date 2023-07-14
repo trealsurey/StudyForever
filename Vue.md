@@ -1259,15 +1259,50 @@ Vue3 中已经移除了 `$on` `$off` `$once` 方法，如果想要在 Vue3 中�
 
 ### 组件的生命周期
 
+![组件的生命周期](imgs/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png)
+
 创建 -> 挂载 -> 更新 -> 卸载
 
 如果我们想在组件的某个阶段进行一些操作，就需要知道组件当前处在哪个过程
 
-Vue 提供了组件的生命周期函数
+Vue 提供了组件的生命周期函数，通过对生命周期函数的回调，就可以知道组件处在哪个阶段
+
 
 #### 生命周期函数
 
 一些 **钩子函数（回调函数）**，在某个时间会被 Vue 源码内部进行回调
+
+#### created()
+
+常用，经常会在其中进行：
+1. 发送网络请求
+2. 事件监听
+3. this.$watch()
+
+### $refs
+
+某些情况下，我们在组件中想要 **直接获取到元素对象或者子组件实例**，但是在 Vue 中不推荐直接进行原生 DOM 操作，这个时候我们就可以给元素或者组件绑定一个 ref 的 attribute 属性
+
+```html
+<button ref="btn" class="btn">按钮</button>
+
+<my-cpn ref="cpn">自定义组件</my-cpn>
+```
+
+```js
+methods: {
+  change() {
+    console.log(this.$refs.btn)  // 就可以拿到上面的 button 元素
+    console.log(this.$refs.cpn) // 拿到的是组件实例（一个 Proxy） 
+    console.log(this.$refs.cpn.$el) // 就可以拿到组件中的根节点 div 了
+    this.$refs.cpn.fn() // 父组件可以通过这种方式主动调用子组件的方法
+  }
+}
+```
+
+### 动态组件
+
+
 
 # Vue3
 
