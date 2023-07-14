@@ -1223,7 +1223,51 @@ const vm = new Vue({
 
 父组件替换插槽的标签，但是内容由子组件来提供
 
+### 非父子组件通信
 
+#### provide / reject
+
+当父子组件之间距离的层级很多时，如果继续使用 props 来进行组件通信就会很麻烦，那么就可以通过以下方式进行组件通信，而且不需要知道彼此进行通信的是谁
+- provide：父传子
+- reject：子传父
+
+在 Vue3 使用 CompositionAPI 之后，就要写到 setup() 中了
+
+```js
+export default {
+  // provide: {
+  //     name: 'lucy',
+  //     age: 18
+  provide() { // 如果需要通过 this 来进行数据获取，必须要写成函数再 return 的形式
+  // }
+  data(){ },
+    return {
+      name: this.name
+    }
+  }
+}
+
+// 子组件
+export default {
+  inject: ["name", "age"] // 使用
+}
+```
+
+#### 事件总线
+
+Vue3 中已经移除了 `$on` `$off` `$once` 方法，如果想要在 Vue3 中使用全局事件总线，需要借助第三方库，比如 [mitt](https://github.com/developit/mitt) 或者 [tiny-emitter](https://github.com/scottcorgan/tiny-emitter)
+
+### 组件的生命周期
+
+创建 -> 挂载 -> 更新 -> 卸载
+
+如果我们想在组件的某个阶段进行一些操作，就需要知道组件当前处在哪个过程
+
+Vue 提供了组件的生命周期函数
+
+#### 生命周期函数
+
+一些 **钩子函数（回调函数）**，在某个时间会被 Vue 源码内部进行回调
 
 # Vue3
 
