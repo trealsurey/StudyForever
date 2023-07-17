@@ -1376,10 +1376,30 @@ const AsyncCategory = defineAsyncComponent({
 
 在组件中使用 v-model 和在 input 上使用 v-model，不同的只是属性的名称和事件触发的名称而已
 
+也可以自定义 v-model 绑定的属性
+
 ```html
 <cpn v-model="message"></cpn>
 <!-- 等价于 -->
 <cpn :modelValue="message" @update:modelValue="message = $event"></cpn>
+```
+
+```html
+<!-- 也可以不使用默认的 modelValue，进行自定义 -->
+<cpn v-model:counter="message"></cpn>
+
+<!-- 相应的 JS 中的事件内容也要改 -->
+<script>
+  export default {
+    props: ["counter"],
+    emits: ["update:counter"],
+    methods: {
+      changeCounter() { 
+        this.$emit("update:counter", 999)
+      }
+    }
+  }
+</script>
 ```
 
 ```html
