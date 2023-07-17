@@ -1372,6 +1372,37 @@ const AsyncCategory = defineAsyncComponent({
 })
 ```
 
+### 组件中的 v-model
+
+在组件中使用 v-model 和在 input 上使用 v-model，不同的只是属性的名称和事件触发的名称而已
+
+```html
+<cpn v-model="message"></cpn>
+<!-- 等价于 -->
+<cpn :modelValue="message" @update:modelValue="message = $event"></cpn>
+```
+
+```html
+<!-- v-model 本质 -->
+<template>
+  <div>
+    <input :value="modelValue" @input="inputChange">
+  </div>
+</template>
+
+<script>
+  export default {
+    props: ["modelValue"],
+    emits: ["update:modelValue"],
+    methods: {
+      inputChange(event) {
+        this.$emit("update:modelValue", event.target.value)
+      }
+    }
+  }
+</script>
+```
+
 # Vue3
 
 ## 虚拟 DOM
