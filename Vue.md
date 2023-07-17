@@ -1309,6 +1309,69 @@ methods: {
 <component :is="tabs[currentIndex]"></component>
 ```
 
+### keep-alive
+
+- include (String | RegExp | Array)：只有名称匹配的组件才会被缓存
+- exclude：名称匹配的组件 不会 被缓存
+- max：最多可以缓存多少组件实例，一旦达到这个数字，那么缓存组件中最近没有被访问的实例会被销毁
+
+**首先会匹配组件自身的 name 属性**
+
+```html
+<!-- a,b 之间不要随便加空格，否则可能无法匹配 -->
+<keep-alive include="a,b">
+<!-- <keep-alive include="/a|b/">正则匹配</keep-alive>
+<keep-alive include="['a', 'b']">数组匹配</keep-alive> -->
+  <component :is="view">字符串匹配</component>
+</keep-alive>
+```
+
+#### 缓存组件的生命周期
+
+对于开启了 keep-alive 被缓存的组件来说，再次进入时不会执行 `created` 或者 `unmounted` 函数，如果我们想要监听相关事件，需要用到以下两个函数
+
+- activated
+- deactivated
+
+### 异步组件
+
+如果需要对组件进行分包处理，那么就需要用到异步组件，Vue 官方提供 `defineAsyncComponent`
+
+该方法接受两种类型的参数
+1. 工厂函数，并返回一个 Promise
+2. 对象类型，对异步函数进行配置
+
+```js
+// 方式一
+import { defineAsyncComponent } from 'vue'
+
+const AsyncCategory = defineAsyncComponent(() => { import("./views/Category.vue") })
+
+export default {
+  components: {
+    Category: AsyncCategory
+  }
+}
+```
+
+```js
+// 方式二，了解即可
+const AsyncCategory = defineAsyncComponent({
+  // 工厂函数
+  loader: () => import("./views/Category.vue"),
+  // 加载过程中显示的组件
+  loadingComponent: Loading,
+  // 加载失败时现实的组件
+  errorComponent: Error,
+  // 在显示 loadingComponent 之前的延迟，默认 200ms
+  delay: 2000,
+  // 如果提供了 timeout，并且加载组建的时间超过了设定值，将显示错误组件，默认值 Infinity，即永不超时
+  // timeout: 0,
+  // 组件是否可挂起，默认值 true
+  suspensible: true
+})
+```
+
 # Vue3
 
 ## 虚拟 DOM
