@@ -1612,7 +1612,6 @@ props 数组的缺点：
 - 不能对类型进行验证
 - 不能设置默认值
 
-
 props 常见 类型验证：String, Number, Boolean, Object（有注意事项）, Array, Date, Function, Symbol
 
 ```js
@@ -1686,6 +1685,90 @@ methods: {
 addFn(count) {
   this.count += count
 }
+```
+
+## Composition API
+
+Options API 的弊端：当我们实现某个功能时，对应的代码逻辑是 **分散在各个属性中的**，当组件结构很复杂时每个功能的逻辑非常分散，不易于阅读和维护
+
+如果能够将同一个功能中的代码都放在一起就更好维护，所以有了 Composition API
+
+在 Vue 中我们只需要使用 `setup()` 函数就可以实现组合式编程了
+
+## setup()
+
+主要有两个参数：`props` `context`
+
+setup() 中的数据默认不是响应式，导入 `ref` 后才可实现响应式
+
+setup() 默认也不会进行绑定，要在函数最后 return 需要绑定的数据才可以显示在页面上
+
+### props
+
+父组件传递过来的属性会放在 props 对象中，定义 props 类型的规则和之前一样，也可以在 template 中使用 props 中属性，但是在 `setup()` 函数中 **不可以通过 this 获取 props**
+
+### context
+
+另一个参数是 context，也称为 SetupContext，包含三个属性
+
+- attrs：非 props 的属性
+- slots：父组件传递过来的插槽
+- emit：组件内部需要发出事件时用到（因为不能访问 this，所以不能通过 this.$emit 发送事件）
+
+```html
+<template>
+  <h2>Hello {{ count }}</h2>
+  <button @click="increasement">+1</button>
+  <button @click="decreasement">-1</button>
+</template>
+
+<script>
+import { ref } from "vue"
+
+export default {
+  setup() {
+    let count = ref(100)
+    const increasement = () => {
+      count.value++
+    }
+    const decreasement = () => {
+      count.value--
+    }
+    return { count, increasement, decreasement }
+  }
+};
+</script>
+```
+
+甚至可以将 setup() 中的内容抽离出来作为单独的文件再进行导入
+
+```js
+// hooks/useCount.js
+import { ref } from "vue";
+export default function useCount() {
+  let count = ref(100);
+  const increasement = () => {
+    count.value++;
+  };
+  const decreasement = () => {
+    count.value--;
+  };
+
+  return { count, increasement, decreasement };
+}
+```
+
+```html
+<script>
+import useCount from "./hooks/useCount";
+export default {
+  setup() {
+    // const { count, increasement, decreasement } = useCount()
+    // return { count, increasement, decreasement }
+    return { ...useCount() } // 解构运算符
+  }
+};
+</script>
 ```
 
 ## 使用单文件进行 Vue 组件开发
