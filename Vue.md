@@ -1376,7 +1376,7 @@ const AsyncCategory = defineAsyncComponent({
 
 在组件中使用 v-model 和在 input 上使用 v-model，不同的只是属性的名称和事件触发的名称而已
 
-也可以自定义 v-model 绑定的属性
+也可以自定义 v-model 绑定的属性，从而做到绑定多个属性
 
 ```html
 <cpn v-model="message"></cpn>
@@ -1421,6 +1421,44 @@ const AsyncCategory = defineAsyncComponent({
     }
   }
 </script>
+```
+
+### Mixin
+
+当组件和组件之间有相同的代码逻辑时，我们希望对 **相同的代码逻辑进行抽取** 那么就需要用到 Mixin
+
+Mixin 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能
+
+一个 Mixin 对象可以包含 **任何组件选项**
+
+当组件使用 Mixin 对象时，所有 Mixin 对象的选项将被 **混合** 进入该组件本身的选项中
+
+使用时只需使用 import 导入、并加上 `mixins: []` 就可以拥有公共部分的代码了
+
+#### Mixin 对象的合并规则
+
+如果 mixin 和组件自己的代码中都有相同的生命周期函数和 data 等属性，可以同时存在
+
+- 如果是 data() 中的内容
+  - 默认情况下会合并
+  - 发生冲突时，保留 **组件自身的数据**
+- 生命周期函数：合并到数组中，都会被调用
+- 值为对象的选项，比如 methods/components/directives，将会被合并为同一个对象
+  - 比如都有 methods，那么都会生效
+  - 如果 key 相同，那么也是 **优先组件自身** 的键值对
+
+#### 全局混入 Mixin
+
+如果需要在所有组件中都导入相同的 Mixin，可以使用全局，通过 app 来注册
+
+```js
+const app = createApp(App)
+app.mixin({
+  created() {
+    console.log("global mixin created")
+  }
+})
+app.mount("#app")
 ```
 
 # Vue3
