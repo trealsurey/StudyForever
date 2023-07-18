@@ -1858,8 +1858,6 @@ export default {
 </script>
 ```
 
-**原来在 `beforeCreate()` 和 `created()` 中进行的操作就直接在 setup() 中执行就好了，比如发送网络请求等**
-
 ### 生命周期钩子函数
 
 在 `setup()` 中可以直接使用导入的 onX 函数注册生命周期，但是 `beforeCreate()` 和 `created()` 是没有的
@@ -1874,6 +1872,60 @@ export default {
   }
 }
 ```
+
+**原来在 `beforeCreate()` 和 `created()` 中进行的操作就直接在 setup() 中执行就好了，比如发送网络请求等**
+
+### watch() 监听数据变化
+
+```js
+import { ref, watch } from 'vue'
+export default {
+  setup() {
+    const message = ref('hello world')
+    watch(message, (newValue, oldValue) => {
+      console.log(newValue, oldValue)
+    }, {
+      immediate: true
+    })
+  }
+}
+```
+
+**默认会进行深度监听**
+
+### watchEffect() 
+
+如果我们希望当监听到某些响应式数据变化时，执行某些操作，就可以使用 `watchEffect()`
+
+`watchEffect()` 传入的函数会被立即执行一次，并且在执行的过程中收集依赖
+
+**只有当收集的依赖发生变化时，`watchEffect()` 传入的函数才会再次执行**
+
+`watchEffect()` 会返回一个函数（可以叫做 `stopWatch()`，当我们希望停止监听时，就可以调用 `stopWatch()` 
+
+```js
+import { ref, watchEffect } from 'vue'
+export default {
+  setup() {
+    const stopWatch = watchEffect(() => {
+      console.log('--------', counter.value)
+    })
+    if (counter.value > 10) stopWatch()
+  }
+  return { counter }
+}
+```
+
+### setup 语法糖
+
+`<script setup></script>`
+
+当使用单文件组件 + Composition API 时可以推荐使用
+
+- 更少的模板内容，更简洁的代码
+- 能够使用纯 TypeScript 声明 prop 和抛出事件
+- 更好的运行时性能
+- 更好的 IDE 类型推断性能
 
 ## 使用单文件进行 Vue 组件开发
 
