@@ -1920,12 +1920,21 @@ export default {
 
 `<script setup></script>`
 
-当使用单文件组件 + Composition API 时可以推荐使用
+当使用单文件组件 + Composition API 时可以推荐使用，里面的代码会被编译成组件 `setup()` 函数的内容
+
+与普通的 `<script>` 只在组件被首次引入的时候执行一次不同，`<script setup></script>` 中的代码会**在每次组件实例被创建的时候执行**
+
+在导入其他组件时只需要 `import` 导入就行了，不需要再写到 `component()` 进行注册了
 
 - 更少的模板内容，更简洁的代码
 - 能够使用纯 TypeScript 声明 prop 和抛出事件
 - 更好的运行时性能
 - 更好的 IDE 类型推断性能
+
+一些功能
+1. **所有编写在顶层的代码都会默认自动编译到模板中，可以直接在 template 中使用**（函数中的内容不是顶层代码，只有直接下载 script 标签中的才叫顶层代码）
+2. `defineProps()` 和 `defineEmits()`，注意是两个函数
+3. `defineExpose()`：通过模板 ref 或者 $parent 链获取到的组件的公开实例，不会暴露在任何 setup 中声明的绑定，通过 defineExpose() 来显式指定在 setup 组件中要暴露出去的属性
 
 ## 使用单文件进行 Vue 组件开发
 
