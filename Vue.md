@@ -1239,12 +1239,11 @@ export default {
   //     name: 'lucy',
   //     age: 18
   provide() { // 如果需要通过 this 来进行数据获取，必须要写成函数再 return 的形式
-  // }
-  data(){ },
     return {
       name: this.name
     }
   }
+  data(){ },
 }
 
 // 子组件
@@ -1699,9 +1698,7 @@ Options API 的弊端：当我们实现某个功能时，对应的代码逻辑�
 
 主要有两个参数：`props` `context`
 
-setup() 中的数据默认不是响应式，导入 `ref` 后才可实现响应式
-
-setup() 默认也不会进行绑定，要在函数最后 return 需要绑定的数据才可以显示在页面上
+setup() 默认不会进行绑定，要在函数最后 return 需要绑定的数据才可以显示在页面上，也就是说 **setup() 的返回值替代 data 选项中的数据和 methods 中的方法**
 
 ### props
 
@@ -1714,6 +1711,15 @@ setup() 默认也不会进行绑定，要在函数最后 return 需要绑定的�
 - attrs：非 props 的属性
 - slots：父组件传递过来的插槽
 - emit：组件内部需要发出事件时用到（因为不能访问 this，所以不能通过 this.$emit 发送事件）
+
+### 定义响应式数据
+
+setup() 中的数据默认不是响应式
+
+- `ref()` 简单数据 + 复杂数据（更常用）
+- `reactive()` 复杂数据（必须是对象/数组），一般来说使用场景如下（不是必须，根据开源项目总结出）
+  - 本地的数据，不是从服务器拿到的数据
+  - 多个数据之间有关系（聚合的数据，比如说 用户名密码这种有关联的数据）
 
 ```html
 <template>
@@ -1769,6 +1775,104 @@ export default {
   }
 };
 </script>
+```
+
+### readonly() 函数
+
+通过 reactive 或者 ref 得到一个响应式对象，但是某些情况下我们希望传给其他组件的不能被修改，这个时候就需要 readonly() 方法
+
+`readonly()` 方法会返回原始对象的只读代理（也就是它是给一个 Proxy，它的 set() 被劫持，并且不能对其进行修改）
+
+在开发中常见的可以传入三个类型的参数
+- 普通对象
+- reactive 返回的对象（通常使用这个较多）
+- ref 对象
+
+使用规则
+- `readonly()` 返回的对象不允许修改
+- 经过 readonly 处理的原来的对象是可以被修改的
+
+```js
+// info 不允许被修改
+// obj 可以被修改，obj 被修改时 info 也会改
+const info = readonly(obj)  
+```
+
+**本质就是 readonly 返回的对象的 setter() 方法被劫持了**
+
+### toRefs & toRef
+
+当我们对 reactive 返回的对象进行解构时，获取到的值就变成了普通变量，不再具有响应式，此时就需要使用 `toRefs`（多个） 或者 `toRef`（单个） 来对解构的数据进行包裹从而实现响应式
+
+```js
+const info = reactive({
+  name: 'lucy',
+  age: 18
+  height: 1.6
+})
+
+const { name, age } = toRefs(info)
+cosnt height = roRef(info, "height")
+```
+
+### computed() 方法
+
+```js
+import { reactive, computed } from 'vue';
+export default {
+  setup() {
+    const name = reactive({
+      firstName: 'lucy',
+      lastName: 'lee'
+    })
+    const score = 89
+    const fullName = computed(() => {
+      return name.firstName + name.lastName
+    })
+    const level = computed(() => {
+      return score >= 60 ? '及格' : '不及格'
+    })
+    return { fullName, level }
+  }
+};
+```
+
+### 使用 ref 获取元素
+
+```html
+<template>
+  <h2 ref="titleRef">我是标题</h2>
+</template>
+
+<script>
+  import { ref, onMounted } from 'vue'
+  export default {
+    setup(){
+      // 获取组件同理
+      const titleRef = ref()
+      onMounted(() => {
+        console.log(titleRef.value) // 拿到 h2 元素
+      })
+    }
+  }
+</script>
+```
+
+**原来在 `beforeCreate()` 和 `created()` 中进行的操作就直接在 setup() 中执行就好了，比如发送网络请求等**
+
+### 生命周期钩子函数
+
+在 `setup()` 中可以直接使用导入的 onX 函数注册生命周期，但是 `beforeCreate()` 和 `created()` 是没有的
+
+```js
+import { onMounted } from 'vue'
+export default {
+  setup() {
+    onMounted(() => {
+      console.log('onMounted')
+    })
+  }
+}
 ```
 
 ## 使用单文件进行 Vue 组件开发
