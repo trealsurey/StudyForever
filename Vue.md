@@ -1936,6 +1936,58 @@ export default {
 2. `defineProps()` 和 `defineEmits()`，注意是两个函数
 3. `defineExpose()`：通过模板 ref 或者 $parent 链获取到的组件的公开实例，不会暴露在任何 setup 中声明的绑定，通过 defineExpose() 来显式指定在 setup 组件中要暴露出去的属性
 
+## Vue Router
+
+**路由的核心就是映射关系**
+
+Vue 的官方路由，与 Vue 核心深度集成，让使用 Vue 构建 SPA 变得非常容易
+
+`vue-router` 是基于路由和组件的
+- 路由用于设定访问路径，将路径和组件映射起来
+- 在 vue-router 的单页面应用中，页面路径的改变就是组件的切换
+
+使用 vue-router 的步骤
+1. 创建路由需要映射的组件
+2. 通过 `createRouter()` 创建路由对象，并传入 `routes` 和 `history`
+   1. 配置路由映射：组件和路径映射关系组成 routes 数组
+   2. 创建基于 hash/history
+3. 使用 app 注册路由对象 `useRouter()` 
+4. 路由使用：通过 `<router-view></router-view>` 进行路由组件占位，通过 `<router-link to></router-link>`进行路由路径切换
+
+```js
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Home from '../Views/Home.Vue'
+import About from '../Views/About.Vue'
+
+// 创建一个路由
+const router = createRouter({
+  // 使用 hash 模式
+  history: createWebHashHistory(),
+  routes: [
+    // 当路径是 / 时，重定向到 /home
+    { path: "/", redirect: "/home"}
+    { path: "/home", component: Home},
+    { path: "/about", component: About}
+  ]
+})
+
+export default router
+```
+
+```html
+<template>
+  <div class="app">
+    <h2>App Content</h2>
+    <div class="nav">
+      <router-link to="/home">首页</router-link>
+      <router-link to="/about">关于</router-link>
+    </div>
+    <!-- router 切换后添加的组件就会在下面这个区域显示 -->
+    <router-view></router-view>
+  </div>
+</template>
+```
+
 ## 使用单文件进行 Vue 组件开发
 
 将每个组件抽离为单独的 `.vue` 文件
