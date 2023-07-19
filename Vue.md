@@ -1962,6 +1962,7 @@ import About from '../Views/About.Vue'
 // 创建一个路由
 const router = createRouter({
   // 使用 hash 模式
+  // 也可使用 history 模式，导入 createWebHistory() 即可
   history: createWebHashHistory(),
   routes: [
     // 当路径是 / 时，重定向到 /home
@@ -1979,7 +1980,8 @@ export default router
   <div class="app">
     <h2>App Content</h2>
     <div class="nav">
-      <router-link to="/home">首页</router-link>
+      <!-- to绑定对象也可以，但不常用 -->
+      <router-link :to="{ path: '/home'}">首页</router-link>
       <router-link to="/about">关于</router-link>
     </div>
     <!-- router 切换后添加的组件就会在下面这个区域显示 -->
@@ -1987,6 +1989,53 @@ export default router
   </div>
 </template>
 ```
+
+> `<router-link></router-link>` 中有一个默认的类名 `router-link-active`，我们可以直接在 css 中对 .router-link-active 进行样式设计，即显示已选中的标签样式
+> 
+> 还可以直接在标签中设置新的类名 `<router-link active-class="link-active"></router-link>` 用来设置已选中标签的样式 
+
+vue-router 中也支持动态组件，从而可以进行代码分包，帮助我们进行路由懒加载等优化操作
+
+```js
+const routes= [
+  { path: '/', redirect: '/home'},
+  // 通过添加 webpack 注释，在 webpack 打包之后就可以显式的知道分包的名字了
+  { path: '/home', component: () => import(/* webpackChunkName: 'home'*/ '../views/Home.Vue')},
+  { path: '/about', component: () => import('../views/About.Vue')},
+]
+```
+
+### 动态路由
+
+很多时候我们的路径后面还会跟上用户名等信息，这时就需要动态路由
+
+```js
+{ path: 'user/:id', component: () => import('../views/User.Vue') }
+
+// 反过来想要在 html 模板中拿到 id 显示到页面上
+{{ $route.params.id }}
+// 在 js 代码中拿到的话，vue 提供了 useRoute() 
+const route = useRoute()
+const id = route.params.id
+```
+
+### NotFound 匹配
+
+当找不到对应的路由匹配显示 NotFound 时，就可以使用 `:pathMatch()` 来进行设置
+
+```js
+// 所有匹配不到的都显示以下组件
+{ path: '/:pathMatch(.*)', component: }
+```
+
+也可以通过 `$route.params.pathMatch` 拿到当前路径，渲染到页面中
+
+**pathMatch() 后面可以再加一个 `*`，`/:pathMatch(.*)*` 用来区别是否对路径进行解析**
+
+`abc/cba/nba` 
+- 不加 * 返回 abc/cba/nba
+- 加 * 返回 ['abc', 'cba', 'nba']，方便进行其他操作
+              
 
 ## 使用单文件进行 Vue 组件开发
 
